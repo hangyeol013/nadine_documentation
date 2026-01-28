@@ -1,0 +1,74 @@
+site_name: Nadine Social Robot
+site_description: Documentation for the Nadine social robot project
+site_dir: site
+
+nav:
+  - Project Overview:
+      - Introduction: overview.md
+      - Installation & Setup: project-installation.md
+      - Usage: project-usage.md
+      - Architecture & Features: project-architecture.md
+      - Development & Troubleshooting: project-dev.md
+  - Perception Layer:
+      - Overview: perception-overview.md
+      - Runtime & MQTT: perception-runtime.md
+      - Selective Memory: perception-memory.md  
+  - Interaction Layer:
+      - Overview: interaction-overview.md
+      - Runtime & MQTT: interaction-runtime.md
+      - Agents & Graph: interaction-agents.md
+      - Memory & RAG: interaction-memory-rag.md
+  - Control Layer:
+      - Overview: control-overview.md
+      - Runtime & MQTT: control-runtime.md
+
+theme:
+  name: material
+  language: en
+
+  # Top nav + left sidebar behavior
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+  # Color palette (very close to the Material docs feel)
+  palette:
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+copyright: >
+  Copyright &copy; 2026 <a href="https://github.com/hangyeol013" target="_blank" rel="noopener">Hangyeol Kang</a>
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.highlight
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
