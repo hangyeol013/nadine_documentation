@@ -1,0 +1,1744 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Nadine social robot project">
+      
+      
+      
+      
+        <link rel="prev" href="../control-overview/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Runtime & MQTT - Nadine Social Robot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#control-layer-runtime-mqtt" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Nadine Social Robot" class="md-header__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Nadine Social Robot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Runtime & MQTT
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Project Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../perception-overview/" class="md-tabs__link">
+          
+  
+  
+  Perception Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../interaction-overview/" class="md-tabs__link">
+          
+  
+  
+  Interaction Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../control-overview/" class="md-tabs__link">
+          
+  
+  
+  Control Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Nadine Social Robot" class="md-nav__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Nadine Social Robot
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation & Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perception Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Perception Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selective Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interaction Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interaction Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents & Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-memory-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory & RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#entrypoint-mainpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entrypoint (main.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-server-nadineserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MQTT Server (NadineServer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MQTT Server (NadineServer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscriptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subscriptions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agentcontrolhandler-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AgentControlHandler creation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feedback-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feedback topics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-level-control-agentcontrolhandler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level Control (AgentControlHandler)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="High-Level Control (AgentControlHandler)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-robot-controller-nadinecontrol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Robot Controller (NadineControl)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Robot Controller (NadineControl)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization-init_me" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialization (init_me)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#look-at-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Look-at behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speech-and-lip-sync-make_nadine_speak" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Speech and lip-sync (make_nadine_speak)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#animation-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animation execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-topics-control-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MQTT Topics (Control Summary)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extension-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extension Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#entrypoint-mainpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entrypoint (main.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-server-nadineserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MQTT Server (NadineServer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MQTT Server (NadineServer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscriptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subscriptions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agentcontrolhandler-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AgentControlHandler creation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feedback-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feedback topics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-level-control-agentcontrolhandler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High-Level Control (AgentControlHandler)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="High-Level Control (AgentControlHandler)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-robot-controller-nadinecontrol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Robot Controller (NadineControl)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Robot Controller (NadineControl)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization-init_me" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialization (init_me)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#look-at-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Look-at behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speech-and-lip-sync-make_nadine_speak" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Speech and lip-sync (make_nadine_speak)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#animation-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animation execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-topics-control-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MQTT Topics (Control Summary)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extension-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extension Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="control-layer-runtime-mqtt">Control Layer – Runtime &amp; MQTT<a class="headerlink" href="#control-layer-runtime-mqtt" title="Permanent link">&para;</a></h1>
+<p>This page explains how the control server processes MQTT commands and turns them into robot motions and speech.</p>
+<hr />
+<h2 id="entrypoint-mainpy">Entrypoint (<code>main.py</code>)<a class="headerlink" href="#entrypoint-mainpy" title="Permanent link">&para;</a></h2>
+<p><code>main.py</code> is responsible for:</p>
+<ul>
+<li>Loading environment variables from <code>control/.env</code> (Azure TTS, etc.).  </li>
+<li>Loading <code>control/config.yaml</code> via <code>load_control_config()</code>.  </li>
+<li>Parsing optional CLI arguments:</li>
+<li><code>-voicepath</code>, <code>-voicepathGerman</code>, <code>-voicepathFrench</code>, <code>-animationXMLPath</code>.  </li>
+<li>Creating a <code>NadineServer</code> instance with the resolved voice paths.  </li>
+<li>Setting the animation XML path on the server.  </li>
+<li>Calling <code>start_server()</code> to begin handling MQTT commands.</li>
+</ul>
+<p>Once started, the process runs until you stop it (CTRL+C).</p>
+<hr />
+<h2 id="mqtt-server-nadineserver">MQTT Server (<code>NadineServer</code>)<a class="headerlink" href="#mqtt-server-nadineserver" title="Permanent link">&para;</a></h2>
+<p><code>NadineServer</code> owns the MQTT client and bridges topics to robot actions.</p>
+<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Creates a <code>paho.mqtt.client.Client</code>.  </li>
+<li>Registers:</li>
+<li><code>on_connect</code> – called when the client connects.  </li>
+<li><code>on_message</code> – called when messages are received.  </li>
+<li>Attempts to connect to an MQTT broker:</li>
+<li>First <code>localhost:1883</code>, then falls back to <code>emqx:1883</code>.</li>
+</ul>
+<h3 id="subscriptions">Subscriptions<a class="headerlink" href="#subscriptions" title="Permanent link">&para;</a></h3>
+<p>On connect, the server subscribes to:</p>
+<ul>
+<li><code>nadine/agent/control/#</code></li>
+</ul>
+<p>This wildcard covers:</p>
+<ul>
+<li><code>nadine/agent/control/speak</code>  </li>
+<li><code>nadine/agent/control/look_at</code>  </li>
+<li><code>nadine/agent/control/animation</code></li>
+</ul>
+<h3 id="agentcontrolhandler-creation">AgentControlHandler creation<a class="headerlink" href="#agentcontrolhandler-creation" title="Permanent link">&para;</a></h3>
+<p>When <code>start_server()</code> is called:</p>
+<ul>
+<li>Logs that the MQTT handler is starting.  </li>
+<li>Creates <code>AgentControlHandler(animation_xml_path)</code>.  </li>
+<li>Attaches itself to the robot:</li>
+<li><code>agentcontrol_handler.robot.nadine_server = self</code></li>
+</ul>
+<p>This allows <code>NadineControl</code> to send feedback (<code>start_speak</code>, <code>end_speak</code>) back through the server.</p>
+<h3 id="message-handling">Message handling<a class="headerlink" href="#message-handling" title="Permanent link">&para;</a></h3>
+<p>In <code>on_message</code>, the server routes topics to <code>AgentControlHandler</code>:</p>
+<ul>
+<li><strong><code>nadine/agent/control/look_at</code></strong></li>
+<li>Payload: JSON <code>{"x": float, "y": float, "z": float}</code>.</li>
+<li>
+<p>Action: <code>agentcontrol_handler.lookAtPosition(...)</code> → <code>NadineControl.look_at_position(...)</code>.</p>
+</li>
+<li>
+<p><strong><code>nadine/agent/control/speak</code></strong></p>
+</li>
+<li>Payload: plain text string.</li>
+<li>
+<p>Action: <code>agentcontrol_handler.speak(text, volume=0)</code> → <code>NadineControl.make_nadine_speak(...)</code>.</p>
+</li>
+<li>
+<p><strong><code>nadine/agent/control/animation</code></strong></p>
+</li>
+<li>Payload: string/enum for a predefined animation.</li>
+<li>Action: forwarded to animation handling (e.g. <code>playAnimation</code> / <code>touchTarget</code> depending on implementation).</li>
+</ul>
+<h3 id="feedback-topics">Feedback topics<a class="headerlink" href="#feedback-topics" title="Permanent link">&para;</a></h3>
+<p><code>NadineServer</code> also exposes:</p>
+<ul>
+<li><code>speakBegin()</code> → publishes <code>nadine/agent/feedback/start_speak</code>  </li>
+<li><code>speakEnd()</code> → publishes <code>nadine/agent/feedback/end_speak</code></li>
+</ul>
+<p>These are called from <code>NadineControl</code> at the start and end of speaking to synchronize with the interaction layer and UI.</p>
+<hr />
+<h2 id="high-level-control-agentcontrolhandler">High-Level Control (<code>AgentControlHandler</code>)<a class="headerlink" href="#high-level-control-agentcontrolhandler" title="Permanent link">&para;</a></h2>
+<p><code>AgentControlHandler</code> wraps <code>NadineControl</code> to present a simple API to the rest of the system.</p>
+<h3 id="initialization">Initialization<a class="headerlink" href="#initialization" title="Permanent link">&para;</a></h3>
+<p>In <code>__init__(animation_xml_path)</code>:</p>
+<ul>
+<li>Creates <code>self.robot = NadineControl()</code>.  </li>
+<li>Calls <code>self.robot.load_animation_library(animation_xml_path)</code>.  </li>
+<li>Calls <code>self.robot.init_me()</code>:</li>
+<li>Initializes joints and default posture.</li>
+<li>Starts idle movement (blinking) threads.</li>
+<li>Sets up Azure TTS and checker.</li>
+</ul>
+<h3 id="key-methods">Key methods<a class="headerlink" href="#key-methods" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>lookAtPosition(position)</code></strong></li>
+<li>Expects a dict with <code>{"x", "y", "z"}</code>.  </li>
+<li>
+<p>Calls <code>self.robot.look_at_position(...)</code> to orient head/eyes.</p>
+</li>
+<li>
+<p><strong><code>lookAtTarget(target)</code> / <code>endLookAt()</code></strong></p>
+</li>
+<li>
+<p>Starts/stops continuous look‑at behavior for a named target.</p>
+</li>
+<li>
+<p><strong><code>speak(phrase, volume)</code></strong></p>
+</li>
+<li>Calls <code>self.robot.make_nadine_speak(phrase, volume)</code>.  </li>
+<li>
+<p><code>NadineControl</code> then:</p>
+<ul>
+<li>Ensures a suitable posture.</li>
+<li>Uses Azure TTS to generate audio and lip/jaw trajectories.</li>
+<li>Updates mouth‑related joints and triggers feedback via <code>nadine_server.speakBegin()/speakEnd()</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong><code>playAnimation(animation)</code></strong></p>
+</li>
+<li>Maps a logical animation identifier (e.g. <code>WHY</code>, <code>WAVE_HAND</code>, <code>NOD_YES</code>) to an XML animation name.</li>
+<li>Calls <code>self.robot.play_animation("SomeAnimationName")</code>.</li>
+</ul>
+<p>Other methods (point/greet/move) are stubs or thin wrappers and can be extended as needed.</p>
+<hr />
+<h2 id="core-robot-controller-nadinecontrol">Core Robot Controller (<code>NadineControl</code>)<a class="headerlink" href="#core-robot-controller-nadinecontrol" title="Permanent link">&para;</a></h2>
+<p><code>NadineControl</code> is responsible for turning high‑level requests into joint‑level trajectories and serial commands.</p>
+<h3 id="initialization-init_me">Initialization (<code>init_me</code>)<a class="headerlink" href="#initialization-init_me" title="Permanent link">&para;</a></h3>
+<p>Typical steps:</p>
+<ul>
+<li>Create 28 <code>Joint</code> objects (for Nadine’s servos) with default positions.  </li>
+<li>Initialize the body configuration and idle state.  </li>
+<li>Create a <code>Checker</code> instance (drives playback and safety checks).  </li>
+<li>Create <code>AzureTTS</code> bound to the checker.  </li>
+<li>Start:</li>
+<li>A <strong>blink/idle movement thread</strong> (<code>endless_movements</code>).  </li>
+<li>A <strong>console input thread</strong> (<code>ask_for_text</code>) for debugging.  </li>
+<li>A <strong>look‑at target thread</strong> to maintain gaze when a target is set.</li>
+</ul>
+<h3 id="look-at-behavior">Look-at behavior<a class="headerlink" href="#look-at-behavior" title="Permanent link">&para;</a></h3>
+<p>Methods like <code>look_at_position(...)</code>, <code>look_at_target(...)</code>, and <code>end_look_at()</code>:</p>
+<ul>
+<li>Compute joint trajectories for head/eye servos based on a 3D position or named target.  </li>
+<li>Update associated <code>Joint</code> trajectories so that the checker loop sends appropriate serial commands.</li>
+</ul>
+<h3 id="speech-and-lip-sync-make_nadine_speak">Speech and lip-sync (<code>make_nadine_speak</code>)<a class="headerlink" href="#speech-and-lip-sync-make_nadine_speak" title="Permanent link">&para;</a></h3>
+<p>When <code>make_nadine_speak(text, volume)</code> is called:</p>
+<ul>
+<li>Ensure Nadine is in a speaking posture (e.g. <code>"LOOKUPPostureDefault"</code>).  </li>
+<li>Log the speech request.  </li>
+<li>Use <code>AzureTTS</code> to:</li>
+<li>Generate speech audio.</li>
+<li>Compute lip/jaw trajectories (<code>channel5</code>, <code>channel6</code>, <code>channel7</code>, etc.).  </li>
+<li>Clear and repopulate mouth-related joints with the new trajectories.  </li>
+<li>Set flags indicating that speech is in progress and call:</li>
+<li><code>nadine_server.speakBegin()</code> at start.  </li>
+<li><code>nadine_server.speakEnd()</code> when speech completes.</li>
+</ul>
+<h3 id="animation-execution">Animation execution<a class="headerlink" href="#animation-execution" title="Permanent link">&para;</a></h3>
+<p>For named animations:</p>
+<ul>
+<li><code>NadineControl</code> uses <code>AnimationLibrary</code> to retrieve per‑joint sequences for the given animation.  </li>
+<li>Populates each relevant <code>Joint</code>’s trajectory.  </li>
+<li>A background loop (inside <code>Checker</code>) steps through frames, sending servo positions over <code>SerialComm</code>.</li>
+</ul>
+<hr />
+<h2 id="mqtt-topics-control-summary">MQTT Topics (Control Summary)<a class="headerlink" href="#mqtt-topics-control-summary" title="Permanent link">&para;</a></h2>
+<p><strong>Subscribed (Control consumes)</strong></p>
+<ul>
+<li><code>nadine/agent/control/speak</code>  </li>
+<li>Payload: <code>"&lt;text to speak&gt;"</code>  </li>
+<li>
+<p>Effect: triggers TTS + lip‑sync and potentially an associated animation.</p>
+</li>
+<li>
+<p><code>nadine/agent/control/look_at</code>  </p>
+</li>
+<li>Payload: <code>{"x": float, "y": float, "z": float}</code>  </li>
+<li>
+<p>Effect: orients Nadine’s head/eyes to look at the given 3D position.</p>
+</li>
+<li>
+<p><code>nadine/agent/control/animation</code>  </p>
+</li>
+<li>Payload: string/enum identifier  </li>
+<li>Effect: plays a predefined gesture/posture animation.</li>
+</ul>
+<p><strong>Published (Control produces)</strong></p>
+<ul>
+<li><code>nadine/agent/feedback/start_speak</code>  </li>
+<li>
+<p>Emitted when Nadine starts speaking.</p>
+</li>
+<li>
+<p><code>nadine/agent/feedback/end_speak</code>  </p>
+</li>
+<li>Emitted when Nadine finishes speaking.</li>
+</ul>
+<p>These topics close the loop between perception (gaze), interaction (dialogue), and control (motion and speech).</p>
+<hr />
+<h2 id="extension-points">Extension Points<a class="headerlink" href="#extension-points" title="Permanent link">&para;</a></h2>
+<p>Common places to extend the control layer:</p>
+<ul>
+<li><strong>Add new animations</strong></li>
+<li>Create a new XML file in <code>XMLAnimations/</code>.  </li>
+<li>
+<p>Add a case in <code>AgentControlHandler.playAnimation(...)</code> mapping an enum/name to your XML animation.</p>
+</li>
+<li>
+<p><strong>Change idle behavior or default posture</strong></p>
+</li>
+<li>
+<p>Modify <code>NadineControl.init_me()</code> and/or <code>endless_movements</code>.</p>
+</li>
+<li>
+<p><strong>Swap TTS provider</strong></p>
+</li>
+<li>
+<p>Implement a new TTS class and replace <code>AzureTTS</code> usage in <code>NadineControl</code>, making sure lip animation data still drives the same joints.</p>
+</li>
+<li>
+<p><strong>Adapt to different hardware</strong></p>
+</li>
+<li>Update <code>SerialComm</code> and <code>Checker</code> configurations to match your controller’s serial port and protocol.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 <a href="https://github.com/hangyeol013" target="_blank" rel="noopener">Hangyeol Kang</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1580 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Nadine social robot project">
+      
+      
+      
+      
+        <link rel="prev" href="../interaction-agents/">
+      
+      
+        <link rel="next" href="../control-overview/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Memory & RAG - Nadine Social Robot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#interaction-layer-memory-rag" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Nadine Social Robot" class="md-header__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Nadine Social Robot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Memory & RAG
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Project Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../perception-overview/" class="md-tabs__link">
+          
+  
+  
+  Perception Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../interaction-overview/" class="md-tabs__link">
+          
+  
+  
+  Interaction Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../control-overview/" class="md-tabs__link">
+          
+  
+  
+  Control Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Nadine Social Robot" class="md-nav__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Nadine Social Robot
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation & Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perception Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Perception Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selective Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interaction Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interaction Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents & Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory & RAG
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory & RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-profiles-user_infojson-user_idsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Profiles (user_info.json &amp; user_ids.json)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-update-agent-memory_update_agentpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Update Agent (memory_update_agent.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Update Agent (memory_update_agent.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structured-user-profile-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured user profile updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#episodic-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Episodic memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-retrieval-memory_retrieval_agentpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Retrieval (memory_retrieval_agent.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Retrieval (memory_retrieval_agent.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#textual-memory-chroma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Textual memory (Chroma)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#knowledge-rag-agent-knowledge_rag_agentpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge RAG Agent (knowledge_RAG_agent.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visual-memory-configuration-interactionconfigyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual Memory Configuration (interaction/config.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-everything-fits-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Everything Fits Together
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-profiles-user_infojson-user_idsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Profiles (user_info.json &amp; user_ids.json)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-update-agent-memory_update_agentpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Update Agent (memory_update_agent.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Update Agent (memory_update_agent.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structured-user-profile-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured user profile updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#episodic-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Episodic memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-retrieval-memory_retrieval_agentpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Retrieval (memory_retrieval_agent.py)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Retrieval (memory_retrieval_agent.py)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#textual-memory-chroma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Textual memory (Chroma)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#knowledge-rag-agent-knowledge_rag_agentpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge RAG Agent (knowledge_RAG_agent.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visual-memory-configuration-interactionconfigyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual Memory Configuration (interaction/config.yaml)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-everything-fits-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Everything Fits Together
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="interaction-layer-memory-rag">Interaction Layer – Memory &amp; RAG<a class="headerlink" href="#interaction-layer-memory-rag" title="Permanent link">&para;</a></h1>
+<p>This page details how Nadine’s interaction layer manages <strong>user memory</strong> (profiles, episodic memory, visual memory) and <strong>knowledge retrieval</strong> (RAG).</p>
+<hr />
+<h2 id="user-profiles-user_infojson-user_idsjson">User Profiles (<code>user_info.json</code> &amp; <code>user_ids.json</code>)<a class="headerlink" href="#user-profiles-user_infojson-user_idsjson" title="Permanent link">&para;</a></h2>
+<p>User profile information is stored under:</p>
+<ul>
+<li><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/user_info.json</code></li>
+</ul>
+<p>Each <code>user_info.json</code> contains fields like:</p>
+<ul>
+<li><code>user_id</code>, <code>user_name</code></li>
+<li><code>current_company</code>, <code>current_position</code>, <code>location</code></li>
+<li><code>hobbies</code>, <code>interests</code></li>
+<li><code>face_image_path</code></li>
+<li><code>last_updated</code></li>
+</ul>
+<p>The file:</p>
+<ul>
+<li><code>interaction/db/user_ids.json</code></li>
+</ul>
+<p>Maps:</p>
+<ul>
+<li><code>user_id</code> → <code>user_name</code></li>
+</ul>
+<p>This mapping is used to quickly resolve names, detect similar names, and coordinate between <strong>interaction</strong> and <strong>perception</strong> layers.</p>
+<p>Key helpers:</p>
+<ul>
+<li><code>user_info_init(user_id, user_name)</code> – create a default profile.  </li>
+<li><code>fetch_user_info(user_id, user_name)</code> – load or initialize profile on disk.  </li>
+<li><code>update_user_ids(user_id, user_name)</code> – update <code>user_ids.json</code> after name changes.</li>
+</ul>
+<hr />
+<h2 id="memory-update-agent-memory_update_agentpy">Memory Update Agent (<code>memory_update_agent.py</code>)<a class="headerlink" href="#memory-update-agent-memory_update_agentpy" title="Permanent link">&para;</a></h2>
+<p>The <strong>memory update agent</strong> has two main responsibilities:</p>
+<ol>
+<li><strong>Structured user profile updates</strong> based on conversation (e.g., “My name is Alice, I work at Trafigura in Geneva”).  </li>
+<li><strong>Episodic memory storage</strong> that summarizes important interaction episodes.</li>
+</ol>
+<h3 id="structured-user-profile-updates">Structured user profile updates<a class="headerlink" href="#structured-user-profile-updates" title="Permanent link">&para;</a></h3>
+<p>When <code>state["intent"] == "update_user_info"</code>:</p>
+<ul>
+<li>A dedicated LLM (<code>load_agent_llm("memory_update_agent")</code>) is prompted to extract structured fields:</li>
+<li><code>user_name</code></li>
+<li><code>current_company</code></li>
+<li><code>current_position</code></li>
+<li><code>location</code></li>
+<li><code>hobbies</code></li>
+<li><code>interests</code></li>
+<li>The output is parsed into a <code>MemoryUpdate</code> Pydantic model.</li>
+<li><code>save_user_info(...)</code>:</li>
+<li>Loads existing <code>user_info.json</code> (or initializes one).</li>
+<li>Merges the new fields (deduplicating hobbies/interests).</li>
+<li>Updates <code>last_updated</code>.</li>
+<li>Ensures <code>user_ids.json</code> is consistent.</li>
+<li>Handles <strong>name similarity and confirmation</strong>:<ul>
+<li>Computes a similarity score between <code>user_name</code> and all names in <code>user_ids.json</code> using Levenshtein ratio.</li>
+<li>If one name is a strong match (<code>HIGH_SIMILARITY_THRESHOLD</code>):</li>
+<li>Immediately links to that existing user and returns the stored profile.</li>
+<li>If several names are moderately similar (<code>LOW_SIMILARITY_THRESHOLD</code>):</li>
+<li>Returns a <code>name_confirmation</code> structure containing:<ul>
+<li><code>given_name</code>, <code>similar_names</code>, <code>similar_ids</code>, <code>similarity_scores</code>.</li>
+</ul>
+</li>
+<li>The graph then routes to <code>response_agent</code>, which asks the user to confirm the top candidate.</li>
+<li>If no reasonable match is found:</li>
+<li>Proceeds as a new user; <code>name_checked</code> is set and a new profile is created/updated.</li>
+</ul>
+</li>
+</ul>
+<p>The <code>update_memory</code> wrapper in <code>graph.py</code> merges the returned <code>user_info</code>, <code>name_checked</code>, and <code>name_confirmation</code> fields back into the graph state. On the next user turn, the <strong>DialogueManager</strong> consumes this state and either accepts a suggested existing user, creates a new one, or rotates to the next suggestion, before finally sending the confirmed <code>user_name</code>/<code>user_id</code> pair back to perception for face-linking.</p>
+<h3 id="episodic-memory">Episodic memory<a class="headerlink" href="#episodic-memory" title="Permanent link">&para;</a></h3>
+<p>When <code>intent != "update_user_info"</code> (e.g., end of a conversation):</p>
+<ul>
+<li>The agent summarizes the last part of the conversation into an <strong>episode</strong>:</li>
+<li>Builds a short transcript of recent <code>Human</code>/<code>AI</code> turns.</li>
+<li>LLM extracts <code>observation</code>, <code>thought</code>, <code>action</code>, <code>result</code> into an <code>EpisodicSave</code> model.</li>
+<li><code>save_episodic_memory(...)</code>:</li>
+<li>Skips save if <code>user_name</code> is missing or still <code>"Unknown"</code>.  </li>
+<li>Otherwise:<ul>
+<li>Builds <code>conversation_text</code> and <code>episode_text</code>.</li>
+<li>Creates two new documents in Chroma, tagged with:</li>
+<li><code>user_id</code></li>
+<li><code>timestamp</code></li>
+<li><code>memory_type</code> = <code>"conversation"</code> or <code>"episode"</code>.</li>
+<li>Stores them in a Chroma collection named after the <code>user_id</code>.</li>
+</ul>
+</li>
+</ul>
+<p>The result flag <code>saved</code> is merged back into the graph state as <code>episodic_memory</code> information.</p>
+<hr />
+<h2 id="memory-retrieval-memory_retrieval_agentpy">Memory Retrieval (<code>memory_retrieval_agent.py</code>)<a class="headerlink" href="#memory-retrieval-memory_retrieval_agentpy" title="Permanent link">&para;</a></h2>
+<p>When the graph needs context about a user, <code>get_user_specific_memory(state)</code> is called.</p>
+<h3 id="textual-memory-chroma">Textual memory (Chroma)<a class="headerlink" href="#textual-memory-chroma" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Finds the Chroma collection for the current <code>user_id</code>.  </li>
+<li>Runs two independent similarity queries based on the latest user message:</li>
+<li>One over documents where <code>memory_type == "episode"</code>.  </li>
+<li>One over documents where <code>memory_type == "conversation"</code>.  </li>
+<li>Returns the closest matching:</li>
+<li><code>episode_memory</code></li>
+<li><code>conversation_memory</code></li>
+</ul>
+<p>If no Chroma collection exists yet, the function degrades gracefully and returns <code>None</code> for these fields.</p>
+<h3 id="visual-memory">Visual memory<a class="headerlink" href="#visual-memory" title="Permanent link">&para;</a></h3>
+<p>The same function also calls <code>_retrieve_best_visual_memory(state, user_id)</code> to:</p>
+<ul>
+<li>Inspect memorable scenes stored by the <strong>perception layer</strong> under:</li>
+<li><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/</code></li>
+<li>Use CLIP text embeddings of the current user question to:</li>
+<li>Compare against stored image embeddings (from perception).</li>
+<li>Optionally combine similarity with stored scene descriptions.</li>
+<li>Select the most relevant visual memory if its combined similarity exceeds a threshold:</li>
+<li>Controlled by:<ul>
+<li><code>interaction.visual_memory.similarity_threshold</code></li>
+<li><code>interaction.visual_memory.retrieval_alpha</code></li>
+</ul>
+</li>
+</ul>
+<p>The output is a minimal dict:</p>
+<ul>
+<li><code>{"image_path": ..., "scene_id": ..., "similarity": ...}</code> or <code>None</code>.</li>
+</ul>
+<p>This is placed in <code>state["visual_memory"]</code> and later consumed by the <strong>response agent</strong>:</p>
+<ul>
+<li><code>response_agent</code> attaches the image as an <code>image_url</code> content item, so the response LLM can reason over both text and visuals.</li>
+</ul>
+<hr />
+<h2 id="knowledge-rag-agent-knowledge_rag_agentpy">Knowledge RAG Agent (<code>knowledge_RAG_agent.py</code>)<a class="headerlink" href="#knowledge-rag-agent-knowledge_rag_agentpy" title="Permanent link">&para;</a></h2>
+<p>Nadine’s long-term <strong>system knowledge</strong> lives in:</p>
+<ul>
+<li><code>interaction/db/knowledge/rag_files/</code></li>
+</ul>
+<p>The <strong>knowledge RAG agent</strong> (<code>get_related_knowledge(state)</code>) works as follows:</p>
+<ol>
+<li>On first run:</li>
+<li>Loads all files from <code>rag_files/</code> using <code>TextLoader</code>.  </li>
+<li>Splits them into chunks grouped by markdown headers (<code>#</code>, <code>##</code>).  </li>
+<li>
+<p>Builds a Chroma vectorstore:</p>
+<ul>
+<li>Embeddings: <code>OllamaEmbeddings(model="nomic-embed-text")</code>.  </li>
+<li>Collection name: <code>"nadine-knowledge"</code>.  </li>
+<li>Persist directory: <code>interaction/db/knowledge/chroma/</code>.</li>
+</ul>
+</li>
+<li>
+<p>On later runs:</p>
+</li>
+<li>
+<p>Reuses the existing Chroma collection if present.</p>
+</li>
+<li>
+<p>For each query:</p>
+</li>
+<li>Uses the LangGraph state’s last message as the query text.  </li>
+<li>Retrieves the top 1 most relevant chunk.  </li>
+<li>Flattens the chunk into a single string (with markup removed).  </li>
+<li>Optionally:<ul>
+<li>Detects and displays a <strong>visual source</strong> (if indicated in the chunk metadata).  </li>
+</ul>
+</li>
+<li>Returns a formatted string summary.</li>
+</ol>
+<p>The result is stored in <code>state["knowledge_retrieval"]</code> and is passed into the <strong>response agent</strong> as part of the user packet.</p>
+<hr />
+<h2 id="visual-memory-configuration-interactionconfigyaml">Visual Memory Configuration (<code>interaction/config.yaml</code>)<a class="headerlink" href="#visual-memory-configuration-interactionconfigyaml" title="Permanent link">&para;</a></h2>
+<p>The visual memory retrieval behavior is configured via:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">interaction</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">visual_memory</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">similarity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">    </span><span class="nt">retrieval_alpha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+</code></pre></div>
+<ul>
+<li><code>similarity_threshold</code>:</li>
+<li>Minimum combined CLIP similarity (text–image + text–description) needed to use a visual memory.</li>
+<li><code>retrieval_alpha</code>:</li>
+<li>Blend factor between:<ul>
+<li><code>sim_image</code> (text vs. image embedding)</li>
+<li><code>sim_desc</code> (text vs. description embedding)</li>
+</ul>
+</li>
+<li>Effective similarity:<ul>
+<li><code>alpha * sim_image + (1 - alpha) * sim_desc</code></li>
+</ul>
+</li>
+</ul>
+<p>Adjust these values to make visual memory <strong>more or less prominent</strong> in responses.</p>
+<hr />
+<h2 id="how-everything-fits-together">How Everything Fits Together<a class="headerlink" href="#how-everything-fits-together" title="Permanent link">&para;</a></h2>
+<p>On each turn:</p>
+<ol>
+<li><strong>Memory retrieval</strong> (<code>retrieve_memory</code>):</li>
+<li>Loads textual + visual memories for the current user.  </li>
+<li>
+<p>Passes them to the affective system and orchestrator.</p>
+</li>
+<li>
+<p><strong>Tools &amp; reasoning</strong> (search, vision, knowledge RAG):</p>
+</li>
+<li>
+<p>Provide up-to-date external and internal knowledge.  </p>
+</li>
+<li>
+<p><strong>Response agent</strong>:</p>
+</li>
+<li>Sees:<ul>
+<li>Conversation + episodic memory summaries.</li>
+<li>Relevant visual memory (if any).</li>
+<li>Knowledge chunks from RAG.</li>
+</ul>
+</li>
+<li>
+<p>Generates a response that is both <strong>contextual</strong> and <strong>personalized</strong>.</p>
+</li>
+<li>
+<p><strong>Memory update</strong> (<code>update_memory</code>):</p>
+</li>
+<li>Incorporates new user profile data and episodic memories.  </li>
+<li>Keeps <code>user_info</code>, Chroma DB, and <code>user_ids.json</code> in sync over time.</li>
+</ol>
+<p>Together, these components make Nadine’s interactions <strong>cumulative</strong>, <strong>personalized</strong>, and <strong>multimodal</strong> across sessions.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 <a href="https://github.com/hangyeol013" target="_blank" rel="noopener">Hangyeol Kang</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

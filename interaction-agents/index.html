@@ -1,0 +1,1820 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Nadine social robot project">
+      
+      
+      
+      
+        <link rel="prev" href="../interaction-runtime/">
+      
+      
+        <link rel="next" href="../interaction-memory-rag/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Agents & Graph - Nadine Social Robot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#interaction-layer-agents-graph" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Nadine Social Robot" class="md-header__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Nadine Social Robot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agents & Graph
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Project Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../perception-overview/" class="md-tabs__link">
+          
+  
+  
+  Perception Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../interaction-overview/" class="md-tabs__link">
+          
+  
+  
+  Interaction Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../control-overview/" class="md-tabs__link">
+          
+  
+  
+  Control Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Nadine Social Robot" class="md-nav__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Nadine Social Robot
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation & Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perception Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Perception Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selective Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interaction Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interaction Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents & Graph
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents & Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview-of-the-agent-graph-graphpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview of the Agent Graph (graph.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intent-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intent Classifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-retrieval-update-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Retrieval &amp; Update Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Retrieval &amp; Update Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-retrieval-memory_retrieve_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Retrieval (memory_retrieve_agent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-update-memory_update_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Update (memory_update_agent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-confirmation-flow-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Name confirmation flow (high-level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#affective-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affective System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Affective System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#affective-appraisal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affective Appraisal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#affective-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affective Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orchestrator-sub-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orchestrator &amp; Sub-Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Orchestrator &amp; Sub-Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#orchestrator-orchestrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orchestrator (orchestrate)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-agent-get_search_results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Agent (get_search_results)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vision-agent-get_vision_results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision Agent (get_vision_results)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-rag-agent-get_knowledge_retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge RAG Agent (get_knowledge_retrieval)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting It All Together
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-memory-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory & RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview-of-the-agent-graph-graphpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview of the Agent Graph (graph.py)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intent-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intent Classifier
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-retrieval-update-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Retrieval &amp; Update Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Retrieval &amp; Update Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-retrieval-memory_retrieve_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Retrieval (memory_retrieve_agent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-update-memory_update_agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Update (memory_update_agent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-confirmation-flow-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Name confirmation flow (high-level)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#affective-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affective System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Affective System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#affective-appraisal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affective Appraisal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#affective-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affective Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orchestrator-sub-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orchestrator &amp; Sub-Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Orchestrator &amp; Sub-Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#orchestrator-orchestrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orchestrator (orchestrate)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-agent-get_search_results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Search Agent (get_search_results)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vision-agent-get_vision_results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vision Agent (get_vision_results)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-rag-agent-get_knowledge_retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge RAG Agent (get_knowledge_retrieval)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting It All Together
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="interaction-layer-agents-graph">Interaction Layer – Agents &amp; Graph<a class="headerlink" href="#interaction-layer-agents-graph" title="Permanent link">&para;</a></h1>
+<p>This page documents the <strong>multi-agent graph</strong> that powers Nadine’s dialogue, how each agent behaves, and how they are wired together using LangGraph.</p>
+<hr />
+<h2 id="overview-of-the-agent-graph-graphpy">Overview of the Agent Graph (<code>graph.py</code>)<a class="headerlink" href="#overview-of-the-agent-graph-graphpy" title="Permanent link">&para;</a></h2>
+<p>The core of the interaction layer is a LangGraph <code>StateGraph</code> defined in <code>nadine/agents/graph.py</code>.</p>
+<p>Key components:</p>
+<ul>
+<li><strong>CustomState</strong> (<code>state_schema.py</code>):</li>
+<li>
+<p>Holds:</p>
+<ul>
+<li><code>messages</code> (chat history)</li>
+<li><code>user_info</code> (ID, name, profile)</li>
+<li><code>conversation_memory</code>, <code>episode_memory</code></li>
+<li><code>visual_memory</code></li>
+<li><code>search_results</code>, <code>vision_results</code>, <code>knowledge_retrieval</code></li>
+<li><code>intent</code>, <code>affect</code>, <code>plan_steps</code>, <code>language</code></li>
+<li><code>name_confirmation</code>, <code>name_checked</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Top-level nodes</strong>:</p>
+</li>
+<li><code>intention_classifier</code></li>
+<li><code>memory_update_agent</code> / <code>memory_retrieve_agent</code></li>
+<li><code>affective_appraisal</code> / <code>affective_update</code></li>
+<li><code>orchestrator</code></li>
+<li>Tool agents: <code>search_agent</code>, <code>vision_agent</code>, <code>knowledge_rag_agent</code></li>
+<li>
+<p><code>response_agent</code></p>
+</li>
+<li>
+<p><strong>Execution entry</strong>:</p>
+</li>
+<li><code>build_agent_graph()</code> returns a compiled workflow used by <code>DialogueManager</code>.</li>
+</ul>
+<hr />
+<h2 id="intent-classifier">Intent Classifier<a class="headerlink" href="#intent-classifier" title="Permanent link">&para;</a></h2>
+<p><strong>Function</strong>: <code>classify_intent(state: CustomState) -&gt; CustomState</code></p>
+<p>Responsibilities:</p>
+<ul>
+<li>Reads the latest user message from <code>state["messages"][-1].content</code>.  </li>
+<li>Uses a dedicated LLM (via <code>load_agent_llm("intention_classifier")</code>) to classify the message into one of:</li>
+<li><code>first_greeting</code></li>
+<li><code>update_user_info</code></li>
+<li><code>end_conversation</code></li>
+<li><code>language_change</code></li>
+<li><code>continue_conversation</code></li>
+</ul>
+<p>Special behavior:</p>
+<ul>
+<li>If <code>language_change</code> is detected, tries to infer the requested language from the message content and updates <code>state["language"]</code> accordingly, then collapses intent back to <code>continue_conversation</code>.</li>
+<li>If <code>state["name_confirmation"]</code> contains <code>similar_names</code> and <code>name_checked</code> is <code>False</code>, forces <code>intent = "update_user_info"</code> so memory update logic can resolve the name.</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>START</code> → <code>intention_classifier</code>.  </li>
+<li>Conditional edges:</li>
+<li>To <code>memory_update_agent</code> if <code>intent == "update_user_info"</code>.</li>
+<li>Otherwise to <code>memory_retrieve_agent</code>.</li>
+</ul>
+<hr />
+<h2 id="memory-retrieval-update-agents">Memory Retrieval &amp; Update Agents<a class="headerlink" href="#memory-retrieval-update-agents" title="Permanent link">&para;</a></h2>
+<h3 id="memory-retrieval-memory_retrieve_agent">Memory Retrieval (<code>memory_retrieve_agent</code>)<a class="headerlink" href="#memory-retrieval-memory_retrieve_agent" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>retrieve_memory(state: CustomState) -&gt; CustomState</code></p>
+<ul>
+<li>If memory agents are disabled (<code>NADINE_ENABLE_MEMORY_AGENTS=0</code>), logs and returns immediately.  </li>
+<li>Otherwise:</li>
+<li>Calls <code>get_user_specific_memory(state)</code> from <code>memory_retrieval_agent.py</code>:<ul>
+<li>Loads user profile from disk (<code>user_info.json</code>).</li>
+<li>Queries Chroma DB for:</li>
+<li>Best matching <strong>episode</strong> memory (events).</li>
+<li>Best matching <strong>conversation</strong> memory (past exchanges).</li>
+<li>Queries <strong>visual memory</strong> (memorable scenes) using CLIP similarity.</li>
+</ul>
+</li>
+<li>If name confirmation is needed, places details into <code>state["name_confirmation"]</code>.  </li>
+<li>Otherwise, updates:<ul>
+<li><code>state["user_info"]</code></li>
+<li><code>state["conversation_memory"]</code></li>
+<li><code>state["episode_memory"]</code></li>
+<li><code>state["visual_memory"]</code></li>
+</ul>
+</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>intention_classifier</code> or <code>memory_update_agent</code> (depending on conditions).  </li>
+<li>Next:</li>
+<li><code>affective_appraisal</code> → <code>orchestrator</code>.</li>
+</ul>
+<h3 id="memory-update-memory_update_agent">Memory Update (<code>memory_update_agent</code>)<a class="headerlink" href="#memory-update-memory_update_agent" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>update_memory(state: CustomState) -&gt; CustomState</code><br />
+Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_agent.py</code>.</p>
+<p>Behaviors:</p>
+<ul>
+<li>If memory agents are disabled, returns immediately.  </li>
+<li>Skips update if name confirmation is still pending.  </li>
+<li>Builds a <code>mem_state</code> with:</li>
+<li><code>messages</code>, <code>user_info</code>, <code>intent</code>, <code>name_checked</code>.</li>
+<li>Calls <code>memory_update_agent(mem_state)</code> to:</li>
+<li>Extract user profile fields from conversation (name, company, location, hobbies, interests).</li>
+<li>Save/update <code>user_info.json</code> and <code>user_ids.json</code>.</li>
+<li>Optionally summarize and save episodic memory to Chroma.</li>
+<li>Merges results back into <code>state</code>:</li>
+<li><code>user_info</code>, <code>name_checked</code>, <code>name_confirmation</code>, <code>episodic_memory</code> flags, etc.</li>
+<li>If <code>name_checked</code> and <code>user_info</code> are valid:</li>
+<li>Sends name and ID to perception via:<ul>
+<li><code>mqtt_comm.send_user_info_to_face_recognition(user_name, user_id)</code></li>
+</ul>
+</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>Conditional edge from <code>intention_classifier</code>: <code>update_user_info</code> → <code>memory_update_agent</code>.  </li>
+<li>From <code>memory_update_agent</code>:</li>
+<li>If <code>name_confirmation</code> present → <code>response_agent</code> (ask the user to confirm).  </li>
+<li>If <code>intent == "end_conversation"</code> → <code>END</code>.  </li>
+<li>Else → <code>memory_retrieve_agent</code> (normal flow).</li>
+</ul>
+<h3 id="name-confirmation-flow-high-level">Name confirmation flow (high-level)<a class="headerlink" href="#name-confirmation-flow-high-level" title="Permanent link">&para;</a></h3>
+<p>The name confirmation logic is split between the <strong>memory update agent</strong> and the <strong>DialogueManager</strong>:</p>
+<ol>
+<li><strong>User shares their name</strong> (e.g., “My name is Alex”):  </li>
+<li>The intent classifier sets <code>intent = "update_user_info"</code>.  </li>
+<li><code>memory_update_agent</code> extracts <code>user_name="Alex"</code> and compares it against names in <code>user_ids.json</code> using fuzzy matching.</li>
+<li><strong>Three possible outcomes</strong> from <code>save_user_info</code>:</li>
+<li><strong>Strong match</strong> (score ≥ <code>HIGH_SIMILARITY_THRESHOLD</code>):  <ul>
+<li>Immediately link to the existing profile for that user ID.  </li>
+<li>Return updated <code>user_info</code> and <code>name_checked=True</code> with no <code>name_confirmation</code>.</li>
+</ul>
+</li>
+<li><strong>Ambiguous match</strong> (between <code>LOW_SIMILARITY_THRESHOLD</code> and <code>HIGH_SIMILARITY_THRESHOLD</code>):  <ul>
+<li>Return a <code>name_confirmation</code> payload with:</li>
+<li><code>given_name</code>, <code>similar_names</code>, <code>similar_ids</code>, <code>similarity_scores</code>.  </li>
+<li>The graph routes to <code>response_agent</code>, which asks the user to confirm the <strong>top</strong> suggested name (e.g., “Is your name Alice?”).</li>
+</ul>
+</li>
+<li><strong>No match</strong> (below <code>LOW_SIMILARITY_THRESHOLD</code>):  <ul>
+<li>Proceed as a new user; create/update a profile with <code>user_name</code> and mark <code>name_checked=True</code>.</li>
+</ul>
+</li>
+<li><strong>User answers the confirmation question</strong>:  </li>
+<li>On the next turn, <code>DialogueManager.name_confirmation(user_input)</code> inspects <code>state["name_confirmation"]</code> and the user’s reply:<ul>
+<li>If the user says “yes / correct / that’s me”, the top candidate user ID is accepted and the full stored profile is loaded.  </li>
+<li>If the user clearly states a different name (e.g. “No, I’m Alice Smith”), a <strong>new profile</strong> is created/updated for that name.  </li>
+<li>If only one candidate remains and the user doesn’t explicitly confirm, the <code>given_name</code> may be taken as the new canonical name.  </li>
+<li>Otherwise, the candidate list is rotated (pop the first suggestion) and another confirmation question will be asked later.</li>
+</ul>
+</li>
+<li>In every resolved case:<ul>
+<li><code>name_checked=True</code>, <code>name_confirmation={}</code>.  </li>
+<li><code>send_user_info_to_face_recognition(user_name, user_id)</code> is called, so perception stores/updates face embeddings under the correct ID.</li>
+</ul>
+</li>
+</ol>
+<p>This loop ensures that:</p>
+<ul>
+<li>Faces, memories, and conversations are consistently linked to the <strong>correct</strong> user ID.  </li>
+<li>Ambiguous matches never silently overwrite existing users; they’re always confirmed explicitly in dialogue.</li>
+</ul>
+<hr />
+<h2 id="affective-system">Affective System<a class="headerlink" href="#affective-system" title="Permanent link">&para;</a></h2>
+<h3 id="affective-appraisal">Affective Appraisal<a class="headerlink" href="#affective-appraisal" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>affective_appraisal(state: CustomState) -&gt; CustomState</code></p>
+<ul>
+<li>Ensures <code>state["affect"]</code> has subkeys:</li>
+<li><code>personality</code>, <code>emotion</code>, <code>mood</code>, <code>params</code>.</li>
+<li>Uses <code>appraise_event_with_llm(...)</code> from <code>affective_system.py</code> to:</li>
+<li>Take the latest user message and contextual info (e.g. retrieved episode memories).  </li>
+<li>Produce a new emotion label/intensity.</li>
+<li>Calls <code>update_affect_state(...)</code> to update PAD mood/emotion state.</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>memory_retrieve_agent</code> → <code>affective_appraisal</code> → <code>orchestrator</code>.</li>
+</ul>
+<h3 id="affective-update">Affective Update<a class="headerlink" href="#affective-update" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>affective_update(state: CustomState) -&gt; CustomState</code></p>
+<ul>
+<li>Post-response hook (after <code>response_agent</code>).  </li>
+<li>Currently a pass-through, but is a good place to:</li>
+<li>Increment turn counters,  </li>
+<li>Adjust mood based on interaction outcome, etc.</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>response_agent</code> → <code>affective_update</code>.  </li>
+<li>Conditional edge:</li>
+<li>If <code>intent == "end_conversation"</code> → <code>memory_update_agent</code> (for final episodic save).  </li>
+<li>Else → <code>END</code>.</li>
+</ul>
+<hr />
+<h2 id="orchestrator-sub-agents">Orchestrator &amp; Sub-Agents<a class="headerlink" href="#orchestrator-sub-agents" title="Permanent link">&para;</a></h2>
+<h3 id="orchestrator-orchestrate">Orchestrator (<code>orchestrate</code>)<a class="headerlink" href="#orchestrator-orchestrate" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>orchestrate(state: CustomState) -&gt; CustomState</code></p>
+<ul>
+<li>Ensures <code>state["plan_steps"]</code> is a list.  </li>
+<li>If a plan already exists, returns immediately.  </li>
+<li>Otherwise:</li>
+<li>Builds an <code>orchestration_agent()</code> chain from <code>orchestration_agent.py</code>.  </li>
+<li>Passes:<ul>
+<li><code>chat_history</code> (all messages except the latest).  </li>
+<li>Latest user message.</li>
+</ul>
+</li>
+<li>Receives a JSON “plan” describing a sequence of steps, e.g.:<ul>
+<li><code>search_agent</code>, <code>knowledge_rag_agent</code>, <code>vision_agent</code>, <code>response_agent</code>.</li>
+</ul>
+</li>
+<li>Stores the plan in <code>state["plan_steps"]</code>.</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>affective_appraisal</code> → <code>orchestrator</code>.  </li>
+<li>Conditional edges:</li>
+<li>If <code>plan_steps</code> empty → <code>response_agent</code>.  </li>
+<li>Else → first planned agent, e.g. <code>search_agent</code>, <code>vision_agent</code>, or <code>knowledge_rag_agent</code>.</li>
+</ul>
+<h3 id="search-agent-get_search_results">Search Agent (<code>get_search_results</code>)<a class="headerlink" href="#search-agent-get_search_results" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>get_search_results(state: CustomState) -&gt; CustomState</code></p>
+<ul>
+<li>Uses <code>search_agent()</code> to run a question-answering pipeline (web or external search).  </li>
+<li>Takes <code>state["plan_steps"][0]["message"]</code> as the query.  </li>
+<li>Stores the result in <code>state["search_results"]</code>.  </li>
+<li>Pops the executed step from <code>plan_steps</code>.</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>orchestrator</code> → <code>search_agent</code>.  </li>
+<li>Conditional edge:</li>
+<li>If <code>plan_steps</code> is now empty → <code>response_agent</code>.  </li>
+<li>Else → <code>orchestrator</code> (to schedule remaining steps).</li>
+</ul>
+<h3 id="vision-agent-get_vision_results">Vision Agent (<code>get_vision_results</code>)<a class="headerlink" href="#vision-agent-get_vision_results" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>get_vision_results(state: CustomState) -&gt; CustomState</code></p>
+<ul>
+<li>If vision agents are disabled (<code>NADINE_ENABLE_VISION_AGENT=0</code>):</li>
+<li>Logs and sets <code>state["vision_results"]</code> to a fallback string.  </li>
+<li>Otherwise:</li>
+<li>Calls <code>vision_agent()</code> with the user question from <code>plan_steps</code>.  </li>
+<li>Stores the result in <code>state["vision_results"]</code>.  </li>
+<li>Pops the executed step from <code>plan_steps</code>.</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>orchestrator</code> → <code>vision_agent</code>.  </li>
+<li>Conditional edge:</li>
+<li>If <code>plan_steps</code> empty → <code>response_agent</code>.  </li>
+<li>Else → <code>orchestrator</code>.</li>
+</ul>
+<h3 id="knowledge-rag-agent-get_knowledge_retrieval">Knowledge RAG Agent (<code>get_knowledge_retrieval</code>)<a class="headerlink" href="#knowledge-rag-agent-get_knowledge_retrieval" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>get_knowledge_retrieval(state: CustomState) -&gt; CustomState</code></p>
+<ul>
+<li>Calls <code>get_related_knowledge(state)</code> from <code>knowledge_RAG_agent.py</code>.  </li>
+<li>This function:</li>
+<li>Builds/loads a Chroma vectorstore from <code>interaction/db/knowledge/rag_files/</code>.  </li>
+<li>Uses <code>OllamaEmbeddings</code> to embed knowledge sections.  </li>
+<li>Retrieves top‑k relevant chunks for the current question.  </li>
+<li>Optionally displays related visuals in the UI.  </li>
+<li>Stores the retrieved text in <code>state["knowledge_retrieval"]</code>.  </li>
+<li>Pops the executed step from <code>plan_steps</code>.</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>From <code>orchestrator</code> → <code>knowledge_rag_agent</code>.  </li>
+<li>Conditional edge:</li>
+<li>If <code>plan_steps</code> empty → <code>response_agent</code>.  </li>
+<li>Else → <code>orchestrator</code>.</li>
+</ul>
+<hr />
+<h2 id="response-agent">Response Agent<a class="headerlink" href="#response-agent" title="Permanent link">&para;</a></h2>
+<p><strong>Function</strong>: <code>get_final_response(state: CustomState) -&gt; CustomState</code></p>
+<p>Wrapper around <code>response_agent()</code> from <code>response_agent.py</code>:</p>
+<ul>
+<li>If <code>state["name_confirmation"]</code> contains <code>similar_names</code>, returns early to trigger a name-confirmation prompt.  </li>
+<li>Otherwise:</li>
+<li>Clears <code>plan_steps</code>.  </li>
+<li>Calls <code>response_agent()(state)</code>:<ul>
+<li>Builds a composite user packet with:</li>
+<li>Search, vision, knowledge results.</li>
+<li>Current time/date.</li>
+<li>Affective state (emotion + mood text).</li>
+<li>Optional visual memory image (encoded as a data URL).</li>
+<li>Sends a system prompt describing Nadine’s persona and language rules.</li>
+<li>Invokes the configured <code>response_llm</code>.</li>
+<li>Returns the final message text.</li>
+</ul>
+</li>
+<li>Writes the response into <code>state["final_message"]</code>.  </li>
+<li>Resets:<ul>
+<li><code>conversation_memory</code>, <code>episode_memory</code>,</li>
+<li><code>search_results</code>, <code>vision_results</code>, <code>knowledge_retrieval</code>.</li>
+</ul>
+</li>
+</ul>
+<p>Graph wiring:</p>
+<ul>
+<li>Called from many points:</li>
+<li>Directly after <code>orchestrator</code> if no tools are needed.  </li>
+<li>After tool agents if <code>plan_steps</code> is empty.  </li>
+<li>From <code>memory_update_agent</code> when name confirmation is required.  </li>
+<li>After <code>response_agent</code>, the graph always goes to <code>affective_update</code>.</li>
+</ul>
+<hr />
+<h2 id="putting-it-all-together">Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permanent link">&para;</a></h2>
+<p>For each user input, the graph runs roughly:</p>
+<ol>
+<li><code>intention_classifier</code> → classify the message.  </li>
+<li><code>memory_update_agent</code> (for profile updates) or <code>memory_retrieve_agent</code> (for context recall).  </li>
+<li><code>affective_appraisal</code> → update emotion/mood.  </li>
+<li><code>orchestrator</code> → decide which sub-agents (if any) to call.  </li>
+<li><code>search_agent</code> / <code>vision_agent</code> / <code>knowledge_rag_agent</code> (optional).  </li>
+<li><code>response_agent</code> → final reply.  </li>
+<li><code>affective_update</code> → finalize affect and optionally trigger further memory updates.</li>
+</ol>
+<p>Detailed memory mechanics are documented on the <strong>Interaction Layer / Memory &amp; RAG</strong> page.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 <a href="https://github.com/hangyeol013" target="_blank" rel="noopener">Hangyeol Kang</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
