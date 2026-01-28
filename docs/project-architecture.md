@@ -135,7 +135,7 @@ The system is being extended towards an advanced multimodal memory framework tha
 - Textual information (dialogue, knowledge).  
 - Contextual information (time, location, user state).  
 
-![Multimodal Memory Overview Framework](assets/multimodal_memory_overview_framework.png)
+![Multimodal Memory Overview Framework](assets/multimodal_memory_framework.jpg)
 
 ---
 
