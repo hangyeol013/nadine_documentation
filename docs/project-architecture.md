@@ -152,7 +152,7 @@ Nadine implements a multimodal memory framework that tightly couples **perceptio
 
 Together, this allows Nadine’s responses to be grounded in **what was seen**, **what was said**, and **who the user is**, rather than relying on text alone.
 
-![Multimodal Memory Overview Framework](assets/multimodal_memory_overview_framework.png)
+![Multimodal Memory Overview Framework](assets/multimodal_memory_framework.jpg)
 
 ---
 
