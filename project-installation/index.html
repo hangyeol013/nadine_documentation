@@ -582,6 +582,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#environment-file-interactionenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment File (interaction/.env)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1248,6 +1259,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#environment-file-interactionenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment File (interaction/.env)
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1278,8 +1300,8 @@
 <h3 id="software">Software<a class="headerlink" href="#software" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Python 3.10  </li>
-<li>Conda (Anaconda/Miniconda)  </li>
-<li>Docker and Docker Compose (for the MQTT broker)  </li>
+<li><a href="https://docs.conda.io/">Conda</a> (Anaconda/Miniconda)  </li>
+<li><a href="https://www.docker.com/">Docker</a> and Docker Compose (for the MQTT broker)  </li>
 <li>CUDA-capable GPU (recommended for faster inference)  </li>
 </ul>
 <h3 id="api-keys-and-services">API Keys and Services<a class="headerlink" href="#api-keys-and-services" title="Permanent link">&para;</a></h3>
@@ -1330,6 +1352,32 @@ conda<span class="w"> </span>activate<span class="w"> </span>nadine<span class="
 <li>YOLOv8 face detection model (already placed in <code>perception/models/</code>).  </li>
 <li>InsightFace models (downloaded automatically on first use).  </li>
 <li>LLM models (configured via environment variables / Ollama / other backends).  </li>
+</ul>
+<hr />
+<h2 id="environment-file-interactionenv">Environment File (<code>interaction/.env</code>)<a class="headerlink" href="#environment-file-interactionenv" title="Permanent link">&para;</a></h2>
+<p>Before running the <strong>interaction</strong> layer, create an <code>.env</code> file in the <code>interaction/</code> directory.<br />
+This file should contain the API keys and configuration for all external services used by Nadine:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># OpenAI / Azure OpenAI</span>
+<span class="na">OPENAI_API_KEY</span><span class="o">=</span><span class="s">&lt;your_openai_key&gt;</span><span class="w">              </span><span class="c1"># If you call OpenAI models directly</span>
+<span class="na">azure_openai_endpoint</span><span class="o">=</span><span class="s">&lt;https://...&gt;.openai.azure.com/</span>
+<span class="na">azure_openai_api_key</span><span class="o">=</span><span class="s">&lt;your_azure_openai_key&gt;</span>
+
+<span class="c1"># Google Cloud (STT, Translate, etc.)</span>
+<span class="na">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s">/absolute/path/to/google-credentials.json</span>
+<span class="na">GOOGLE_CLOUD_PROJECT</span><span class="o">=</span><span class="s">&lt;your_gcp_project_id&gt;</span>
+
+<span class="c1"># Web search (Serper)</span>
+<span class="na">SERPER_API_KEY</span><span class="o">=</span><span class="s">&lt;your_serper_api_key&gt;</span>
+
+<span class="c1"># LangChain / LangGraph observability</span>
+<span class="na">LANGCHAIN_TRACING_V2</span><span class="o">=</span><span class="s">true</span>
+<span class="na">LANGCHAIN_API_KEY</span><span class="o">=</span><span class="s">&lt;your_langsmith_or_langchain_api_key&gt;</span>
+</code></pre></div>
+<p>Notes:</p>
+<ul>
+<li><code>GOOGLE_APPLICATION_CREDENTIALS</code> should point to a JSON service-account key file with access to the required Google APIs.  </li>
+<li>If you are only using Azure OpenAI (and not OpenAI’s public API), you can leave <code>OPENAI_API_KEY</code> unset.  </li>
+<li>If you don’t want to use LangChain/LangGraph tracing, you can omit <code>LANGCHAIN_TRACING_V2</code> and <code>LANGCHAIN_API_KEY</code>.  </li>
 </ul>
 
 

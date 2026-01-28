@@ -1500,9 +1500,30 @@
 <h2 id="quick-dev-tips">Quick Dev Tips<a class="headerlink" href="#quick-dev-tips" title="Permanent link">&para;</a></h2>
 <ul>
 <li>To debug the LangGraph flow in isolation, run <code>graph.py</code> directly (it has a CLI <code>main()</code> loop).  </li>
-<li>To test the dialogue manager without STT/UI, run:</li>
-<li><code>python -m nadine --chatmode</code>  </li>
-<li>Use the <strong>Agents &amp; Graph</strong> and <strong>Memory &amp; RAG</strong> pages to understand how state fields like <code>user_info</code>, <code>conversation_memory</code>, <code>episode_memory</code>, and <code>visual_memory</code> are set and used.</li>
+<li>To test the dialogue manager without STT/UI, you can either:</li>
+<li>
+<p>Run the built‑in chat mode:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>interaction
+conda<span class="w"> </span>activate<span class="w"> </span>nadine
+python<span class="w"> </span>-m<span class="w"> </span>nadine<span class="w"> </span>--chatmode
+</code></pre></div>
+</li>
+<li>
+<p>Or call the <code>DialogueManager</code> directly from a small script:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">nadine.agents.dm</span><span class="w"> </span><span class="kn">import</span> <span class="n">DialogueManager</span>
+
+<span class="n">dm</span> <span class="o">=</span> <span class="n">DialogueManager</span><span class="p">()</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;You: &quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;exit&quot;</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">reply</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">processInput</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nadine:&quot;</span><span class="p">,</span> <span class="n">reply</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Use the <strong>Agents &amp; Graph</strong> and <strong>Memory &amp; RAG</strong> pages to understand how state fields like <code>user_info</code>, <code>conversation_memory</code>, <code>episode_memory</code>, and <code>visual_memory</code> are set and used.</p>
+</li>
 </ul>
 
 

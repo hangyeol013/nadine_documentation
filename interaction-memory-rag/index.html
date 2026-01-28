@@ -1288,7 +1288,7 @@
 
 
 <h1 id="interaction-layer-memory-rag">Interaction Layer – Memory &amp; RAG<a class="headerlink" href="#interaction-layer-memory-rag" title="Permanent link">&para;</a></h1>
-<p>This page details how Nadine’s interaction layer manages <strong>user memory</strong> (profiles, episodic memory, visual memory) and <strong>knowledge retrieval</strong> (RAG).</p>
+<p>This page details how Nadine’s interaction layer manages <strong>user memory</strong> (profiles, episodic memory, visual memory) and <strong>knowledge retrieval</strong> (RAG) on top of <a href="https://www.trychroma.com/">ChromaDB</a> and <a href="https://openai.com/research/clip">CLIP</a>-based embeddings.</p>
 <hr />
 <h2 id="user-profiles-user_infojson-user_idsjson">User Profiles (<code>user_info.json</code> &amp; <code>user_ids.json</code>)<a class="headerlink" href="#user-profiles-user_infojson-user_idsjson" title="Permanent link">&para;</a></h2>
 <p>User profile information is stored under:</p>
@@ -1395,7 +1395,7 @@
 <ul>
 <li>Inspect memorable scenes stored by the <strong>perception layer</strong> under:</li>
 <li><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/</code></li>
-<li>Use CLIP text embeddings of the current user question to:</li>
+<li>Use <a href="https://openai.com/research/clip">CLIP</a> text embeddings of the current user question to:</li>
 <li>Compare against stored image embeddings (from perception).</li>
 <li>Optionally combine similarity with stored scene descriptions.</li>
 <li>Select the most relevant visual memory if its combined similarity exceeds a threshold:</li>
@@ -1450,7 +1450,8 @@
 </li>
 <li>Returns a formatted string summary.</li>
 </ol>
-<p>The result is stored in <code>state["knowledge_retrieval"]</code> and is passed into the <strong>response agent</strong> as part of the user packet.</p>
+<p>The result is stored in <code>state["knowledge_retrieval"]</code> and is passed into the <strong>response agent</strong> as part of the user packet.
+For a deeper view of how this knowledge is combined with other agents, see <a href="../interaction-agents/">Interaction Layer – Agents &amp; Graph</a>.</p>
 <hr />
 <h2 id="visual-memory-configuration-interactionconfigyaml">Visual Memory Configuration (<code>interaction/config.yaml</code>)<a class="headerlink" href="#visual-memory-configuration-interactionconfigyaml" title="Permanent link">&para;</a></h2>
 <p>The visual memory retrieval behavior is configured via:</p>

@@ -1432,7 +1432,7 @@
 
 
 <h1 id="interaction-layer-agents-graph">Interaction Layer – Agents &amp; Graph<a class="headerlink" href="#interaction-layer-agents-graph" title="Permanent link">&para;</a></h1>
-<p>This page documents the <strong>multi-agent graph</strong> that powers Nadine’s dialogue, how each agent behaves, and how they are wired together using LangGraph.</p>
+<p>This page documents the <strong>multi-agent graph</strong> that powers Nadine’s dialogue, how each agent behaves, and how they are wired together using <a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph</a>.</p>
 <hr />
 <h2 id="overview-of-the-agent-graph-graphpy">Overview of the Agent Graph (<code>graph.py</code>)<a class="headerlink" href="#overview-of-the-agent-graph-graphpy" title="Permanent link">&para;</a></h2>
 <p>The core of the interaction layer is a LangGraph <code>StateGraph</code> defined in <code>nadine/agents/graph.py</code>.</p>
@@ -1455,7 +1455,7 @@
 <p><strong>Top-level nodes</strong>:</p>
 </li>
 <li><code>intention_classifier</code></li>
-<li><code>memory_update_agent</code> / <code>memory_retrieve_agent</code></li>
+<li><code>memory_update_agent</code> / <code>memory_retrieve_agent</code> (ChromaDB‑backed textual memory + CLIP‑backed visual memory)</li>
 <li><code>affective_appraisal</code> / <code>affective_update</code></li>
 <li><code>orchestrator</code></li>
 <li>Tool agents: <code>search_agent</code>, <code>vision_agent</code>, <code>knowledge_rag_agent</code></li>

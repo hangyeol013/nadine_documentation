@@ -1155,7 +1155,7 @@
 
 <h1 id="interaction-layer-overview">Interaction Layer – Overview<a class="headerlink" href="#interaction-layer-overview" title="Permanent link">&para;</a></h1>
 <p>The interaction layer is the <strong>main brain</strong> of Nadine.<br />
-It runs a multi-agent dialogue system (LangGraph) that:</p>
+It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph</a>) that:</p>
 <ul>
 <li>Listens to the user via speech-to-text (STT)</li>
 <li>Routes requests across specialized LLM agents (search, vision, RAG, memory, affect)</li>
@@ -1184,7 +1184,7 @@ It runs a multi-agent dialogue system (LangGraph) that:</p>
 <p><strong>Reasoning &amp; tools</strong></p>
 </li>
 <li>Use web/knowledge search (search agent).</li>
-<li>Retrieve from Nadine’s internal knowledge (knowledge RAG agent).</li>
+<li>Retrieve from Nadine’s internal knowledge (knowledge RAG agent, backed by ChromaDB).</li>
 <li>
 <p>Perform visual reasoning (vision agent).</p>
 </li>
@@ -1242,7 +1242,7 @@ It runs a multi-agent dialogue system (LangGraph) that:</p>
 <p><strong><code>nadine/stt/</code></strong></p>
 </li>
 <li>
-<p><code>google_stt.py</code>, <code>stt.py</code> – Google Cloud STT integration and microphone handling.</p>
+<p><code>google_stt.py</code>, <code>stt.py</code> – <a href="https://cloud.google.com/speech-to-text">Google Cloud Speech-to-Text</a> integration and microphone handling.</p>
 </li>
 <li>
 <p><strong><code>nadine/ui/</code></strong></p>

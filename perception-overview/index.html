@@ -1216,8 +1216,8 @@
 <h2 id="responsibilities">Responsibilities<a class="headerlink" href="#responsibilities" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Capture RGB‑D frames</strong> from the Intel RealSense camera  </li>
-<li><strong>Detect and track faces</strong> using YOLO  </li>
-<li><strong>Recognize known users</strong> with InsightFace and a local face database  </li>
+<li><strong>Detect and track faces</strong> using <a href="https://docs.ultralytics.com/">YOLOv8</a>  </li>
+<li><strong>Recognize known users</strong> with <a href="https://github.com/deepinsight/insightface">InsightFace</a> and a local face database  </li>
 <li><strong>Publish user position and identity</strong> via MQTT to other layers  </li>
 <li><strong>Trigger visual memory updates</strong>, delegating memorability decisions to the selective-memory module</li>
 </ul>
@@ -1230,7 +1230,7 @@
 <li><strong><code>selective_memory.py</code></strong>: <code>SelectiveMemoryModule</code> class for computing memorability and writing memorable scenes.</li>
 <li><strong><code>utils.py</code></strong>: logging (<code>LoggersFactory</code>) and <code>user_info_init</code> helper.</li>
 <li><strong><code>run.sh</code></strong>: activates the <code>nadine</code> conda env and runs <code>main.py</code>.</li>
-<li><strong><code>models/</code> and <code>weights/</code></strong>: model checkpoints for YOLO and OpenFace/OpenFace‑based models.</li>
+<li><strong><code>models/</code> and <code>weights/</code></strong>: model checkpoints for YOLO and <a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace</a>/OpenFace‑based models.</li>
 </ul>
 <hr />
 <h2 id="how-to-run">How to Run<a class="headerlink" href="#how-to-run" title="Permanent link">&para;</a></h2>

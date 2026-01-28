@@ -1390,7 +1390,7 @@
 <li>Lip-sync animation generation.  </li>
 </ul>
 <h3 id="2-interaction-component-interaction">2. Interaction Component (<code>interaction/</code>)<a class="headerlink" href="#2-interaction-component-interaction" title="Permanent link">&para;</a></h3>
-<p>Multi-agent dialogue system built with LangGraph:</p>
+<p>Multi-agent dialogue system built with <a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph</a>:</p>
 <ul>
 <li><strong>Orchestration Agent</strong> – routes requests to the right sub-agents.  </li>
 <li><strong>Response Agent</strong> – generates conversational responses with emotional tone.  </li>
@@ -1484,12 +1484,42 @@
 <li>Dynamic mood and emotion updates per interaction.  </li>
 </ul>
 <h3 id="multimodal-memory-framework">Multimodal Memory Framework<a class="headerlink" href="#multimodal-memory-framework" title="Permanent link">&para;</a></h3>
-<p>The system is being extended towards an advanced multimodal memory framework that integrates:</p>
+<p>Nadine implements a multimodal memory framework that tightly couples <strong>perception</strong> and <strong>interaction</strong>:</p>
 <ul>
-<li>Visual information (images/scenes).  </li>
-<li>Textual information (dialogue, knowledge).  </li>
-<li>Contextual information (time, location, user state).  </li>
+<li><strong>Selective visual memory (perception)</strong>  </li>
+<li>The perception layer computes a memorability score per frame using:<ul>
+<li>Emotion salience from OpenFace (facial expressions).  </li>
+<li>Novelty from CLIP embeddings vs. past scenes for that user.  </li>
 </ul>
+</li>
+<li>
+<p>Only scenes above a configurable threshold are stored under each user’s profile as:</p>
+<ul>
+<li>RGB images, CLIP embeddings, and JSON metadata (emotions, memorability, optional scene description).  </li>
+</ul>
+</li>
+<li>
+<p><strong>Textual &amp; episodic memory (interaction)</strong>  </p>
+</li>
+<li>
+<p>The interaction layer stores:</p>
+<ul>
+<li>Conversation snippets and episodic summaries in a per-user Chroma collection.  </li>
+<li>Structured user profiles in <code>user_info.json</code> and <code>user_ids.json</code>.  </li>
+</ul>
+</li>
+<li>
+<p><strong>Hybrid retrieval (interaction)</strong>  </p>
+</li>
+<li>For a new user query, the memory agents:<ul>
+<li>Query Chroma for the most relevant <strong>conversation</strong> and <strong>episode</strong> documents.  </li>
+<li>Use CLIP text embeddings to find the most relevant <strong>visual memory</strong> (image) for that user.  </li>
+<li>Apply configurable thresholds and weights (image vs. description similarity) from <code>interaction/config.yaml</code>.  </li>
+</ul>
+</li>
+<li>The best matching visual memory (if any) is passed to the response LLM as an attached image, alongside textual memories and RAG results.</li>
+</ul>
+<p>Together, this allows Nadine’s responses to be grounded in <strong>what was seen</strong>, <strong>what was said</strong>, and <strong>who the user is</strong>, rather than relying on text alone.</p>
 <p><img alt="Multimodal Memory Overview Framework" src="../assets/multimodal_memory_framework.jpg" /></p>
 <hr />
 <h2 id="research-applications">Research &amp; Applications<a class="headerlink" href="#research-applications" title="Permanent link">&para;</a></h2>
