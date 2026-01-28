@@ -9,8 +9,8 @@ If you are new to the project, start with **Project Overview**, then use this pa
 ## Responsibilities
 
 - **Capture RGB‑D frames** from the Intel RealSense camera  
-- **Detect and track faces** using YOLO  
-- **Recognize known users** with InsightFace and a local face database  
+- **Detect and track faces** using [YOLOv8](https://docs.ultralytics.com/)  
+- **Recognize known users** with [InsightFace](https://github.com/deepinsight/insightface) and a local face database  
 - **Publish user position and identity** via MQTT to other layers  
 - **Trigger visual memory updates**, delegating memorability decisions to the selective-memory module
 
@@ -25,7 +25,7 @@ Main perception files under `perception/`:
 - **`selective_memory.py`**: `SelectiveMemoryModule` class for computing memorability and writing memorable scenes.
 - **`utils.py`**: logging (`LoggersFactory`) and `user_info_init` helper.
 - **`run.sh`**: activates the `nadine` conda env and runs `main.py`.
-- **`models/` and `weights/`**: model checkpoints for YOLO and OpenFace/OpenFace‑based models.
+- **`models/` and `weights/`**: model checkpoints for YOLO and [OpenFace](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0)/OpenFace‑based models.
 
 ---
 

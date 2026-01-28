@@ -19,8 +19,8 @@ If the memorability score is high enough, the scene is stored (image + embedding
 
 `SelectiveMemoryModule` combines three main pieces:
 
-- **Emotion analysis (OpenFace)**
-  - Uses OpenFace (`MultitaskPredictor` + `FaceDetector`) to infer probabilities over:
+- **Emotion analysis ([OpenFace](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0))**
+  - Uses [OpenFace](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0) (`MultitaskPredictor` + `FaceDetector`) to infer probabilities over:
     - `['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']`
   - Produces a normalized probability distribution over these emotions.
 

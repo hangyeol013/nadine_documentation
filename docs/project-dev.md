@@ -10,8 +10,8 @@ This page collects development notes, configuration hints, MQTT topics, and trou
 
 Create `.env` files in the relevant component directories with:
 
-- API keys for Azure TTS and Google Cloud services.  
-- LLM configuration (e.g. Ollama endpoint, API keys).  
+- API keys for [Azure Text-to-Speech](https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech) and [Google Cloud](https://cloud.google.com/) services.  
+- LLM configuration (e.g. [Ollama](https://ollama.com/) endpoint, API keys).  
 - MQTT broker settings (if different from defaults).  
 
 ### Agent Toggles

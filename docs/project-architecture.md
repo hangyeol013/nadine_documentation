@@ -20,7 +20,7 @@ Handles robot physical control, animations, and speech synthesis:
 
 ### 2. Interaction Component (`interaction/`)
 
-Multi-agent dialogue system built with LangGraph:
+Multi-agent dialogue system built with [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview):
 
 - **Orchestration Agent** – routes requests to the right sub-agents.  
 - **Response Agent** – generates conversational responses with emotional tone.  
@@ -129,11 +129,28 @@ The interaction component uses LangGraph to orchestrate multiple specialized age
 
 ### Multimodal Memory Framework
 
-The system is being extended towards an advanced multimodal memory framework that integrates:
+Nadine implements a multimodal memory framework that tightly couples **perception** and **interaction**:
 
-- Visual information (images/scenes).  
-- Textual information (dialogue, knowledge).  
-- Contextual information (time, location, user state).  
+- **Selective visual memory (perception)**  
+  - The perception layer computes a memorability score per frame using:
+    - Emotion salience from OpenFace (facial expressions).  
+    - Novelty from CLIP embeddings vs. past scenes for that user.  
+  - Only scenes above a configurable threshold are stored under each user’s profile as:
+    - RGB images, CLIP embeddings, and JSON metadata (emotions, memorability, optional scene description).  
+
+- **Textual & episodic memory (interaction)**  
+  - The interaction layer stores:
+    - Conversation snippets and episodic summaries in a per-user Chroma collection.  
+    - Structured user profiles in `user_info.json` and `user_ids.json`.  
+
+- **Hybrid retrieval (interaction)**  
+  - For a new user query, the memory agents:
+    - Query Chroma for the most relevant **conversation** and **episode** documents.  
+    - Use CLIP text embeddings to find the most relevant **visual memory** (image) for that user.  
+    - Apply configurable thresholds and weights (image vs. description similarity) from `interaction/config.yaml`.  
+  - The best matching visual memory (if any) is passed to the response LLM as an attached image, alongside textual memories and RAG results.
+
+Together, this allows Nadine’s responses to be grounded in **what was seen**, **what was said**, and **who the user is**, rather than relying on text alone.
 
 ![Multimodal Memory Overview Framework](assets/multimodal_memory_overview_framework.png)
 

@@ -1,6 +1,6 @@
 # Interaction Layer – Memory & RAG
 
-This page details how Nadine’s interaction layer manages **user memory** (profiles, episodic memory, visual memory) and **knowledge retrieval** (RAG).
+This page details how Nadine’s interaction layer manages **user memory** (profiles, episodic memory, visual memory) and **knowledge retrieval** (RAG) on top of [ChromaDB](https://www.trychroma.com/) and [CLIP](https://openai.com/research/clip)\-based embeddings.
 
 ---
 
@@ -116,7 +116,7 @@ The same function also calls `_retrieve_best_visual_memory(state, user_id)` to:
 
 - Inspect memorable scenes stored by the **perception layer** under:
   - `interaction/db/memory/user_profiles/<user_id>/memorable_scenes/`
-- Use CLIP text embeddings of the current user question to:
+- Use [CLIP](https://openai.com/research/clip) text embeddings of the current user question to:
   - Compare against stored image embeddings (from perception).
   - Optionally combine similarity with stored scene descriptions.
 - Select the most relevant visual memory if its combined similarity exceeds a threshold:
@@ -162,6 +162,7 @@ The **knowledge RAG agent** (`get_related_knowledge(state)`) works as follows:
    - Returns a formatted string summary.
 
 The result is stored in `state["knowledge_retrieval"]` and is passed into the **response agent** as part of the user packet.
+For a deeper view of how this knowledge is combined with other agents, see [Interaction Layer – Agents & Graph](interaction-agents.md).
 
 ---
 

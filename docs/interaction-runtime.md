@@ -181,8 +181,29 @@ The interaction layer uses `MQTTCommunication` as its main MQTT client.
 ## Quick Dev Tips
 
 - To debug the LangGraph flow in isolation, run `graph.py` directly (it has a CLI `main()` loop).  
-- To test the dialogue manager without STT/UI, run:
-  - `python -m nadine --chatmode`  
+- To test the dialogue manager without STT/UI, you can either:
+  - Run the built‑in chat mode:
+
+    ```bash
+    cd interaction
+    conda activate nadine
+    python -m nadine --chatmode
+    ```
+
+  - Or call the `DialogueManager` directly from a small script:
+
+    ```python
+    from nadine.agents.dm import DialogueManager
+
+    dm = DialogueManager()
+    while True:
+        text = input("You: ")
+        if text.lower() == "exit":
+            break
+        reply = dm.processInput(text)
+        print("Nadine:", reply)
+    ```
+
 - Use the **Agents & Graph** and **Memory & RAG** pages to understand how state fields like `user_info`, `conversation_memory`, `episode_memory`, and `visual_memory` are set and used.
 
 

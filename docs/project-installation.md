@@ -15,8 +15,8 @@ This page explains what you need to install and configure before running Nadine.
 ### Software
 
 - Python 3.10  
-- Conda (Anaconda/Miniconda)  
-- Docker and Docker Compose (for the MQTT broker)  
+- [Conda](https://docs.conda.io/) (Anaconda/Miniconda)  
+- [Docker](https://www.docker.com/) and Docker Compose (for the MQTT broker)  
 - CUDA-capable GPU (recommended for faster inference)  
 
 ### API Keys and Services
@@ -90,5 +90,36 @@ On first run, the system will automatically download required models. You can al
 - YOLOv8 face detection model (already placed in `perception/models/`).  
 - InsightFace models (downloaded automatically on first use).  
 - LLM models (configured via environment variables / Ollama / other backends).  
+
+---
+
+## Environment File (`interaction/.env`)
+
+Before running the **interaction** layer, create an `.env` file in the `interaction/` directory.  
+This file should contain the API keys and configuration for all external services used by Nadine:
+
+```ini
+# OpenAI / Azure OpenAI
+OPENAI_API_KEY=<your_openai_key>              # If you call OpenAI models directly
+azure_openai_endpoint=<https://...>.openai.azure.com/
+azure_openai_api_key=<your_azure_openai_key>
+
+# Google Cloud (STT, Translate, etc.)
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/google-credentials.json
+GOOGLE_CLOUD_PROJECT=<your_gcp_project_id>
+
+# Web search (Serper)
+SERPER_API_KEY=<your_serper_api_key>
+
+# LangChain / LangGraph observability
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=<your_langsmith_or_langchain_api_key>
+```
+
+Notes:
+
+- `GOOGLE_APPLICATION_CREDENTIALS` should point to a JSON service-account key file with access to the required Google APIs.  
+- If you are only using Azure OpenAI (and not OpenAI’s public API), you can leave `OPENAI_API_KEY` unset.  
+- If you don’t want to use LangChain/LangGraph tracing, you can omit `LANGCHAIN_TRACING_V2` and `LANGCHAIN_API_KEY`.  
 
 

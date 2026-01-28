@@ -1,7 +1,7 @@
 # Interaction Layer – Overview
 
 The interaction layer is the **main brain** of Nadine.  
-It runs a multi-agent dialogue system (LangGraph) that:
+It runs a multi-agent dialogue system (based on [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview)) that:
 
 - Listens to the user via speech-to-text (STT)
 - Routes requests across specialized LLM agents (search, vision, RAG, memory, affect)
@@ -26,7 +26,7 @@ If you are new to the project, read this page first, then see the **Runtime & MQ
 
 - **Reasoning & tools**
   - Use web/knowledge search (search agent).
-  - Retrieve from Nadine’s internal knowledge (knowledge RAG agent).
+  - Retrieve from Nadine’s internal knowledge (knowledge RAG agent, backed by ChromaDB).
   - Perform visual reasoning (vision agent).
 
 - **Multi-modal output**
@@ -68,7 +68,7 @@ Under `interaction/`:
   - `mqtt_comm.py` – interaction-layer MQTT client and helpers.
 
 - **`nadine/stt/`**
-  - `google_stt.py`, `stt.py` – Google Cloud STT integration and microphone handling.
+  - `google_stt.py`, `stt.py` – [Google Cloud Speech-to-Text](https://cloud.google.com/speech-to-text) integration and microphone handling.
 
 - **`nadine/ui/`**
   - `ui.py` – Qt/GUI window for monitoring interactions (user text, agent reply, status).

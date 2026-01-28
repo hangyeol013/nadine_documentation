@@ -1,6 +1,6 @@
 # Interaction Layer – Agents & Graph
 
-This page documents the **multi-agent graph** that powers Nadine’s dialogue, how each agent behaves, and how they are wired together using LangGraph.
+This page documents the **multi-agent graph** that powers Nadine’s dialogue, how each agent behaves, and how they are wired together using [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview).
 
 ---
 
@@ -22,7 +22,7 @@ Key components:
 
 - **Top-level nodes**:
   - `intention_classifier`
-  - `memory_update_agent` / `memory_retrieve_agent`
+  - `memory_update_agent` / `memory_retrieve_agent` (ChromaDB‑backed textual memory + CLIP‑backed visual memory)
   - `affective_appraisal` / `affective_update`
   - `orchestrator`
   - Tool agents: `search_agent`, `vision_agent`, `knowledge_rag_agent`

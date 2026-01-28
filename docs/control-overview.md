@@ -11,7 +11,7 @@ If you are new to the project, start with **Project Overview**, then use this pa
 - **Receive high‑level commands** via MQTT from interaction/perception:  
   - speak, look_at, play animation
 - **Execute joint‑level motion** using XML animation files and per‑joint trajectories
-- **Generate speech audio and lip movements** using Azure TTS and a lip animation generator
+- **Generate speech audio and lip movements** using [Azure Text-to-Speech](https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech) and a lip animation generator
 - **Send feedback events** (start/end speaking) back to the interaction layer
 
 ---

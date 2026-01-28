@@ -40,7 +40,7 @@ On startup, `main.py`:
 
 - **Selective memory**
   - Creates a `SelectiveMemoryModule` with:
-    - OpenFace backbone and face detector weights (`perception/weights/`).
+    - [OpenFace](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0) backbone and face detector weights (`perception/weights/`).
     - Weights/thresholds from `_sm_cfg` (emotion, novelty, memorability).
 
 ---
