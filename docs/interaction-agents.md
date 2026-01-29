@@ -144,8 +144,9 @@ The name confirmation logic is split between the **memory update agent** and the
      - `name_checked=True`, `name_confirmation={}`.  
      - `send_user_info_to_face_recognition(user_name, user_id)` is called, so perception stores/updates face embeddings under the correct ID.
 
-![Name Confirmation Flow](assets/name_confirmation.jpg)
-
+<div align="center">
+  <img src="assets/name_confirmation.jpg" alt="Name Confirmation Flow" width="60%">
+</div>
 
 This loop ensures that:
 

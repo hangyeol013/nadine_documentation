@@ -73,6 +73,7 @@ When `state["intent"] == "update_user_info"`:
 
 The `update_memory` wrapper in `graph.py` merges the returned `user_info`, `name_checked`, and `name_confirmation` fields back into the graph state. On the next user turn, the **DialogueManager** consumes this state and either accepts a suggested existing user, creates a new one, or rotates to the next suggestion, before finally sending the confirmed `user_name`/`user_id` pair back to perception for face-linking.
 
+
 ### Episodic memory
 
 When `intent != "update_user_info"` (e.g., end of a conversation):
