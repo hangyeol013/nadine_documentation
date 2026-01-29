@@ -1597,6 +1597,9 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 </ul>
 <h3 id="name-confirmation-flow-high-level">Name confirmation flow (high-level)<a class="headerlink" href="#name-confirmation-flow-high-level" title="Permanent link">&para;</a></h3>
 <p>The name confirmation logic is split between the <strong>memory update agent</strong> and the <strong>DialogueManager</strong>:</p>
+<figure>
+  <img alt="Name Confirmation Flow" src="../assets/name_confirmation.jpg" width="400" />
+</figure>
 <ol>
 <li><strong>User shares their name</strong> (e.g., “My name is Alex”):  </li>
 <li>The intent classifier sets <code>intent = "update_user_info"</code>.  </li>
@@ -1631,10 +1634,6 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 </ul>
 </li>
 </ol>
-<div align="center">
-  <img src="assets/name_confirmation.jpg" alt="Name Confirmation Flow" width="60%">
-</div>
-
 <p>This loop ensures that:</p>
 <ul>
 <li>Faces, memories, and conversations are consistently linked to the <strong>correct</strong> user ID.  </li>
