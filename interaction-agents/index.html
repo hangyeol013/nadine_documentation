@@ -965,6 +965,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#contextualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contextualizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#orchestrator-orchestrate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1018,6 +1029,17 @@
     <span class="md-ellipsis">
       
         Response Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-test-harnesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing &amp; Test Harnesses
       
     </span>
   </a>
@@ -1344,6 +1366,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#contextualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contextualizer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#orchestrator-orchestrate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1397,6 +1430,17 @@
     <span class="md-ellipsis">
       
         Response Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-test-harnesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing &amp; Test Harnesses
       
     </span>
   </a>
@@ -1625,24 +1669,38 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 </ul>
 <hr />
 <h2 id="orchestrator-sub-agents">Orchestrator &amp; Sub-Agents<a class="headerlink" href="#orchestrator-sub-agents" title="Permanent link">&para;</a></h2>
+<h3 id="contextualizer">Contextualizer<a class="headerlink" href="#contextualizer" title="Permanent link">&para;</a></h3>
+<p><strong>Function</strong>: <code>contextualizer()</code> (used within <code>orchestrate</code>)</p>
+<ul>
+<li><strong>Purpose</strong>: Summarizes conversation history to provide context to the orchestrator without passing the full chat history (which can cause invalid JSON output with long conversations).</li>
+<li><strong>Location</strong>: <code>nadine/agents/context_summarizer.py</code></li>
+<li><strong>Behavior</strong>:</li>
+<li>Takes chat history and the latest user message.</li>
+<li>Generates a concise summary/contextualized question that includes relevant context from the conversation.</li>
+<li>Returns a standalone question that can be understood without the full history.</li>
+<li>If no history exists or the question is standalone, returns the original question unchanged.</li>
+<li><strong>Usage</strong>: Called automatically by the orchestrator when chat history exists.</li>
+</ul>
 <h3 id="orchestrator-orchestrate">Orchestrator (<code>orchestrate</code>)<a class="headerlink" href="#orchestrator-orchestrate" title="Permanent link">&para;</a></h3>
 <p><strong>Function</strong>: <code>orchestrate(state: CustomState) -&gt; CustomState</code></p>
 <ul>
 <li>Ensures <code>state["plan_steps"]</code> is a list.  </li>
 <li>If a plan already exists, returns immediately.  </li>
 <li>Otherwise:</li>
+<li><strong>Context Generation</strong>: If chat history exists, calls <code>contextualizer()</code> to generate conversation context (prevents invalid JSON from long histories).</li>
 <li>Builds an <code>orchestration_agent()</code> chain from <code>orchestration_agent.py</code>.  </li>
 <li>Passes:<ul>
-<li><code>chat_history</code> (all messages except the latest).  </li>
 <li>Latest user message.</li>
+<li>Generated context (if available) - a summarized version of the conversation history.</li>
 </ul>
 </li>
-<li>Receives a JSON “plan” describing a sequence of steps, e.g.:<ul>
+<li>Receives a JSON "plan" describing a sequence of steps, e.g.:<ul>
 <li><code>search_agent</code>, <code>knowledge_rag_agent</code>, <code>vision_agent</code>, <code>response_agent</code>.</li>
 </ul>
 </li>
 <li>Stores the plan in <code>state["plan_steps"]</code>.</li>
 </ul>
+<p><strong>Note</strong>: The orchestrator no longer receives the full <code>chat_history</code> directly to avoid JSON parsing errors with long conversations. Instead, it receives a summarized context from the contextualizer.</p>
 <p>Graph wiring:</p>
 <ul>
 <li>From <code>affective_appraisal</code> → <code>orchestrator</code>.  </li>
@@ -1736,13 +1794,38 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li>After <code>response_agent</code>, the graph always goes to <code>affective_update</code>.</li>
 </ul>
 <hr />
+<h2 id="testing-test-harnesses">Testing &amp; Test Harnesses<a class="headerlink" href="#testing-test-harnesses" title="Permanent link">&para;</a></h2>
+<p>All agents include comprehensive test harnesses that can be run directly:</p>
+<ul>
+<li><strong>Intent Classifier</strong>: <code>python intention_classifier_test.py</code> - Tests intent classification with various message types.</li>
+<li><strong>Memory Update Agent</strong>: <code>python memory_update_agent.py</code> - Tests user info extraction and episodic memory summarization.</li>
+<li><strong>Orchestration Agent</strong>: <code>python orchestration_agent.py</code> - Tests routing to different sub-agents.</li>
+<li><strong>Search Agent</strong>: <code>python search_agent.py</code> - Tests search router and answer summarization.</li>
+<li><strong>Vision Agent</strong>: <code>python vision_agent.py</code> - Tests vision router and image description (with real images from <code>db/nadine_view/samples/</code>).</li>
+<li><strong>Response Agent</strong>: <code>python response_agent.py</code> - Tests response generation with various affect states and contexts.</li>
+<li><strong>Contextualizer</strong>: <code>python context_summarizer.py</code> - Tests conversation context summarization.</li>
+</ul>
+<p><strong>Centralized Test Samples</strong>: All test cases are stored in <code>agent_test_samples.py</code> for easy maintenance and reuse:
+- <code>INTENT_CLASSIFICATION_TEST_MESSAGES</code>
+- <code>USER_INFO_TEST_MESSAGES</code>
+- <code>EPISODIC_MEMORY_TEST_CONVERSATIONS</code>
+- <code>ORCHESTRATION_TEST_CASES</code>
+- <code>SEARCH_ROUTER_TEST_CASES</code>
+- <code>SEARCH_ANSWER_TEST_CASES</code>
+- <code>VISION_ROUTER_TEST_CASES</code>
+- <code>VISION_DESCRIPTION_TEST_CASES</code>
+- <code>VISION_REAL_IMAGE_QUESTIONS</code>
+- <code>RESPONSE_AGENT_TEST_CASES</code>
+- <code>CONTEXTUALIZER_TEST_CASES</code></p>
 <h2 id="putting-it-all-together">Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permanent link">&para;</a></h2>
 <p>For each user input, the graph runs roughly:</p>
 <ol>
 <li><code>intention_classifier</code> → classify the message.  </li>
 <li><code>memory_update_agent</code> (for profile updates) or <code>memory_retrieve_agent</code> (for context recall).  </li>
 <li><code>affective_appraisal</code> → update emotion/mood.  </li>
-<li><code>orchestrator</code> → decide which sub-agents (if any) to call.  </li>
+<li><code>orchestrator</code> → decide which sub-agents (if any) to call:</li>
+<li><strong>Contextualizer</strong> (if history exists) → generates conversation context.</li>
+<li>Orchestrator uses context + user message to route requests.</li>
 <li><code>search_agent</code> / <code>vision_agent</code> / <code>knowledge_rag_agent</code> (optional).  </li>
 <li><code>response_agent</code> → final reply.  </li>
 <li><code>affective_update</code> → finalize affect and optionally trigger further memory updates.</li>

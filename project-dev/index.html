@@ -618,6 +618,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#testing-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#adding-new-agents-interaction-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -705,6 +716,17 @@
     <span class="md-ellipsis">
       
         LLM Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt Optimization
       
     </span>
   </a>
@@ -1272,6 +1294,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#testing-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#adding-new-agents-interaction-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1359,6 +1392,17 @@
     <span class="md-ellipsis">
       
         LLM Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prompt Optimization
       
     </span>
   </a>
@@ -1453,12 +1497,39 @@
 <p>For topic-by-topic payload details, see the individual Perception, Interaction, and Control layer docs.</p>
 <hr />
 <h2 id="development-tips">Development Tips<a class="headerlink" href="#development-tips" title="Permanent link">&para;</a></h2>
+<h3 id="testing-agents">Testing Agents<a class="headerlink" href="#testing-agents" title="Permanent link">&para;</a></h3>
+<p>All agents include test harnesses that can be run directly:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>interaction/nadine/agents
+
+<span class="c1"># Test intent classification</span>
+python<span class="w"> </span>intention_classifier_test.py
+
+<span class="c1"># Test memory update agent</span>
+python<span class="w"> </span>memory_update_agent.py
+
+<span class="c1"># Test orchestration agent</span>
+python<span class="w"> </span>orchestration_agent.py
+
+<span class="c1"># Test search agent</span>
+python<span class="w"> </span>search_agent.py
+
+<span class="c1"># Test vision agent</span>
+python<span class="w"> </span>vision_agent.py
+
+<span class="c1"># Test response agent</span>
+python<span class="w"> </span>response_agent.py
+
+<span class="c1"># Test contextualizer</span>
+python<span class="w"> </span>context_summarizer.py
+</code></pre></div>
+<p><strong>Test Samples</strong>: All test cases are centralized in <code>agent_test_samples.py</code> for easy maintenance. When adding new test cases, add them to this file and import them in the respective agent test harnesses.</p>
 <h3 id="adding-new-agents-interaction-layer">Adding New Agents (Interaction Layer)<a class="headerlink" href="#adding-new-agents-interaction-layer" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Create a new agent function under <code>interaction/nadine/agents/</code>.  </li>
 <li>Add the agent as a node in <code>interaction/nadine/agents/graph.py</code>.  </li>
-<li>Update the orchestration agent’s prompt and parsing logic if necessary.  </li>
-<li>Wire the agent into the graph using <code>add_node</code> and <code>add_conditional_edges</code>.  </li>
+<li>Update the orchestration agent's prompt and parsing logic if necessary.  </li>
+<li>Wire the agent into the graph using <code>add_node</code> and <code>add_conditional_edges</code>.</li>
+<li>Add test cases to <code>agent_test_samples.py</code> and create a test harness in the agent file.  </li>
 </ol>
 <h3 id="extending-the-knowledge-base">Extending the Knowledge Base<a class="headerlink" href="#extending-the-knowledge-base" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1502,8 +1573,25 @@
 <ul>
 <li>Verify that Ollama (or your LLM backend) is running.  </li>
 <li>Check API keys in <code>.env</code>.  </li>
-<li>Inspect logs in <code>interaction/logs/</code> and agent-specific logs if enabled.  </li>
+<li>Inspect logs in <code>interaction/logs/</code> and agent-specific logs if enabled.</li>
+<li><strong>Invalid JSON Output</strong>: If agents return invalid JSON, check:</li>
+<li>Prompt length (long prompts can cause issues with small LLMs).</li>
+<li>Use the test harnesses to debug specific agents.</li>
+<li>Check that <code>format="json"</code> is set in <code>load_agent_llm()</code> calls where needed.</li>
 </ul>
+<h3 id="prompt-optimization">Prompt Optimization<a class="headerlink" href="#prompt-optimization" title="Permanent link">&para;</a></h3>
+<p>All agent prompts have been optimized for small LLMs (e.g., <code>granite4:350m</code>, <code>qwen2.5:1.5b-instruct</code>) to improve:
+- <strong>Speed</strong>: Shorter, more directive prompts reduce latency.
+- <strong>Accuracy</strong>: Explicit rules and examples guide the LLM to correct outputs.
+- <strong>JSON Output</strong>: Prompts explicitly require JSON format with examples.
+- <strong>Consistency</strong>: Clear rules reduce variability in outputs.</p>
+<p>Key optimization strategies:
+- Use explicit, numbered rules instead of verbose explanations.
+- Include concrete examples in the prompt.
+- Emphasize critical constraints (e.g., "NEVER answer", "Output JSON only").
+- Remove unnecessary context that doesn't affect the task.
+- Use <code>format="json"</code> parameter in <code>load_agent_llm()</code> for structured outputs.</p>
+<p>When modifying prompts, test with the agent's test harness to ensure performance is maintained.  </p>
 <hr />
 <h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
 <p>Logs are stored in:</p>

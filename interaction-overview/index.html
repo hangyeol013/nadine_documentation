@@ -1267,7 +1267,16 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <li><strong>DialogueManager</strong>:</li>
 <li>Appends the user message to chat history.</li>
 <li>Syncs state with any detected face-recognition user.</li>
-<li>Runs the LangGraph multi-agent workflow.</li>
+<li>Runs the LangGraph multi-agent workflow:<ul>
+<li>Intent classification</li>
+<li>Memory retrieval/update</li>
+<li>Affective appraisal</li>
+<li>Contextualizer (generates conversation context from history)</li>
+<li>Orchestrator (routes to sub-agents using context)</li>
+<li>Sub-agents (search, vision, knowledge RAG)</li>
+<li>Response generation</li>
+</ul>
+</li>
 <li>Produces a final response text (and affect state).</li>
 <li>UI is updated (user input + agent output).  </li>
 <li><strong>MQTTCommunication.speak</strong> sends the English response (translated to target language if needed) over:</li>
