@@ -144,6 +144,9 @@ The name confirmation logic is split between the **memory update agent** and the
      - `name_checked=True`, `name_confirmation={}`.  
      - `send_user_info_to_face_recognition(user_name, user_id)` is called, so perception stores/updates face embeddings under the correct ID.
 
+![Name Confirmation Flow](assets/name_confirmation.jpg)
+
+
 This loop ensures that:
 
 - Faces, memories, and conversations are consistently linked to the **correct** user ID.  
