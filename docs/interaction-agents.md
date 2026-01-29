@@ -188,6 +188,19 @@ Graph wiring:
 
 ## Orchestrator & Sub-Agents
 
+### Contextualizer
+
+**Function**: `contextualizer()` (used within `orchestrate`)
+
+- **Purpose**: Summarizes conversation history to provide context to the orchestrator without passing the full chat history (which can cause invalid JSON output with long conversations).
+- **Location**: `nadine/agents/context_summarizer.py`
+- **Behavior**:
+  - Takes chat history and the latest user message.
+  - Generates a concise summary/contextualized question that includes relevant context from the conversation.
+  - Returns a standalone question that can be understood without the full history.
+  - If no history exists or the question is standalone, returns the original question unchanged.
+- **Usage**: Called automatically by the orchestrator when chat history exists.
+
 ### Orchestrator (`orchestrate`)
 
 **Function**: `orchestrate(state: CustomState) -> CustomState`
@@ -195,13 +208,16 @@ Graph wiring:
 - Ensures `state["plan_steps"]` is a list.  
 - If a plan already exists, returns immediately.  
 - Otherwise:
+  - **Context Generation**: If chat history exists, calls `contextualizer()` to generate conversation context (prevents invalid JSON from long histories).
   - Builds an `orchestration_agent()` chain from `orchestration_agent.py`.  
   - Passes:
-    - `chat_history` (all messages except the latest).  
     - Latest user message.
-  - Receives a JSON “plan” describing a sequence of steps, e.g.:
+    - Generated context (if available) - a summarized version of the conversation history.
+  - Receives a JSON "plan" describing a sequence of steps, e.g.:
     - `search_agent`, `knowledge_rag_agent`, `vision_agent`, `response_agent`.
   - Stores the plan in `state["plan_steps"]`.
+
+**Note**: The orchestrator no longer receives the full `chat_history` directly to avoid JSON parsing errors with long conversations. Instead, it receives a summarized context from the contextualizer.
 
 Graph wiring:
 
@@ -299,6 +315,31 @@ Graph wiring:
 
 ---
 
+## Testing & Test Harnesses
+
+All agents include comprehensive test harnesses that can be run directly:
+
+- **Intent Classifier**: `python intention_classifier_test.py` - Tests intent classification with various message types.
+- **Memory Update Agent**: `python memory_update_agent.py` - Tests user info extraction and episodic memory summarization.
+- **Orchestration Agent**: `python orchestration_agent.py` - Tests routing to different sub-agents.
+- **Search Agent**: `python search_agent.py` - Tests search router and answer summarization.
+- **Vision Agent**: `python vision_agent.py` - Tests vision router and image description (with real images from `db/nadine_view/samples/`).
+- **Response Agent**: `python response_agent.py` - Tests response generation with various affect states and contexts.
+- **Contextualizer**: `python context_summarizer.py` - Tests conversation context summarization.
+
+**Centralized Test Samples**: All test cases are stored in `agent_test_samples.py` for easy maintenance and reuse:
+- `INTENT_CLASSIFICATION_TEST_MESSAGES`
+- `USER_INFO_TEST_MESSAGES`
+- `EPISODIC_MEMORY_TEST_CONVERSATIONS`
+- `ORCHESTRATION_TEST_CASES`
+- `SEARCH_ROUTER_TEST_CASES`
+- `SEARCH_ANSWER_TEST_CASES`
+- `VISION_ROUTER_TEST_CASES`
+- `VISION_DESCRIPTION_TEST_CASES`
+- `VISION_REAL_IMAGE_QUESTIONS`
+- `RESPONSE_AGENT_TEST_CASES`
+- `CONTEXTUALIZER_TEST_CASES`
+
 ## Putting It All Together
 
 For each user input, the graph runs roughly:
@@ -306,7 +347,9 @@ For each user input, the graph runs roughly:
 1. `intention_classifier` → classify the message.  
 2. `memory_update_agent` (for profile updates) or `memory_retrieve_agent` (for context recall).  
 3. `affective_appraisal` → update emotion/mood.  
-4. `orchestrator` → decide which sub-agents (if any) to call.  
+4. `orchestrator` → decide which sub-agents (if any) to call:
+   - **Contextualizer** (if history exists) → generates conversation context.
+   - Orchestrator uses context + user message to route requests.
 5. `search_agent` / `vision_agent` / `knowledge_rag_agent` (optional).  
 6. `response_agent` → final reply.  
 7. `affective_update` → finalize affect and optionally trigger further memory updates.

@@ -90,7 +90,14 @@ Normal (voice) mode:
 3. **DialogueManager**:
    - Appends the user message to chat history.
    - Syncs state with any detected face-recognition user.
-   - Runs the LangGraph multi-agent workflow.
+   - Runs the LangGraph multi-agent workflow:
+     - Intent classification
+     - Memory retrieval/update
+     - Affective appraisal
+     - Contextualizer (generates conversation context from history)
+     - Orchestrator (routes to sub-agents using context)
+     - Sub-agents (search, vision, knowledge RAG)
+     - Response generation
    - Produces a final response text (and affect state).
 4. UI is updated (user input + agent output).  
 5. **MQTTCommunication.speak** sends the English response (translated to target language if needed) over:

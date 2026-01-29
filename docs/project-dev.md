@@ -55,12 +55,44 @@ For topic-by-topic payload details, see the individual Perception, Interaction, 
 
 ## Development Tips
 
+### Testing Agents
+
+All agents include test harnesses that can be run directly:
+
+```bash
+cd interaction/nadine/agents
+
+# Test intent classification
+python intention_classifier_test.py
+
+# Test memory update agent
+python memory_update_agent.py
+
+# Test orchestration agent
+python orchestration_agent.py
+
+# Test search agent
+python search_agent.py
+
+# Test vision agent
+python vision_agent.py
+
+# Test response agent
+python response_agent.py
+
+# Test contextualizer
+python context_summarizer.py
+```
+
+**Test Samples**: All test cases are centralized in `agent_test_samples.py` for easy maintenance. When adding new test cases, add them to this file and import them in the respective agent test harnesses.
+
 ### Adding New Agents (Interaction Layer)
 
 1. Create a new agent function under `interaction/nadine/agents/`.  
 2. Add the agent as a node in `interaction/nadine/agents/graph.py`.  
-3. Update the orchestration agent’s prompt and parsing logic if necessary.  
-4. Wire the agent into the graph using `add_node` and `add_conditional_edges`.  
+3. Update the orchestration agent's prompt and parsing logic if necessary.  
+4. Wire the agent into the graph using `add_node` and `add_conditional_edges`.
+5. Add test cases to `agent_test_samples.py` and create a test harness in the agent file.  
 
 ### Extending the Knowledge Base
 
@@ -108,7 +140,28 @@ For topic-by-topic payload details, see the individual Perception, Interaction, 
 
 - Verify that Ollama (or your LLM backend) is running.  
 - Check API keys in `.env`.  
-- Inspect logs in `interaction/logs/` and agent-specific logs if enabled.  
+- Inspect logs in `interaction/logs/` and agent-specific logs if enabled.
+- **Invalid JSON Output**: If agents return invalid JSON, check:
+  - Prompt length (long prompts can cause issues with small LLMs).
+  - Use the test harnesses to debug specific agents.
+  - Check that `format="json"` is set in `load_agent_llm()` calls where needed.
+
+### Prompt Optimization
+
+All agent prompts have been optimized for small LLMs (e.g., `granite4:350m`, `qwen2.5:1.5b-instruct`) to improve:
+- **Speed**: Shorter, more directive prompts reduce latency.
+- **Accuracy**: Explicit rules and examples guide the LLM to correct outputs.
+- **JSON Output**: Prompts explicitly require JSON format with examples.
+- **Consistency**: Clear rules reduce variability in outputs.
+
+Key optimization strategies:
+- Use explicit, numbered rules instead of verbose explanations.
+- Include concrete examples in the prompt.
+- Emphasize critical constraints (e.g., "NEVER answer", "Output JSON only").
+- Remove unnecessary context that doesn't affect the task.
+- Use `format="json"` parameter in `load_agent_llm()` for structured outputs.
+
+When modifying prompts, test with the agent's test harness to ensure performance is maintained.  
 
 ---
 
