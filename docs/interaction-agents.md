@@ -121,6 +121,10 @@ Graph wiring:
 
 The name confirmation logic is split between the **memory update agent** and the **DialogueManager**:
 
+<figure markdown="span">
+  ![Name Confirmation Flow](assets/name_confirmation.jpg){ width="400" }
+</figure>
+
 1. **User shares their name** (e.g., “My name is Alex”):  
    - The intent classifier sets `intent = "update_user_info"`.  
    - `memory_update_agent` extracts `user_name="Alex"` and compares it against names in `user_ids.json` using fuzzy matching.
@@ -144,9 +148,7 @@ The name confirmation logic is split between the **memory update agent** and the
      - `name_checked=True`, `name_confirmation={}`.  
      - `send_user_info_to_face_recognition(user_name, user_id)` is called, so perception stores/updates face embeddings under the correct ID.
 
-<div align="center">
-  <img src="assets/name_confirmation.jpg" alt="Name Confirmation Flow" width="60%">
-</div>
+
 
 This loop ensures that:
 
