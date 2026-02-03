@@ -2,17 +2,17 @@ site_name: Nadine Social Robot
 site_description: Documentation for the Nadine social robot project
 site_dir: site
 
-plugins:
-  - with-pdf:
-      author: Hangyeol Kang
-      copyright: Copyright © 2026 Hangyeol Kang
-      cover: true
-      cover_title: Nadine Social Robot
-      cover_subtitle: Documentation
-      toc_title: Table of Contents
-      toc_level: 3
-      heading_shift: true
-      ordered_chapter_level: 3
+# plugins:
+#   - with-pdf:
+#       author: Hangyeol Kang
+#       copyright: Copyright © 2026 Hangyeol Kang
+#       cover: true
+#       cover_title: Nadine Social Robot
+#       cover_subtitle: Documentation
+#       toc_title: Table of Contents
+#       toc_level: 3
+#       heading_shift: true
+#       ordered_chapter_level: 3
       # PDF generation can be disabled by not setting ENABLE_PDF_EXPORT environment variable
       # enabled_if_env: ENABLE_PDF_EXPORT
 
