@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1245,13 +1245,16 @@
 <h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h2>
 <p><code>SelectiveMemoryModule</code> combines three main pieces:</p>
 <ul>
-<li><strong>Emotion analysis (<a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace</a>)</strong></li>
-<li>Uses <a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace</a> (<code>MultitaskPredictor</code> + <code>FaceDetector</code>) to infer probabilities over:<ul>
-<li><code>['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code></li>
+<li><strong>Emotion analysis (configurable: OpenFace / DeepFace / Ensemble)</strong></li>
+<li>Supports three modes via <code>emotion_detector</code> in <code>perception/config.yaml</code>:<ul>
+<li><code>"openface"</code> – Uses <a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace 3.0</a> (<code>MultitaskPredictor</code> + <code>FaceDetector</code>).</li>
+<li><code>"deepface"</code> – Uses <a href="https://github.com/serengil/deepface">DeepFace</a> (generally better at detecting 'happy').</li>
+<li><code>"ensemble"</code> (default) – Combines both: averages probability distributions from OpenFace and DeepFace.</li>
 </ul>
 </li>
+<li>Infers probabilities over: <code>['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>.</li>
 <li>
-<p>Produces a normalized probability distribution over these emotions.</p>
+<p>A configurable <code>happy_boost_factor</code> (default 1.2) can boost 'happy' probabilities in OpenFace/ensemble mode to compensate for OpenFace's tendency to underweight happiness.</p>
 </li>
 <li>
 <p><strong>Scene embedding (CLIP)</strong></p>
@@ -1339,10 +1342,12 @@
 <h2 id="configuration-hooks">Configuration Hooks<a class="headerlink" href="#configuration-hooks" title="Permanent link">&para;</a></h2>
 <p>You can tune selective memory behavior via <code>perception/config.yaml</code>:</p>
 <ul>
-<li><code>w_emotion</code>, <code>w_novelty</code> – balance between emotional and novelty cues.  </li>
-<li><code>novelty_threshold</code> – how easily novelty becomes salient.  </li>
-<li><code>memorability_threshold</code> – how “picky” the system is about storing scenes.  </li>
-<li><code>memorability_check_interval</code> (in <code>main.py</code>) – how often memorability is evaluated per user.</li>
+<li><code>w_emotion</code>, <code>w_novelty</code> – balance between emotional and novelty cues (default: 0.8, 0.2).</li>
+<li><code>novelty_threshold</code> – how easily novelty becomes salient (default: 0.45).</li>
+<li><code>memorability_threshold</code> – how “picky” the system is about storing scenes (default: 0.4).</li>
+<li><code>memorability_check_interval</code> – how often memorability is evaluated per user (default: 3.0s).</li>
+<li><code>emotion_detector</code> – <code>”openface”</code>, <code>”deepface”</code>, or <code>”ensemble”</code> (default: <code>”ensemble”</code>).</li>
+<li><code>happy_boost_factor</code> – multiplier for 'happy' probabilities in OpenFace/ensemble mode (default: 1.2).</li>
 </ul>
 <p>For finer control (code changes), you can adjust:</p>
 <ul>

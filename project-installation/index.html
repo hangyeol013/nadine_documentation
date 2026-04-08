@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1335,6 +1335,12 @@ pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </s
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>perception
 conda<span class="w"> </span>activate<span class="w"> </span>nadine<span class="w">  </span><span class="c1"># Uses same environment as interaction</span>
 </code></pre></div>
+<p><strong>vLLM server</strong> (for fine-tuned model serving)</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>vllm_serve<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+conda<span class="w"> </span>activate<span class="w"> </span>vllm_serve
+pip<span class="w"> </span>install<span class="w"> </span>vllm
+</code></pre></div>
+<p>This environment is used by <code>start_nadine.sh</code> to run the vLLM multi-LoRA server that serves the fine-tuned Qwen2.5-1.5B adapters on GPU 0.</p>
 <hr />
 <h2 id="mqtt-broker-emqx">MQTT Broker (EMQX)<a class="headerlink" href="#mqtt-broker-emqx" title="Permanent link">&para;</a></h2>
 <p>From the project root:</p>
@@ -1351,7 +1357,8 @@ conda<span class="w"> </span>activate<span class="w"> </span>nadine<span class="
 <ul>
 <li>YOLOv8 face detection model (already placed in <code>perception/models/</code>).  </li>
 <li>InsightFace models (downloaded automatically on first use).  </li>
-<li>LLM models (configured via environment variables / Ollama / other backends).  </li>
+<li>LLM models via Ollama: <code>mistral-small3.2:latest</code>, <code>qwen2.5:1.5b-instruct</code>, <code>qwen2.5vl:3b</code>.  </li>
+<li>Fine-tuned LoRA adapters (in <code>interaction/finetune/adapters/</code>) are served by the vLLM server.  </li>
 </ul>
 <hr />
 <h2 id="environment-file-interactionenv">Environment File (<code>interaction/.env</code>)<a class="headerlink" href="#environment-file-interactionenv" title="Permanent link">&para;</a></h2>

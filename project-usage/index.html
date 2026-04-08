@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1195,15 +1195,19 @@
 <div class="highlight"><pre><span></span><code>./start_nadine.sh
 </code></pre></div>
 <p>This script will:</p>
-<ul>
-<li>Launch the <strong>control</strong> component (robot control server).  </li>
-<li>Launch the <strong>interaction</strong> component (dialogue system).  </li>
-<li>Launch the <strong>perception</strong> component (face recognition).  </li>
-</ul>
+<ol>
+<li>Set up audio echo cancellation and microphone volume.</li>
+<li>Launch the <strong>control</strong> component (robot control server).</li>
+<li>Start the <strong>vLLM multi-LoRA server</strong> on GPU 0 (serves fine-tuned Qwen2.5-1.5B adapters).</li>
+<li>Wait for the vLLM server to become healthy (up to 90s).</li>
+<li>Launch the <strong>interaction</strong> component on GPU 1 (dialogue system via Ollama + vLLM).</li>
+<li>Launch the <strong>perception</strong> component on GPU 0 (face recognition + selective memory).</li>
+</ol>
 <p>Make sure:</p>
 <ul>
-<li>Conda environments are created and available.  </li>
-<li>EMQX MQTT broker is running (see Installation &amp; Setup).  </li>
+<li>All three conda environments are created: <code>nadine</code>, <code>nadine_new</code>, <code>vllm_serve</code> (see Installation &amp; Setup).</li>
+<li>EMQX MQTT broker is running (see Installation &amp; Setup).</li>
+<li>Ollama is running with required models (<code>mistral-small3.2</code>, <code>qwen2.5:1.5b-instruct</code>, <code>qwen2.5vl:3b</code>).</li>
 </ul>
 <hr />
 <h2 id="startup-options">Startup Options<a class="headerlink" href="#startup-options" title="Permanent link">&para;</a></h2>
@@ -1211,12 +1215,16 @@
 <div class="highlight"><pre><span></span><code><span class="c1"># Disable vision agent in the interaction graph</span>
 ./start_nadine.sh<span class="w"> </span>--no-vision-agent
 
-<span class="c1"># Disable memory agents</span>
+<span class="c1"># Disable memory agents (NOTE: memory agents are disabled by default)</span>
 ./start_nadine.sh<span class="w"> </span>--no-memory-agents
 
 <span class="c1"># Skip the perception process (no face recognition)</span>
 ./start_nadine.sh<span class="w"> </span>--no-vision-process
+
+<span class="c1"># Set microphone volume (0-150%)</span>
+./start_nadine.sh<span class="w"> </span>--mic-volume<span class="o">=</span><span class="m">20</span>
 </code></pre></div>
+<p>Default behavior: vision agent is <strong>enabled</strong>, memory agents are <strong>disabled</strong>, perception is <strong>enabled</strong>, mic volume is <strong>20%</strong>.</p>
 <p>These are useful for debugging or running Nadine on systems without a camera or without GPU resources for vision.</p>
 <hr />
 <h2 id="manual-component-startup">Manual Component Startup<a class="headerlink" href="#manual-component-startup" title="Permanent link">&para;</a></h2>

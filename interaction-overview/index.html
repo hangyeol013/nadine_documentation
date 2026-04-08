@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1199,8 +1199,9 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <p>Under <code>interaction/</code>:</p>
 <ul>
 <li><strong><code>config.yaml</code></strong></li>
-<li>LLM profiles (<code>small_llm</code>, <code>big_llm</code>, <code>response_llm</code>, <code>vision_llm</code>).</li>
-<li>Agent → LLM profile mapping.</li>
+<li>LLM profiles: Ollama (<code>small_llm</code>, <code>big_llm</code>, <code>response_llm</code>, <code>vision_llm</code>) and vLLM (<code>vllm_small</code>, <code>ft_*</code> fine-tuned adapters).</li>
+<li>Agent → LLM profile mapping (most agents use fine-tuned vLLM profiles).</li>
+<li>vLLM server URL.</li>
 <li>
 <p>Visual-memory retrieval parameters.</p>
 </li>
@@ -1292,22 +1293,49 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <h2 id="configuration-interactionconfigyaml">Configuration (<code>interaction/config.yaml</code>)<a class="headerlink" href="#configuration-interactionconfigyaml" title="Permanent link">&para;</a></h2>
 <p>The interaction config binds agents to LLM profiles and tunes visual memory:</p>
 <ul>
-<li><strong><code>interaction.llm</code></strong></li>
-<li><code>small_llm</code> – e.g., <code>granite4:350m</code> (low-cost tasks).</li>
-<li><code>big_llm</code> – e.g., <code>mistral-small3.2</code> for heavier reasoning.</li>
-<li><code>response_llm</code> – main conversation LLM (typically same as <code>big_llm</code>).</li>
+<li><strong><code>interaction.vllm</code></strong></li>
 <li>
-<p><code>vision_llm</code> – dedicated profile for vision agent.</p>
+<p><code>base_url</code> – URL of the vLLM server (default: <code>http://localhost:8000/v1</code>).</p>
+</li>
+<li>
+<p><strong><code>interaction.llm</code></strong></p>
+</li>
+<li><strong>Ollama profiles</strong> (served by Ollama on GPU 1):<ul>
+<li><code>small_llm</code> – <code>qwen2.5:1.5b-instruct</code> (fallback for simple tasks).</li>
+<li><code>big_llm</code> – <code>mistral-small3.2:latest</code> (heavier reasoning).</li>
+<li><code>response_llm</code> – <code>mistral-small3.2:latest</code> (main conversation LLM, T=0.3).</li>
+<li><code>vision_llm</code> – <code>qwen2.5vl:3b</code> (vision agent).</li>
+</ul>
+</li>
+<li>
+<p><strong>vLLM profiles</strong> (served by vLLM multi-LoRA server on GPU 0):</p>
+<ul>
+<li><code>vllm_small</code> – base <code>Qwen2.5-1.5B-Instruct</code> via vLLM.</li>
+<li><code>ft_intent_classifier</code> – fine-tuned LoRA adapter for intent classification.</li>
+<li><code>ft_orchestration_agent</code> – fine-tuned LoRA adapter for orchestration.</li>
+<li><code>ft_affective_appraisal</code> – fine-tuned LoRA adapter for emotion appraisal.</li>
+<li><code>ft_memory_update</code> – fine-tuned LoRA adapter for memory extraction.</li>
+<li><code>ft_episodic_memory</code> – fine-tuned LoRA adapter for episodic summarization.</li>
+<li><code>ft_search_router</code> – fine-tuned LoRA adapter for search routing.</li>
+<li><code>ft_response_agent</code> – fine-tuned LoRA adapter for response generation (not used in production; <code>response_llm</code> via Ollama is preferred).</li>
+</ul>
 </li>
 <li>
 <p><strong><code>interaction.agents</code></strong></p>
 </li>
 <li>
-<p>Maps logical agents to one of the above profiles, e.g.:</p>
+<p>Maps logical agents to LLM profiles. Most agents now use <strong>fine-tuned vLLM profiles</strong> for lower latency:</p>
 <ul>
-<li><code>orchestration_agent</code> → <code>big_llm</code></li>
-<li><code>search_answer</code> → <code>small_llm</code></li>
-<li><code>response_agent</code> → <code>response_llm</code></li>
+<li><code>intention_classifier</code> → <code>ft_intent_classifier</code></li>
+<li><code>orchestration_agent</code> → <code>ft_orchestration_agent</code></li>
+<li><code>affective_appraisal</code> → <code>ft_affective_appraisal</code></li>
+<li><code>memory_update_agent</code> → <code>ft_memory_update</code></li>
+<li><code>contextualizer</code> → <code>ft_episodic_memory</code></li>
+<li><code>search_router</code> → <code>vllm_small</code></li>
+<li><code>search_answer</code> → <code>vllm_small</code></li>
+<li><code>vision_router</code> → <code>vllm_small</code></li>
+<li><code>vision_description</code> → <code>vision_llm</code> (Ollama)</li>
+<li><code>response_agent</code> → <code>response_llm</code> (Ollama, Mistral Small 3.2)</li>
 </ul>
 </li>
 <li>

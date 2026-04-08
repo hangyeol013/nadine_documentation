@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -1517,7 +1517,7 @@
 <p>Responsibilities:</p>
 <ul>
 <li>Reads the latest user message from <code>state["messages"][-1].content</code>.  </li>
-<li>Uses a dedicated LLM (via <code>load_agent_llm("intention_classifier")</code>) to classify the message into one of:</li>
+<li>Uses a <strong>fine-tuned</strong> LLM (via <code>load_agent_llm("intention_classifier")</code>, served by vLLM) to classify the message into one of:</li>
 <li><code>first_greeting</code></li>
 <li><code>update_user_info</code></li>
 <li><code>end_conversation</code></li>
