@@ -14,3 +14,5 @@ Each layer page explains:
 - **Key configuration options and typical extension points**
 
 
+
+![Nadine social robot](assets/nadine_table.jpg){ width="800" }
