@@ -34,6 +34,8 @@ Multi-agent dialogue system built with [LangGraph](https://docs.langchain.com/os
 - Multi-language support (English, German, French, Chinese).  
 - UI for monitoring.  
 
+Most agents use **fine-tuned Qwen2.5-1.5B LoRA adapters** served by a **vLLM multi-LoRA server** for low-latency inference (2×–5× faster than the generic base models). The response agent uses **Mistral Small 3.2 (22B)** via Ollama for higher-quality generation.
+
 ### 3. Perception Component (`perception/`)
 
 Computer vision and face recognition:
@@ -87,6 +89,17 @@ nadine_Jan_2026/
 └── start_nadine.sh        # Main startup script
 ```
 
+### GPU Allocation
+
+The system runs on **2× NVIDIA RTX 4090** GPUs:
+
+| GPU | Component | Models |
+|-----|-----------|--------|
+| **GPU 0** | vLLM server + Perception | Fine-tuned LoRA adapters (Qwen2.5-1.5B), YOLOv8, OpenFace, CLIP, Moondream2 |
+| **GPU 1** | Interaction (Ollama) | Mistral Small 3.2 (response), Qwen2.5-VL:3B (vision), CLIP (memory retrieval) |
+
+This allocation is configured in `start_nadine.sh` via `CUDA_VISIBLE_DEVICES`.
+
 ---
 
 ## Key Features
@@ -133,10 +146,11 @@ Nadine implements a multimodal memory framework that tightly couples **perceptio
 
 - **Selective visual memory (perception)**  
   - The perception layer computes a memorability score per frame using:
-    - Emotion salience from OpenFace (facial expressions).  
-    - Novelty from CLIP embeddings vs. past scenes for that user.  
+    - Emotion salience from OpenFace, DeepFace, or an ensemble of both (configurable via `emotion_detector` in `perception/config.yaml`).
+    - Novelty from CLIP embeddings vs. past scenes for that user.
+  - A configurable `happy_boost_factor` (default 1.2) boosts happy emotion detection in the ensemble mode.
   - Only scenes above a configurable threshold are stored under each user’s profile as:
-    - RGB images, CLIP embeddings, and JSON metadata (emotions, memorability, optional scene description).  
+    - RGB images, CLIP embeddings, and JSON metadata (emotions, memorability, optional scene description via Moondream2).
 
 - **Textual & episodic memory (interaction)**  
   - The interaction layer stores:

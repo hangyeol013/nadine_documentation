@@ -40,8 +40,9 @@ If you are new to the project, read this page first, then see the **Runtime & MQ
 Under `interaction/`:
 
 - **`config.yaml`**
-  - LLM profiles (`small_llm`, `big_llm`, `response_llm`, `vision_llm`).
-  - Agent → LLM profile mapping.
+  - LLM profiles: Ollama (`small_llm`, `big_llm`, `response_llm`, `vision_llm`) and vLLM (`vllm_small`, `ft_*` fine-tuned adapters).
+  - Agent → LLM profile mapping (most agents use fine-tuned vLLM profiles).
+  - vLLM server URL.
   - Visual-memory retrieval parameters.
 
 - **`run.sh`**
@@ -115,17 +116,37 @@ In **chat mode**, steps are similar but:
 
 The interaction config binds agents to LLM profiles and tunes visual memory:
 
+- **`interaction.vllm`**
+  - `base_url` – URL of the vLLM server (default: `http://localhost:8000/v1`).
+
 - **`interaction.llm`**
-  - `small_llm` – e.g., `granite4:350m` (low-cost tasks).
-  - `big_llm` – e.g., `mistral-small3.2` for heavier reasoning.
-  - `response_llm` – main conversation LLM (typically same as `big_llm`).
-  - `vision_llm` – dedicated profile for vision agent.
+  - **Ollama profiles** (served by Ollama on GPU 1):
+    - `small_llm` – `qwen2.5:1.5b-instruct` (fallback for simple tasks).
+    - `big_llm` – `mistral-small3.2:latest` (heavier reasoning).
+    - `response_llm` – `mistral-small3.2:latest` (main conversation LLM, T=0.3).
+    - `vision_llm` – `qwen2.5vl:3b` (vision agent).
+  - **vLLM profiles** (served by vLLM multi-LoRA server on GPU 0):
+    - `vllm_small` – base `Qwen2.5-1.5B-Instruct` via vLLM.
+    - `ft_intent_classifier` – fine-tuned LoRA adapter for intent classification.
+    - `ft_orchestration_agent` – fine-tuned LoRA adapter for orchestration.
+    - `ft_affective_appraisal` – fine-tuned LoRA adapter for emotion appraisal.
+    - `ft_memory_update` – fine-tuned LoRA adapter for memory extraction.
+    - `ft_episodic_memory` – fine-tuned LoRA adapter for episodic summarization.
+    - `ft_search_router` – fine-tuned LoRA adapter for search routing.
+    - `ft_response_agent` – fine-tuned LoRA adapter for response generation (not used in production; `response_llm` via Ollama is preferred).
 
 - **`interaction.agents`**
-  - Maps logical agents to one of the above profiles, e.g.:
-    - `orchestration_agent` → `big_llm`
-    - `search_answer` → `small_llm`
-    - `response_agent` → `response_llm`
+  - Maps logical agents to LLM profiles. Most agents now use **fine-tuned vLLM profiles** for lower latency:
+    - `intention_classifier` → `ft_intent_classifier`
+    - `orchestration_agent` → `ft_orchestration_agent`
+    - `affective_appraisal` → `ft_affective_appraisal`
+    - `memory_update_agent` → `ft_memory_update`
+    - `contextualizer` → `ft_episodic_memory`
+    - `search_router` → `vllm_small`
+    - `search_answer` → `vllm_small`
+    - `vision_router` → `vllm_small`
+    - `vision_description` → `vision_llm` (Ollama)
+    - `response_agent` → `response_llm` (Ollama, Mistral Small 3.2)
 
 - **`interaction.visual_memory`**
   - `similarity_threshold` – CLIP similarity cut-off for using visual memory.  

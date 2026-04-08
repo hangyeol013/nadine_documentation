@@ -40,7 +40,7 @@ Key components:
 Responsibilities:
 
 - Reads the latest user message from `state["messages"][-1].content`.  
-- Uses a dedicated LLM (via `load_agent_llm("intention_classifier")`) to classify the message into one of:
+- Uses a **fine-tuned** LLM (via `load_agent_llm("intention_classifier")`, served by vLLM) to classify the message into one of:
   - `first_greeting`
   - `update_user_info`
   - `end_conversation`

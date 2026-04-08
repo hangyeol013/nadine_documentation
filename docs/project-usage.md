@@ -14,14 +14,18 @@ From the project root:
 
 This script will:
 
-- Launch the **control** component (robot control server).  
-- Launch the **interaction** component (dialogue system).  
-- Launch the **perception** component (face recognition).  
+1. Set up audio echo cancellation and microphone volume.
+2. Launch the **control** component (robot control server).
+3. Start the **vLLM multi-LoRA server** on GPU 0 (serves fine-tuned Qwen2.5-1.5B adapters).
+4. Wait for the vLLM server to become healthy (up to 90s).
+5. Launch the **interaction** component on GPU 1 (dialogue system via Ollama + vLLM).
+6. Launch the **perception** component on GPU 0 (face recognition + selective memory).
 
 Make sure:
 
-- Conda environments are created and available.  
-- EMQX MQTT broker is running (see Installation & Setup).  
+- All three conda environments are created: `nadine`, `nadine_new`, `vllm_serve` (see Installation & Setup).
+- EMQX MQTT broker is running (see Installation & Setup).
+- Ollama is running with required models (`mistral-small3.2`, `qwen2.5:1.5b-instruct`, `qwen2.5vl:3b`).
 
 ---
 
@@ -33,12 +37,17 @@ Make sure:
 # Disable vision agent in the interaction graph
 ./start_nadine.sh --no-vision-agent
 
-# Disable memory agents
+# Disable memory agents (NOTE: memory agents are disabled by default)
 ./start_nadine.sh --no-memory-agents
 
 # Skip the perception process (no face recognition)
 ./start_nadine.sh --no-vision-process
+
+# Set microphone volume (0-150%)
+./start_nadine.sh --mic-volume=20
 ```
+
+Default behavior: vision agent is **enabled**, memory agents are **disabled**, perception is **enabled**, mic volume is **20%**.
 
 These are useful for debugging or running Nadine on systems without a camera or without GPU resources for vision.
 

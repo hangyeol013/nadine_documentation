@@ -66,6 +66,16 @@ cd perception
 conda activate nadine  # Uses same environment as interaction
 ```
 
+**vLLM server** (for fine-tuned model serving)
+
+```bash
+conda create -n vllm_serve python=3.11
+conda activate vllm_serve
+pip install vllm
+```
+
+This environment is used by `start_nadine.sh` to run the vLLM multi-LoRA server that serves the fine-tuned Qwen2.5-1.5B adapters on GPU 0.
+
 ---
 
 ## MQTT Broker (EMQX)
@@ -89,7 +99,8 @@ On first run, the system will automatically download required models. You can al
 
 - YOLOv8 face detection model (already placed in `perception/models/`).  
 - InsightFace models (downloaded automatically on first use).  
-- LLM models (configured via environment variables / Ollama / other backends).  
+- LLM models via Ollama: `mistral-small3.2:latest`, `qwen2.5:1.5b-instruct`, `qwen2.5vl:3b`.  
+- Fine-tuned LoRA adapters (in `interaction/finetune/adapters/`) are served by the vLLM server.  
 
 ---
 

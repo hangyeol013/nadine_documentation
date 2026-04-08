@@ -19,10 +19,13 @@ If the memorability score is high enough, the scene is stored (image + embedding
 
 `SelectiveMemoryModule` combines three main pieces:
 
-- **Emotion analysis ([OpenFace](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0))**
-  - Uses [OpenFace](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0) (`MultitaskPredictor` + `FaceDetector`) to infer probabilities over:
-    - `['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']`
-  - Produces a normalized probability distribution over these emotions.
+- **Emotion analysis (configurable: OpenFace / DeepFace / Ensemble)**
+  - Supports three modes via `emotion_detector` in `perception/config.yaml`:
+    - `"openface"` – Uses [OpenFace 3.0](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0) (`MultitaskPredictor` + `FaceDetector`).
+    - `"deepface"` – Uses [DeepFace](https://github.com/serengil/deepface) (generally better at detecting 'happy').
+    - `"ensemble"` (default) – Combines both: averages probability distributions from OpenFace and DeepFace.
+  - Infers probabilities over: `['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']`.
+  - A configurable `happy_boost_factor` (default 1.2) can boost 'happy' probabilities in OpenFace/ensemble mode to compensate for OpenFace's tendency to underweight happiness.
 
 - **Scene embedding (CLIP)**
   - Uses `openai/clip-vit-large-patch14` to embed the entire RGB frame into a high‑dimensional vector.
@@ -115,10 +118,12 @@ This structure lets downstream components (e.g., memory/RAG agents) quickly disc
 
 You can tune selective memory behavior via `perception/config.yaml`:
 
-- `w_emotion`, `w_novelty` – balance between emotional and novelty cues.  
-- `novelty_threshold` – how easily novelty becomes salient.  
-- `memorability_threshold` – how “picky” the system is about storing scenes.  
-- `memorability_check_interval` (in `main.py`) – how often memorability is evaluated per user.
+- `w_emotion`, `w_novelty` – balance between emotional and novelty cues (default: 0.8, 0.2).
+- `novelty_threshold` – how easily novelty becomes salient (default: 0.45).
+- `memorability_threshold` – how “picky” the system is about storing scenes (default: 0.4).
+- `memorability_check_interval` – how often memorability is evaluated per user (default: 3.0s).
+- `emotion_detector` – `”openface”`, `”deepface”`, or `”ensemble”` (default: `”ensemble”`).
+- `happy_boost_factor` – multiplier for 'happy' probabilities in OpenFace/ensemble mode (default: 1.2).
 
 For finer control (code changes), you can adjust:
 
