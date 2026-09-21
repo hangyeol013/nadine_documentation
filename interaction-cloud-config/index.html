@@ -1210,17 +1210,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#design-history" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Design History
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1633,17 +1622,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#design-history" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Design History
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1938,7 +1916,7 @@ response_agent → affective_update → (intent == end_conversation → memory_u
 <ul>
 <li><code>ANTHROPIC_API_KEY</code> – only for the Claude profiles.</li>
 <li><code>GOOGLE_APPLICATION_CREDENTIALS</code>, <code>GOOGLE_CLOUD_PROJECT</code>, <code>SERPER_API_KEY</code> – unchanged from <code>nadine_local</code>.</li>
-<li><code>LANGCHAIN_TRACING_V2</code> / <code>LANGCHAIN_API_KEY</code> – present but tracing was disabled on 2026-07-13 after the monthly trace quota was exhausted. In study mode every prompt and completion is logged locally by <code>nadine/common/prompt_logger.py</code> instead.</li>
+<li><code>LANGCHAIN_TRACING_V2</code> / <code>LANGCHAIN_API_KEY</code> – present but tracing was disabled after the monthly trace quota was exhausted. In study mode every prompt and completion is logged locally by <code>nadine/common/prompt_logger.py</code> instead.</li>
 </ul>
 <p>The conda environment pins <code>openai==2.15.0</code> and <code>anthropic==0.76.0</code>.</p>
 <h3 id="local-models-still-required">Local models still required<a class="headerlink" href="#local-models-still-required" title="Permanent link">&para;</a></h3>
@@ -1955,16 +1933,6 @@ response_agent → affective_update → (intent == end_conversation → memory_u
 <li><strong>Data leaving the machine.</strong> User speech text, the conversation history passed as context, extracted profile facts, episodic summaries, and knowledge-base chunks are sent to OpenAI. Camera frames, the vision description, face embeddings, and the text-memory embeddings stay local.</li>
 <li><strong>Two embedding models.</strong> Knowledge RAG uses OpenAI embeddings while user text memory keeps the local ONNX MiniLM model; the two indexes cannot be queried with each other's vectors.</li>
 <li><strong>Legacy mode still needs the adapters.</strong> Switching to <code>NADINE_PIPELINE_MODE=legacy</code> requires all <code>nadine-*</code> Ollama models to be present and loads them on first use rather than at startup.</li>
-</ul>
-<hr />
-<h2 id="design-history">Design History<a class="headerlink" href="#design-history" title="Permanent link">&para;</a></h2>
-<p>From the <code>nadine_phd</code> commit history after the fork from <code>nadine_local</code> on 2026-06-23:</p>
-<ul>
-<li><strong>2026-06-23</strong> – Merged turn-understanding pipeline, cloud latency tuning, English default, Zoom interview audio.</li>
-<li><strong>2026-06-25</strong> – Per-turn latency logging (interaction, first sentence, end to end) and the study-log schema.</li>
-<li><strong>2026-06-30</strong> – User emotion appraised as the presently felt emotion only, not recalled or referenced ones; turn-understanding stability test suite for intent, routing, emotion, and recall cues.</li>
-<li><strong>2026-07-13</strong> – LangSmith tracing disabled; local prompt logging in study mode.</li>
-<li><strong>2026-07-14</strong> – Memory extraction switched to current-facts-only profiles and claim-preserving episodes, with the remaining pipeline LLMs moved to <code>gpt-5.4-mini</code>. Knowledge RAG moved to OpenAI embeddings with header-aware chunks. Runtime language persisted in a state file.</li>
 </ul>
 
 
