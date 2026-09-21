@@ -13,6 +13,7 @@ This page explains how the interaction layer runs at runtime: from microphone in
 `Nadine.__init__(nomqtt: bool)`:
 
 - Loads environment variables from `interaction/.env`.  
+- Reads the current language from `language_config` (default: French).  
 - Creates:
   - `logger` via `LoggersFactory.getLogger()`.
   - `Translation` for multi-language translations.
@@ -79,8 +80,8 @@ This loop repeats for each user utterance.
   - `user_info` – default profile dict via `user_info_init(user_id)`.
   - `c_state` – current graph state (custom state dict).
   - `multi_agent_graph` – compiled LangGraph from `build_agent_graph()`.
-  - `conversation_limit` – how many recent turns to keep in `chat_history`.
-- Calls `warmup_llms()` to pre-initialize key LLMs.
+  - `conversation_limit` – how many recent messages to keep in `chat_history` (4, i.e. two user–robot exchanges).
+- Does not warm up models itself: the Ollama models are pre-warmed by `start_nadine.sh` before the interaction process starts (`warmup_llms` in `utils.py` is an unused helper).
 
 ### State refresh & name confirmation
 
@@ -89,9 +90,20 @@ Before invoking the graph, DM:
 - Checks face-recognition info via `mqtt_comm.get_detected_user_info()`.  
 - `_refresh_state(detected_user_id)`:
   - If a different user was detected:
-    - Loads their `user_info.json` from the interaction DB.
-    - Resets MQTT detection state.
+    - Saves an episodic memory for the outgoing user (`_save_episodic_on_switch`, skipped for unknown users).
+    - Loads the new user's `user_info.json` from the interaction DB.
+    - Clears `chat_history` and resets `c_state`, so greeting flags, affect, and memories are per user.
+    - Resets the language to English through `set_language_callback`.
   - Updates `c_state` via `default_custom_state(c_state, chat_history, user_info)`.
+
+### Pre-graph short-circuits
+
+Before the graph runs, `_short_circuit_reply` answers two kinds of input directly and appends them to the history:
+
+- A request for a joke returns a random entry from `french_kids_jokes.json`.
+- "stop talking" and similar phrases return "Okay. I will stop talking."
+
+Independently, `should_trigger_handshake` matches phrases such as "shake hands" and calls `mqtt_comm.give_handshake()` before the graph runs.
 
 If the memory agents previously requested name confirmation, `name_confirmation(user_input)`:
 
@@ -124,7 +136,7 @@ The DM:
 - Extracts:
   - Final text + emotion via `_extract_robot_response(results)`.  
 - Updates `chat_history` with the new AI message.  
-- Resets chat history on `end_conversation` and trims to `conversation_limit` messages.
+- Resets chat history on `end_conversation` and trims to `conversation_limit` messages. After the reply is spoken, `__main__.py` also resets the language to French on `end_conversation`.
 
 ### Motion side-effects
 
@@ -174,13 +186,23 @@ The interaction layer uses `MQTTCommunication` as its main MQTT client.
 - `nadine/agent/control/animation`
   - To control layer.
   - Payload: animation name.
-  - Used by helper methods like `give_wave`, `give_greeting`, `give_smile`, etc.
+  - Used by helper methods like `give_wave`, `give_greeting`, `give_smile`, `give_handshake`, etc.
+
+- `nadine/agent/control/look_at_target`
+  - To control layer.
+  - Payload: posture name (`Posture_LookAtInterviewer`, `Posture_LookAtZoom`, or `LOOKUPPostureDefault` to clear the target).
+  - Sent by the UI's "Gaze Direction" radio buttons via `mqtt_comm.look_at_target`.
+
+- `nadine/affect/state`
+  - To perception layer.
+  - Payload: `{"label": str, "arousal": float, "intensity": float}`.
+  - Published by the affective appraisal node after every appraisal; perception's selective memory uses it to decide whether the current scene is memorable.
 
 ---
 
 ## Quick Dev Tips
 
-- To debug the LangGraph flow in isolation, run `graph.py` directly (it has a CLI `main()` loop).  
+- To debug the LangGraph flow in isolation, run `graph.py` directly; its `async main()` REPL (started with `asyncio.run`) drives the graph with its own simplified name-confirmation handling.  
 - To test the dialogue manager without STT/UI, you can either:
   - Run the built‑in chat mode:
 

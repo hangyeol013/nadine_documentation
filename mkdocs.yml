@@ -19,6 +19,7 @@ site_dir: site
 nav:
   - Project Overview:
       - Introduction: overview.md
+      - Platforms: platforms.md
       - Installation & Setup: project-installation.md
       - Usage: project-usage.md
       - Architecture & Features: project-architecture.md
@@ -73,6 +74,13 @@ theme:
 copyright: >
   Copyright &copy; 2026 <a href="https://github.com/hangyeol013" target="_blank" rel="noopener">Hangyeol Kang</a>
 
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -80,9 +88,16 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.inlinehilite
   - pymdownx.highlight
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path: [docs]
   - pymdownx.tabbed:
       alternate_style: true

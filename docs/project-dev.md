@@ -8,20 +8,21 @@ This page collects development notes, configuration hints, MQTT topics, and trou
 
 ### Environment Variables
 
-Create `.env` files in the relevant component directories with:
+Two `.env` files hold credentials (see Installation & Setup for the full contents):
 
-- API keys for [Azure Text-to-Speech](https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech) and [Google Cloud](https://cloud.google.com/) services.  
-- LLM configuration (e.g. [Ollama](https://ollama.com/) endpoint, API keys).  
-- MQTT broker settings (if different from defaults).  
+- `control/.env` – [Azure Speech](https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech) key and region for text-to-speech.  
+- `interaction/.env` – [Google Cloud](https://cloud.google.com/) service-account path and project, Serper key, optional LangSmith and OpenAI keys.  
+
+LLM profiles and the agent-to-profile mapping live in `interaction/config.yaml`; MQTT hosts and ports are in each layer's `config.yaml`.
 
 ### Agent Toggles
 
-Control which agents are active via environment variables:
+`graph.py` reads two environment variables at import time and skips the corresponding nodes when they are `0`:
 
-- `NADINE_ENABLE_VISION_AGENT` – enable/disable vision agent.  
-- `NADINE_ENABLE_MEMORY_AGENTS` – enable/disable memory agents.  
+- `NADINE_ENABLE_VISION_AGENT` – vision agent.  
+- `NADINE_ENABLE_MEMORY_AGENTS` – memory retrieval and update agents.  
 
-These are read by `graph.py` to skip certain agents when running on resource-constrained systems.
+Both default to `1` when the interaction layer is started manually. `start_nadine.sh` sets both to `0`; `start_nadine_chatmode.sh` sets both to `1` (see Usage).
 
 ---
 
@@ -29,25 +30,22 @@ These are read by `graph.py` to skip certain agents when running on resource-con
 
 The system uses MQTT for inter-component communication.
 
-**Perception -> Interaction**
+| Topic | Direction | Purpose |
+|---|---|---|
+| `nadine/graph/user_detected` | Perception → Interaction | Recognized user (name, id, confidence); also sent with empty fields after 5 s without a face. |
+| `nadine/graph/face_stored` | Perception → Interaction | Confirmation that a new face image was stored. |
+| `nadine/memory/scene_stored` | Perception → (unused) | A memorable scene was stored; published but no layer subscribes to it. |
+| `nadine/agent/control/look_at` | Perception → Control | 3D position of the tracked face for gaze. |
+| `nadine/face_recognition/user_info` | Interaction → Perception | User name and id to attach to the tracked face. |
+| `nadine/perception/capture_current_view` | Interaction → Perception | Request the current camera frame for the vision agent. |
+| `nadine/affect/state` | Interaction → Perception | Robot emotion label, arousal, and intensity after each appraisal; drives the memorability decision. |
+| `nadine/agent/control/speak` | Interaction → Control | Text to synthesize and speak. |
+| `nadine/agent/control/animation` | Interaction → Control | Animation name to play. |
+| `nadine/agent/control/look_at_target` | Interaction → Control | Named gaze posture from the UI (interviewer, Zoom, default). |
+| `nadine/agent/feedback/start_speak` | Control → Interaction | Speech synthesis started. |
+| `nadine/agent/feedback/end_speak` | Control → Interaction | Speech finished; the microphone is re-enabled. |
 
-- `nadine/graph/user_detected` – user recognition events.  
-- `nadine/graph/face_stored` – face storage confirmations.  
-
-**Interaction -> Control**
-
-- `nadine/agent/control/speak` – text-to-speech requests.  
-- `nadine/agent/control/look_at` – gaze (3D position) control commands.  
-- `nadine/agent/control/animation` – animation requests.  
-
-**Perception -> Control**
-
-- `nadine/agent/control/look_at` – 3D position for gaze.  
-
-**Interaction -> Perception**
-
-- `nadine/face_recognition/user_info` – user information for face storage.  
-- `nadine/perception/capture_current_view` – request the current camera view.  
+Control subscribes to the whole `nadine/agent/control/#` tree.
 
 For topic-by-topic payload details, see the individual Perception, Interaction, and Control layer docs.
 
@@ -96,13 +94,13 @@ python context_summarizer.py
 
 ### Extending the Knowledge Base
 
-- Add documents to `interaction/db/knowledge/rag_files/`.  
-- They will be indexed automatically by the knowledge RAG pipeline on first use.  
+- Add text documents to `interaction/db/knowledge/rag_files/` (create the folder if it does not exist).  
+- On the next start the knowledge RAG agent embeds them with the `nomic-embed-text` Ollama model and stores the index in `interaction/db/knowledge/chroma/`; delete that folder to force a rebuild.  
 
 ### Custom Animations (Control Layer)
 
 - Add XML animation files to `control/XMLAnimations/` following existing examples.  
-- Map them from logical names in `AgentControlHandler` or in higher-level interaction logic.  
+- Animations are addressed by the `<animation_name>` value inside the XML, not the filename; publish that name on `nadine/agent/control/animation` or reference it from `interaction/nadine/common/mqtt_comm.py`.  
 
 ---
 
@@ -148,7 +146,7 @@ python context_summarizer.py
 
 ### Prompt Optimization
 
-All agent prompts have been optimized for small LLMs (e.g., `granite4:350m`, `qwen2.5:1.5b-instruct`) to improve:
+All agent prompts are written for small LLMs (Qwen2.5-1.5B and its fine-tuned variants) to improve:
 - **Speed**: Shorter, more directive prompts reduce latency.
 - **Accuracy**: Explicit rules and examples guide the LLM to correct outputs.
 - **JSON Output**: Prompts explicitly require JSON format with examples.

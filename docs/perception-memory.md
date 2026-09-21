@@ -1,88 +1,108 @@
 # Perception Layer – Selective Memory
 
-This page focuses on the **Selective Memory Module** (`selective_memory.py`), which decides which visual scenes are memorable enough to store for each user.
+This page focuses on the **selective memory module** (`selective_memory.py`), which decides which visual scenes are memorable enough to store for each user.
 
 ---
 
 ## Purpose
 
-For every recognized user, the system occasionally evaluates the current visual scene and computes a **memorability score** based on:
+For every recognized user, the system periodically evaluates the current visual scene and decides whether to keep it. A kept scene is stored as image + CLIP embedding + metadata in the user's memory folder, together with a short natural-language description, for later retrieval by the interaction layer.
 
-- How emotionally salient the scene is  
-- How novel the scene is compared to past scenes for that user  
+Two storage policies are implemented and selected with `selective_memory.policy` in `perception/config.yaml`:
 
-If the memorability score is high enough, the scene is stored (image + embedding + metadata) in the user’s memory folder for later use by the interaction layer.
-
----
-
-## Components
-
-`SelectiveMemoryModule` combines three main pieces:
-
-- **Emotion analysis (configurable: OpenFace / DeepFace / Ensemble)**
-  - Supports three modes via `emotion_detector` in `perception/config.yaml`:
-    - `"openface"` – Uses [OpenFace 3.0](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0) (`MultitaskPredictor` + `FaceDetector`).
-    - `"deepface"` – Uses [DeepFace](https://github.com/serengil/deepface) (generally better at detecting 'happy').
-    - `"ensemble"` (default) – Combines both: averages probability distributions from OpenFace and DeepFace.
-  - Infers probabilities over: `['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']`.
-  - A configurable `happy_boost_factor` (default 1.2) can boost 'happy' probabilities in OpenFace/ensemble mode to compensate for OpenFace's tendency to underweight happiness.
-
-- **Scene embedding (CLIP)**
-  - Uses `openai/clip-vit-large-patch14` to embed the entire RGB frame into a high‑dimensional vector.
-  - Embeddings are \(L_2\)-normalized for cosine similarity comparisons.
-
-- **Scene description (optional VLM)**
-  - Optionally uses `moondream2` to generate a short textual description for each stored scene.
-  - If the model is unavailable, description generation is skipped gracefully.
-
-All models are loaded once at initialization and run on the best available device (CUDA/MPS/CPU).
+- **`pad_arousal`** (default) – the decision comes from Nadine's own affective state, as appraised by the interaction layer during the conversation.
+- **`vision`** (fallback) – the decision is computed from the user's facial emotion and the novelty of the scene.
 
 ---
 
-## Emotion & Novelty to Memorability
+## Storage Policies
 
-### Emotion salience
+### `pad_arousal` (default) – `PADArousalMemoryModule`
 
-Given emotion probabilities \(p_e\) and thresholds \(t_e\) per emotion, salience is computed as:
+The interaction layer publishes `nadine/affect/state` after every affective appraisal with Nadine's current emotion `label`, PAD `arousal`, and `intensity`. Perception keeps the latest values and uses them when the memorability check runs.
+
+**Memorability**
+
+\[
+\text{memorability} = \text{base}(\text{label}) \times \text{intensity}
+\]
+
+where `base` is the `MEMORABILITY_AROUSAL_BASE` table in `selective_memory.py`. All emotions have a positive base value, so the score measures activation rather than valence:
+
+| Emotion label | Base |
+|---|---|
+| anger / angry | 0.85 |
+| fear / fearful | 0.80 |
+| surprise / surprised | 0.75 |
+| joy / happy | 0.60 |
+| disgust / disgusted | 0.55 |
+| sadness / sad | 0.40 |
+| goodbye | 0.30 |
+| neutral | 0.10 |
+| any other label | 0.10 |
+
+**Decision** (`should_store`)
+
+- If the user has no stored scenes yet (first meeting), the scene is always stored.
+- Otherwise the scene is stored when `memorability ≥ arousal_threshold`.
+- `main.py` additionally enforces a 15 s cooldown per user between stores.
+
+**Parameters**
+
+- `arousal_threshold` – config.yaml: 0.25 (lowered from 0.40 to capture more everyday moments); code fallback: 0.3.
+- `memorability_check_interval` – config.yaml: 3.0 s; code fallback: 2.0 s.
+
+This module loads only CLIP (retrieval embeddings) and Moondream2 (scene descriptions); OpenFace is not needed.
+
+### `vision` (fallback) – `SelectiveMemoryModule`
+
+Kept for comparison. It combines facial emotion salience with scene novelty.
+
+**Emotion analysis**
+
+- [OpenFace 3.0](https://github.com/CMU-MultiComp-Lab/OpenFace-3.0) (`MultitaskPredictor` + `FaceDetector`) with the weights in `perception/weights/`, run on a padded face crop.
+- Produces probabilities over `['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']`.
+- `happy_boost_factor` multiplies the `happy` probability and rescales the others, as a stopgap for OpenFace's under-detection of happiness.
+
+**Emotion salience**
+
+Given a probability \(p_e\) and a per-emotion threshold \(t_e\):
 
 \[
 \text{salience}(p_e, t_e) = \max\left(0, \frac{p_e - t_e}{1 - t_e}\right)
 \]
 
-- Emotion thresholds are tuned per emotion (e.g., lower thresholds for “happy/sad”, higher for “surprise/disgust”).  
-- The final **emotion salience** is the maximum salience value across active emotions:
-  - Active set: `['happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']`.
+The per-emotion thresholds are code defaults in `SelectiveMemoryModule` (not read from config): `neutral` 1.0, `happy` 0.5, `sad` 0.7, `surprise` 0.7, `anger` 0.7, `contempt` 0.7, `fear` 0.8, `disgust` 0.8. The final emotion salience is the maximum over the active set `['happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']`; the emotion that produced it is the dominant emotion.
 
-### Novelty
+**Novelty**
 
-Novelty is based on **distance from past scenes** stored for the same user:
+1. Compute the CLIP embedding of the current frame.
+2. Load all previous scene embeddings for the user from `interaction/db/memory/user_profiles/<user_id>/memorable_scenes/embeddings/`.
+3. Novelty score = minimum over stored scenes of \(1 - \text{cosine similarity}\); higher means more novel.
+4. Novelty salience uses the same threshold mapping with `novelty_threshold`.
 
-1. Compute CLIP embedding for the current frame.  
-2. Load all previous embeddings for that user from:
-   - `interaction/db/memory/user_profiles/<user_id>/memorable_scenes/embeddings/`
-3. Compute cosine similarity between the current embedding and all stored embeddings:
-   - Distance = \(1 - \text{similarity}\)
-4. Define **novelty score** as the minimum distance (closest match); higher = more novel.
-
-Novelty salience is then computed using the same threshold-based mapping as emotions:
+**Combined memorability**
 
 \[
-\text{novelty\_salience} = \max\left(0, \frac{\text{novelty\_score} - t_{\text{novelty}}}{1 - t_{\text{novelty}}}\right)
+\text{memorability} = w_{\text{emotion}} \cdot \text{emotion\_salience} + w_{\text{novelty}} \cdot \text{novelty\_salience}
 \]
 
-Where \(t_{\text{novelty}}\) is `novelty_threshold` from config.
+The scene is stored when `memorability ≥ memorability_threshold`, subject to the same 15 s cooldown.
 
-### Combined memorability
+**Parameters** (config.yaml value, code fallback in parentheses)
 
-Memorability is a weighted sum of emotion and novelty salience:
+- `w_emotion` 0.8 (0.5), `w_novelty` 0.2 (0.5)
+- `novelty_threshold` 0.45 (0.3)
+- `memorability_threshold` 0.4 (0.5)
+- `happy_boost_factor` 1.2 (1.0)
 
-\[
-\text{memorability} = w_{\text{emotion}} \cdot \text{emotion\_salience}
-                     + w_{\text{novelty}} \cdot \text{novelty\_salience}
-\]
+---
 
-- Weights `w_emotion` and `w_novelty` are configured in `perception/config.yaml`.  
-- If `memorability` ≥ `memorability_threshold`, the scene is stored.
+## Shared Components
+
+- **Scene embedding (CLIP)** – `openai/clip-vit-base-patch32` embeds the full RGB frame; embeddings are \(L_2\)-normalized for cosine comparisons. The interaction layer uses the same model for visual-memory retrieval.
+- **Scene description (VLM)** – `vikhyatk/moondream2`, pinned to revision `2025-06-21`, generates a one-sentence caption for each stored scene. If the model fails to load, storage proceeds without a description.
+- All models are loaded once at initialization on the best available device (`cuda:0`, then MPS, then CPU). Ollama fills GPU 1 first, so perception models take GPU 0.
 
 ---
 
@@ -103,31 +123,31 @@ Within that directory:
   - Filename: `scene_YYYYMMDD_HHMMSS_embedding.npy`
 
 - **`metadata/`**  
-  - JSON files with metadata, including:
-    - `scene_id`, `timestamp`, `image_path`
-    - `memorability`, `emotion_salience`, `novelty_salience`
-    - Full `emotion_probs`
-    - Optional natural language `description`
-  - Filename: `scene_YYYYMMDD_HHMMSS_metadata.json`
+  - JSON files, filename `scene_YYYYMMDD_HHMMSS_metadata.json`. Common fields: `scene_id`, `timestamp`, `image_path`, `memorability`, `description`.
+  - Under `pad_arousal`: `emotion_label`, `intensity`, and a human-readable `reason` string.
+  - Under `vision`: `emotion_salience`, `novelty_salience`, and the full `emotion_probs` distribution.
 
-This structure lets downstream components (e.g., memory/RAG agents) quickly discover and use memorable scenes.
+This structure lets the interaction layer's memory retrieval agent discover and rank scenes for a user.
 
 ---
 
 ## Configuration Hooks
 
-You can tune selective memory behavior via `perception/config.yaml`:
+Tune selective memory via the `selective_memory` block of `perception/config.yaml`:
 
-- `w_emotion`, `w_novelty` – balance between emotional and novelty cues (default: 0.8, 0.2).
-- `novelty_threshold` – how easily novelty becomes salient (default: 0.45).
-- `memorability_threshold` – how “picky” the system is about storing scenes (default: 0.4).
-- `memorability_check_interval` – how often memorability is evaluated per user (default: 3.0s).
-- `emotion_detector` – `”openface”`, `”deepface”`, or `”ensemble”` (default: `”ensemble”`).
-- `happy_boost_factor` – multiplier for 'happy' probabilities in OpenFace/ensemble mode (default: 1.2).
+- `policy` – `"pad_arousal"` (default) or `"vision"`.
+- `arousal_threshold` – `pad_arousal` store threshold (0.25).
+- `w_emotion`, `w_novelty`, `novelty_threshold`, `memorability_threshold`, `happy_boost_factor` – `vision` policy parameters.
+- `memorability_check_interval` – seconds between checks per user (3.0).
 
-For finer control (code changes), you can adjust:
+Constants that require a code change:
 
-- Per‑emotion thresholds in `SelectiveMemoryModule.emotion_thresholds`.  
-- The way novelty is normalized or aggregated if you want more sophisticated behavior.
+- `SCENE_STORE_COOLDOWN` (15 s) and `FACE_STORE_COOLDOWN` (10 s) in `main.py`.
+- `MEMORABILITY_AROUSAL_BASE` and the per-emotion thresholds in `selective_memory.py`.
 
-
+!!! note "Differences in the Hybrid Cloud version (nadine_phd)"
+    - The default policy is renamed `intensity` (`IntensityMemoryModule`, `intensity_threshold: 0.5`); `pad_arousal` is accepted as a legacy alias.
+    - Storage is event-driven by default: one evaluation per dialogue turn when a new `nadine/affect/state` arrives (`NADINE_STORAGE_TRIGGER=event`), instead of the frame-loop interval and cooldown (`interval`).
+    - The affect message also carries the user's expressed emotion (`user_label`, `user_intensity`), the user's utterance (`user_message`, stamped onto the scene so it can be retrieved by what was said), and a `suppress_storage` flag for recall turns. `NADINE_STORAGE_EMOTION_SOURCE` selects `user` (default) or `robot` as the driving signal.
+    - `store_first_meeting_scene()` stores a dedicated `scene_type: "first_meeting"` scene on first face registration; other scenes are `"moment"`.
+    - `NADINE_ENABLE_VISUAL_MEMORY=0` disables the module entirely (A/B study condition), and `fer_sampler.py` logs continuous facial-emotion samples for offline analysis.

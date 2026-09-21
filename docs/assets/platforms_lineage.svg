@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 486" role="img" aria-label="Lineage of the Nadine platforms" class="fig" style="overflow:visible">
+
+<style>
+  .fig { font-family: var(--md-text-font-family, Roboto, Helvetica, Arial, sans-serif); color: var(--md-default-fg-color, #222); }
+  .fig text { fill: currentColor; }
+  .fig .t  { font-size: 14px; }
+  .fig .b  { font-size: 14px; font-weight: 700; }
+  .fig .s  { font-size: 14px; fill: var(--md-default-fg-color--light, #555); }
+  .fig .lane { font-size: 14px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .fig .edge { fill: none; stroke: var(--md-default-fg-color--light, #777); stroke-width: 1.5; }
+  .fig .lbl { font-size: 14px; font-style: italic; fill: var(--md-default-fg-color--light, #555); }
+  .fig .band { fill: rgba(120,144,156,0.08); stroke: rgba(120,144,156,0.45); stroke-width: 1; }
+  .fig .band-ma { fill: rgba(63,81,181,0.06); stroke: rgba(63,81,181,0.45); stroke-width: 1; }
+  .fig .band-ra { fill: rgba(0,137,123,0.06); stroke: rgba(0,137,123,0.45); stroke-width: 1; }
+  .fig .n-sh { fill: var(--md-default-bg-color, #fff); stroke: #78909c; stroke-width: 1.4; }
+  .fig .n-ma { fill: var(--md-default-bg-color, #fff); stroke: #3f51b5; stroke-width: 1.4; }
+  .fig .n-ra { fill: var(--md-default-bg-color, #fff); stroke: #00897b; stroke-width: 1.4; }
+  .fig .n-ma-hi { fill: rgba(63,81,181,0.14); stroke: #3f51b5; stroke-width: 2.6; }
+  .fig .n-ra-hi { fill: rgba(0,137,123,0.14); stroke: #00897b; stroke-width: 2.6; }
+  .fig .ma { fill: #3f51b5; }
+  .fig .ra { fill: #00897b; }
+</style>
+
+
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--md-default-fg-color--light, #777)"/>
+  </marker>
+</defs>
+
+<rect x="30" y="16" width="940" height="48" rx="8" class="n-sh"/>
+<text x="500.0" y="45.0" text-anchor="middle" class="b">MQTT three-layer stack  ·  Perception / Interaction / Control  ·  2025</text>
+<rect x="26" y="104" width="948" height="144" rx="8" class="band-ma"/>
+<text x="42" y="126" class="lane ma">Multi-agent family</text>
+<rect x="34" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="107.0" y="171.0" text-anchor="middle" class="t">LangGraph</text>
+<text x="107.0" y="189.0" text-anchor="middle" class="t">multi-agent graph</text>
+<text x="107.0" y="207.0" text-anchor="middle" class="s">2025</text>
+<rect x="192" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="265.0" y="171.0" text-anchor="middle" class="t">Per-agent LoRA</text>
+<text x="265.0" y="189.0" text-anchor="middle" class="t">models via Ollama</text>
+<text x="265.0" y="207.0" text-anchor="middle" class="s">Mar 2026</text>
+<path d="M180,184.0 L192,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="350" y="142" width="146" height="84" rx="6" class="n-ma-hi"/>
+<text x="423.0" y="171.0" text-anchor="middle" class="b">Multi-Agent,</text>
+<text x="423.0" y="189.0" text-anchor="middle" class="b">Local</text>
+<text x="423.0" y="207.0" text-anchor="middle" class="s">Apr 2026</text>
+<path d="M338,184.0 L350,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="508" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="581.0" y="171.0" text-anchor="middle" class="t">Visual memory</text>
+<text x="581.0" y="189.0" text-anchor="middle" class="t">recall</text>
+<text x="581.0" y="207.0" text-anchor="middle" class="s">Jun 2026</text>
+<path d="M496,184.0 L508,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="666" y="142" width="146" height="84" rx="6" class="n-ma-hi"/>
+<text x="739.0" y="171.0" text-anchor="middle" class="b">Multi-Agent,</text>
+<text x="739.0" y="189.0" text-anchor="middle" class="b">Hybrid Cloud</text>
+<text x="739.0" y="207.0" text-anchor="middle" class="s">forked 23 Jun 2026</text>
+<path d="M654,184.0 L666,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="824" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="897.0" y="162.0" text-anchor="middle" class="t">Merged pipeline,</text>
+<text x="897.0" y="180.0" text-anchor="middle" class="t">cloud routing,</text>
+<text x="897.0" y="198.0" text-anchor="middle" class="t">scene memory</text>
+<text x="897.0" y="216.0" text-anchor="middle" class="s">Jun – Jul 2026</text>
+<path d="M812,184.0 L824,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="26" y="278" width="948" height="144" rx="8" class="band-ra"/>
+<text x="42" y="300" class="lane ra">ReAct family</text>
+<rect x="34" y="316" width="146" height="84" rx="6" class="n-ra"/>
+<text x="107.0" y="345.0" text-anchor="middle" class="t">SoR-ReAct v2</text>
+<text x="107.0" y="363.0" text-anchor="middle" class="t">demo deployments</text>
+<text x="107.0" y="381.0" text-anchor="middle" class="s">2025</text>
+<rect x="192" y="316" width="146" height="84" rx="6" class="n-ra-hi"/>
+<text x="265.0" y="345.0" text-anchor="middle" class="b">ReAct, Cloud</text>
+<text x="265.0" y="363.0" text-anchor="middle" class="t">recording build</text>
+<text x="265.0" y="381.0" text-anchor="middle" class="s">Jun 2026</text>
+<path d="M180,358.0 L192,358.0" class="edge" marker-end="url(#arr)"/>
+<rect x="350" y="316" width="146" height="84" rx="6" class="n-ra"/>
+<text x="423.0" y="345.0" text-anchor="middle" class="t">Singing pipeline,</text>
+<text x="423.0" y="363.0" text-anchor="middle" class="t">song library</text>
+<text x="423.0" y="381.0" text-anchor="middle" class="s">Jul 2026</text>
+<path d="M338,358.0 L350,358.0" class="edge" marker-end="url(#arr)"/>
+<rect x="508" y="316" width="146" height="84" rx="6" class="n-ra"/>
+<text x="581.0" y="345.0" text-anchor="middle" class="t">Barge-in and</text>
+<text x="581.0" y="363.0" text-anchor="middle" class="t">lip-sync recovery</text>
+<text x="581.0" y="381.0" text-anchor="middle" class="s">Jul 2026</text>
+<path d="M496,358.0 L508,358.0" class="edge" marker-end="url(#arr)"/>
+<path d="M107.0,64 L107.0,142" class="edge" marker-end="url(#arr)"/>
+<path d="M30,40 L16,40 L16,358.0 L34,358.0" class="edge" marker-end="url(#arr)"/>
+<path d="M26,452 L974,452" class="edge" marker-end="url(#arr)"/>
+<text x="26" y="470" text-anchor="start" class="lbl">earlier</text>
+<text x="974" y="470" text-anchor="end" class="lbl">later</text>
+<text x="500.0" y="470" text-anchor="middle" class="lbl">Highlighted boxes are the three maintained versions. The two multi-agent versions share one code base.</text>
+</svg>

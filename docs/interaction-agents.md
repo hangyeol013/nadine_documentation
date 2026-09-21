@@ -12,21 +12,23 @@ Key components:
 
 - **CustomState** (`state_schema.py`):
   - Holds:
-    - `messages` (chat history)
-    - `user_info` (ID, name, profile)
-    - `conversation_memory`, `episode_memory`
-    - `visual_memory`
+    - `messages` (chat history), `intent`, `language`
+    - `user_info` (ID, name, profile), `name_confirmation`, `name_checked`
+    - `affect` (personality, emotion, mood, params)
+    - `conversation_memory`, `episode_memory`, `visual_memory`
     - `search_results`, `vision_results`, `knowledge_retrieval`
-    - `intent`, `affect`, `plan_steps`, `language`
-    - `name_confirmation`, `name_checked`
+    - `assistant_note` (memory update status text)
+    - `plan_steps` (orchestrator plan)
+    - `final_message` (response text)
+    - `first_greeting_done`, `greeted_user_id` (greeting bookkeeping)
 
-- **Top-level nodes**:
-  - `intention_classifier`
-  - `memory_update_agent` / `memory_retrieve_agent` (ChromaDB‑backed textual memory + CLIP‑backed visual memory)
-  - `affective_appraisal` / `affective_update`
-  - `orchestrator`
-  - Tool agents: `search_agent`, `vision_agent`, `knowledge_rag_agent`
-  - `response_agent`
+- **Top-level nodes** (node name, followed by the function that implements it):
+  - `intention_classifier` (`classify_intent`)
+  - `memory_update_agent` (`update_memory`) and `memory_retrieve_agent` (`retrieve_memory`): ChromaDB-backed textual memory plus CLIP-backed visual memory
+  - `affective_appraisal` (`affective_appraisal`) and `affective_update` (`affective_update`)
+  - `orchestrator` (`orchestrate`)
+  - Tool agents: `search_agent` (`get_search_results`), `vision_agent` (`get_vision_results`), `knowledge_rag_agent` (`get_knowledge_retrieval`)
+  - `response_agent` (`get_final_response`)
 
 - **Execution entry**:
   - `build_agent_graph()` returns a compiled workflow used by `DialogueManager`.
@@ -40,7 +42,7 @@ Key components:
 Responsibilities:
 
 - Reads the latest user message from `state["messages"][-1].content`.  
-- Uses a **fine-tuned** LLM (via `load_agent_llm("intention_classifier")`, served by vLLM) to classify the message into one of:
+- Uses a **fine-tuned** LLM (via `load_agent_llm("intention_classifier")`, the `nadine-intent_classifier` Ollama model) to classify the message into one of:
   - `first_greeting`
   - `update_user_info`
   - `end_conversation`
@@ -49,8 +51,17 @@ Responsibilities:
 
 Special behavior:
 
-- If `language_change` is detected, tries to infer the requested language from the message content and updates `state["language"]` accordingly, then collapses intent back to `continue_conversation`.
+- If `language_change` is detected, tries to infer the requested language from the message content, updates `state["language"]` and the persisted runtime language, then collapses intent back to `continue_conversation`.
 - If `state["name_confirmation"]` contains `similar_names` and `name_checked` is `False`, forces `intent = "update_user_info"` so memory update logic can resolve the name.
+
+### Post-classification overrides
+
+After the model's label is validated, deterministic rules correct the cases the classifier gets wrong most often:
+
+- `first_greeting` becomes `update_user_info` when the message contains a name introduction ("I'm Alex", "my name is", "call me"), so the memory update agent can extract the name. If no real name is found the agent stores nothing, so false positives are harmless.
+- `update_user_info` becomes `continue_conversation` when the message is a question about Nadine ("tell me about yourself", "who are you").
+- `end_conversation` becomes `continue_conversation` unless the message contains an explicit farewell word ("bye", "see you", "have to go now"), so future plans such as "I'm going to Paris" do not end the conversation.
+- `first_greeting` is only accepted once per user: `first_greeting_done` and `greeted_user_id` are set the first time, and a repeated greeting from the same user is downgraded to `continue_conversation`. When no user ID is known, greetings are never suppressed.
 
 Graph wiring:
 
@@ -68,15 +79,15 @@ Graph wiring:
 **Function**: `retrieve_memory(state: CustomState) -> CustomState`
 
 - If memory agents are disabled (`NADINE_ENABLE_MEMORY_AGENTS=0`), logs and returns immediately.  
+- Retrieval only runs for a known user: if `user_info.user_name` is missing or `"Unknown"`, the node returns the state unchanged.  
 - Otherwise:
   - Calls `get_user_specific_memory(state)` from `memory_retrieval_agent.py`:
     - Loads user profile from disk (`user_info.json`).
-    - Queries Chroma DB for:
+    - Queries ChromaDB for:
       - Best matching **episode** memory (events).
       - Best matching **conversation** memory (past exchanges).
     - Queries **visual memory** (memorable scenes) using CLIP similarity.
-  - If name confirmation is needed, places details into `state["name_confirmation"]`.  
-  - Otherwise, updates:
+  - Updates:
     - `state["user_info"]`
     - `state["conversation_memory"]`
     - `state["episode_memory"]`
@@ -102,7 +113,7 @@ Behaviors:
 - Calls `memory_update_agent(mem_state)` to:
   - Extract user profile fields from conversation (name, company, location, hobbies, interests).
   - Save/update `user_info.json` and `user_ids.json`.
-  - Optionally summarize and save episodic memory to Chroma.
+  - On `end_conversation`, summarize and save episodic memory to ChromaDB.
 - Merges results back into `state`:
   - `user_info`, `name_checked`, `name_confirmation`, `episodic_memory` flags, etc.
 - If `name_checked` and `user_info` are valid:
@@ -128,7 +139,7 @@ The name confirmation logic is split between the **memory update agent** and the
 1. **User shares their name** (e.g., “My name is Alex”):  
    - The intent classifier sets `intent = "update_user_info"`.  
    - `memory_update_agent` extracts `user_name="Alex"` and compares it against names in `user_ids.json` using fuzzy matching.
-2. **Three possible outcomes** from `save_user_info`:
+2. **Four possible outcomes** from `save_user_info`:
    - **Strong match** (score ≥ `HIGH_SIMILARITY_THRESHOLD`):  
      - Immediately link to the existing profile for that user ID.  
      - Return updated `user_info` and `name_checked=True` with no `name_confirmation`.
@@ -138,6 +149,8 @@ The name confirmation logic is split between the **memory update agent** and the
      - The graph routes to `response_agent`, which asks the user to confirm the **top** suggested name (e.g., “Is your name Alice?”).
    - **No match** (below `LOW_SIMILARITY_THRESHOLD`):  
      - Proceed as a new user; create/update a profile with `user_name` and mark `name_checked=True`.
+   - **Identity conflict**: face recognition already loaded a known user (say "Alex") but the person states a different, unmatched name ("Han").  
+     - A new user ID is generated for the stated name instead of overwriting Alex's profile.
 3. **User answers the confirmation question**:  
    - On the next turn, `DialogueManager.name_confirmation(user_input)` inspects `state["name_confirmation"]` and the user’s reply:
      - If the user says “yes / correct / that’s me”, the top candidate user ID is accepted and the full stored profile is loaded.  
@@ -169,6 +182,7 @@ This loop ensures that:
   - Take the latest user message and contextual info (e.g. retrieved episode memories).  
   - Produce a new emotion label/intensity.
 - Calls `update_affect_state(...)` to update PAD mood/emotion state.
+- Publishes the new emotion to `nadine/affect/state` as `{"label", "arousal", "intensity"}`; the perception layer's selective memory uses it to decide whether the current scene is worth storing.
 
 Graph wiring:
 
@@ -201,11 +215,10 @@ Graph wiring:
 - **Purpose**: Summarizes conversation history to provide context to the orchestrator without passing the full chat history (which can cause invalid JSON output with long conversations).
 - **Location**: `nadine/agents/context_summarizer.py`
 - **Behavior**:
-  - Takes chat history and the latest user message.
-  - Generates a concise summary/contextualized question that includes relevant context from the conversation.
-  - Returns a standalone question that can be understood without the full history.
-  - If no history exists or the question is standalone, returns the original question unchanged.
-- **Usage**: Called automatically by the orchestrator when chat history exists.
+  - Receives only the chat history (all messages except the latest one).
+  - Asks the `contextualizer` model (`ft_episodic_memory`) to summarize the conversation in one sentence.
+  - Returns "No context found" when there is nothing to summarize.
+- **Usage**: Called by the orchestrator when chat history exists; the sentence is passed to the orchestration model as `context` alongside the latest user message.
 
 ### Orchestrator (`orchestrate`)
 
@@ -213,6 +226,7 @@ Graph wiring:
 
 - Ensures `state["plan_steps"]` is a list.  
 - If a plan already exists, returns immediately.  
+- **Fast path**: for `end_conversation` and `first_greeting` it leaves the plan empty, so the graph goes straight to `response_agent` without calling the contextualizer or the orchestration model.  
 - Otherwise:
   - **Context Generation**: If chat history exists, calls `contextualizer()` to generate conversation context (prevents invalid JSON from long histories).
   - Builds an `orchestration_agent()` chain from `orchestration_agent.py`.  
@@ -232,59 +246,25 @@ Graph wiring:
   - If `plan_steps` empty → `response_agent`.  
   - Else → first planned agent, e.g. `search_agent`, `vision_agent`, or `knowledge_rag_agent`.
 
-### Search Agent (`get_search_results`)
+### Tool-agent contract
 
-**Function**: `get_search_results(state: CustomState) -> CustomState`
+The three tool agents share one contract. Each is entered from `orchestrator` when it is the first step of the plan, takes its query from `state["plan_steps"][0]["message"]`, writes its result to its own state field, and pops the executed step from `plan_steps`. The conditional edge after every tool agent is the same: if `plan_steps` is now empty, go to `response_agent`; otherwise go back to `orchestrator`, which dispatches the next planned step without re-planning.
 
-- Uses `search_agent()` to run a question-answering pipeline (web or external search).  
-- Takes `state["plan_steps"][0]["message"]` as the query.  
-- Stores the result in `state["search_results"]`.  
-- Pops the executed step from `plan_steps`.
+### Search Agent (`search_agent`, `get_search_results`)
 
-Graph wiring:
+- Uses `search_agent()` to run a question-answering pipeline (web search routed by `search_router`, answer summarized by `search_answer`).  
+- Result field: `state["search_results"]`.
 
-- From `orchestrator` → `search_agent`.  
-- Conditional edge:
-  - If `plan_steps` is now empty → `response_agent`.  
-  - Else → `orchestrator` (to schedule remaining steps).
+### Vision Agent (`vision_agent`, `get_vision_results`)
 
-### Vision Agent (`get_vision_results`)
+- If vision agents are disabled (`NADINE_ENABLE_VISION_AGENT=0`), sets `state["vision_results"]` to a fallback string and pops the step.  
+- Otherwise calls `vision_agent()` with the planned question.  
+- Result field: `state["vision_results"]`.
 
-**Function**: `get_vision_results(state: CustomState) -> CustomState`
+### Knowledge RAG Agent (`knowledge_rag_agent`, `get_knowledge_retrieval`)
 
-- If vision agents are disabled (`NADINE_ENABLE_VISION_AGENT=0`):
-  - Logs and sets `state["vision_results"]` to a fallback string.  
-- Otherwise:
-  - Calls `vision_agent()` with the user question from `plan_steps`.  
-  - Stores the result in `state["vision_results"]`.  
-- Pops the executed step from `plan_steps`.
-
-Graph wiring:
-
-- From `orchestrator` → `vision_agent`.  
-- Conditional edge:
-  - If `plan_steps` empty → `response_agent`.  
-  - Else → `orchestrator`.
-
-### Knowledge RAG Agent (`get_knowledge_retrieval`)
-
-**Function**: `get_knowledge_retrieval(state: CustomState) -> CustomState`
-
-- Calls `get_related_knowledge(state)` from `knowledge_RAG_agent.py`.  
-- This function:
-  - Builds/loads a Chroma vectorstore from `interaction/db/knowledge/rag_files/`.  
-  - Uses `OllamaEmbeddings` to embed knowledge sections.  
-  - Retrieves top‑k relevant chunks for the current question.  
-  - Optionally displays related visuals in the UI.  
-- Stores the retrieved text in `state["knowledge_retrieval"]`.  
-- Pops the executed step from `plan_steps`.
-
-Graph wiring:
-
-- From `orchestrator` → `knowledge_rag_agent`.  
-- Conditional edge:
-  - If `plan_steps` empty → `response_agent`.  
-  - Else → `orchestrator`.
+- Calls `get_related_knowledge(state)` from `knowledge_RAG_agent.py`, which builds or loads a ChromaDB vectorstore from `interaction/db/knowledge/rag_files/`, embeds sections with `OllamaEmbeddings`, retrieves the most relevant chunk for the current question, and optionally displays a related visual in the UI.  
+- Result field: `state["knowledge_retrieval"]`.
 
 ---
 
@@ -302,8 +282,8 @@ Wrapper around `response_agent()` from `response_agent.py`:
       - Search, vision, knowledge results.
       - Current time/date.
       - Affective state (emotion + mood text).
-      - Optional visual memory image (encoded as a data URL).
-    - Sends a system prompt describing Nadine’s persona and language rules.
+      - Optional visual memory: the stored scene image (encoded as a data URL) plus a "VISUAL MEMORY" text block carrying the scene description generated by perception.
+    - Sends a system prompt describing Nadine’s persona and language rules, including a recall rule: when the user asks whether Nadine remembers them or a previous meeting, the model weaves specific visual details from the attached scene into the reply as a memory of its own, without saying that it sees an image.
     - Invokes the configured `response_llm`.
     - Returns the final message text.
   - Writes the response into `state["final_message"]`.  
@@ -354,7 +334,8 @@ For each user input, the graph runs roughly:
 2. `memory_update_agent` (for profile updates) or `memory_retrieve_agent` (for context recall).  
 3. `affective_appraisal` → update emotion/mood.  
 4. `orchestrator` → decide which sub-agents (if any) to call:
-   - **Contextualizer** (if history exists) → generates conversation context.
+   - Fast path: `first_greeting` and `end_conversation` go straight to `response_agent`.
+   - **Contextualizer** (if history exists) → one-sentence summary of the history.
    - Orchestrator uses context + user message to route requests.
 5. `search_agent` / `vision_agent` / `knowledge_rag_agent` (optional).  
 6. `response_agent` → final reply.  

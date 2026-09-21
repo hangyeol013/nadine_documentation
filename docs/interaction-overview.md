@@ -40,9 +40,9 @@ If you are new to the project, read this page first, then see the **Runtime & MQ
 Under `interaction/`:
 
 - **`config.yaml`**
-  - LLM profiles: Ollama (`small_llm`, `big_llm`, `response_llm`, `vision_llm`) and vLLM (`vllm_small`, `ft_*` fine-tuned adapters).
-  - Agent → LLM profile mapping (most agents use fine-tuned vLLM profiles).
-  - vLLM server URL.
+  - LLM profiles: generic Ollama models (`small_llm`, `big_llm`, `response_llm`, `vision_llm`), fine-tuned Ollama models (`ft_*`), and optional cloud profiles (`gpt4o_mini`, `gpt4o_mini_long`, unmapped by default).
+  - Agent → LLM profile mapping (most agents use the fine-tuned profiles).
+  - vLLM server URL, used only by profiles that set `backend: vllm` (none by default).
   - Visual-memory retrieval parameters.
 
 - **`run.sh`**
@@ -65,6 +65,7 @@ Under `interaction/`:
 - **`nadine/common/`**
   - `loggers.py` – logging utilities (`LoggersFactory`).
   - `language.py` – language enum and helpers.
+  - `language_config.py` – persisted runtime language (`get_current_language`, `set_current_language`, `coerce_language`); the default is French.
   - `translation.py`, `translation_llm.py` – text translation tools.
   - `mqtt_comm.py` – interaction-layer MQTT client and helpers.
 
@@ -72,7 +73,7 @@ Under `interaction/`:
   - `google_stt.py`, `stt.py` – [Google Cloud Speech-to-Text](https://cloud.google.com/speech-to-text) integration and microphone handling.
 
 - **`nadine/ui/`**
-  - `ui.py` – Qt/GUI window for monitoring interactions (user text, agent reply, status).
+  - `ui.py` – Tkinter window for monitoring interactions (user text, agent reply, status), a language selector, and a gaze-direction control that publishes look-at targets to the control layer.
 
 - **`nadine/agents/`**
   - Multi-agent graph and specialized agents (documented in **Agents & Graph** and **Memory & RAG** pages).
@@ -89,8 +90,9 @@ Normal (voice) mode:
    - Translates non-English input into English (if needed).
    - Calls `DialogueManager.processInput(text_en)`.
 3. **DialogueManager**:
+   - Syncs state with any detected face-recognition user (a user switch saves the outgoing user's episodic memory and resets history and state).
+   - Answers a few requests directly without the graph (jokes, "stop talking"); a handshake request triggers the handshake animation.
    - Appends the user message to chat history.
-   - Syncs state with any detected face-recognition user.
    - Runs the LangGraph multi-agent workflow:
      - Intent classification
      - Memory retrieval/update
@@ -103,7 +105,7 @@ Normal (voice) mode:
 4. UI is updated (user input + agent output).  
 5. **MQTTCommunication.speak** sends the English response (translated to target language if needed) over:
    - `nadine/agent/control/speak`
-6. After speaking finishes, STT is re-activated to listen for the next utterance.
+6. After speaking finishes, STT is re-activated to listen for the next utterance. If the intent was `end_conversation`, the language is reset to the default (French).
 
 In **chat mode**, steps are similar but:
 
@@ -117,40 +119,40 @@ In **chat mode**, steps are similar but:
 The interaction config binds agents to LLM profiles and tunes visual memory:
 
 - **`interaction.vllm`**
-  - `base_url` – URL of the vLLM server (default: `http://localhost:8000/v1`).
+  - `base_url` – URL of a vLLM server (default: `http://localhost:8000/v1`). Only used by profiles with `backend: vllm`; no profile sets it in this version, so all local models go through Ollama.
 
 - **`interaction.llm`**
-  - **Ollama profiles** (served by Ollama on GPU 1):
+  - **Generic Ollama profiles**:
     - `small_llm` – `qwen2.5:1.5b-instruct` (fallback for simple tasks).
     - `big_llm` – `mistral-small3.2:latest` (heavier reasoning).
     - `response_llm` – `mistral-small3.2:latest` (main conversation LLM, T=0.3).
     - `vision_llm` – `qwen2.5vl:3b` (vision agent).
-  - **vLLM profiles** (served by vLLM multi-LoRA server on GPU 0):
-    - `vllm_small` – base `Qwen2.5-1.5B-Instruct` via vLLM.
-    - `ft_intent_classifier` – fine-tuned LoRA adapter for intent classification.
-    - `ft_orchestration_agent` – fine-tuned LoRA adapter for orchestration.
-    - `ft_affective_appraisal` – fine-tuned LoRA adapter for emotion appraisal.
-    - `ft_memory_update` – fine-tuned LoRA adapter for memory extraction.
-    - `ft_episodic_memory` – fine-tuned LoRA adapter for episodic summarization.
-    - `ft_search_router` – fine-tuned LoRA adapter for search routing.
-    - `ft_response_agent` – fine-tuned LoRA adapter for response generation (not used in production; `response_llm` via Ollama is preferred).
+  - **Fine-tuned Ollama profiles** (Qwen2.5-1.5B LoRA adapters merged, exported to GGUF, and registered as `nadine-*` models; see Installation & Setup):
+    - `ft_intent_classifier` – `nadine-intent_classifier`, intent classification.
+    - `ft_orchestration_agent` – `nadine-orchestration_agent`, routing plan.
+    - `ft_affective_appraisal` – `nadine-affective_appraisal`, emotion appraisal.
+    - `ft_memory_update` – `nadine-memory_update`, memory extraction.
+    - `ft_episodic_memory` – `nadine-episodic_memory`, episodic summarization.
+    - `ft_search_router` – `nadine-search_router`, search routing (defined but not mapped to an agent by default).
+  - **Cloud profiles** (`backend: openai`): `gpt4o_mini`, `gpt4o_mini_long`. Defined for experiments; not mapped to any agent by default.
+  - A profile may also set `backend: vllm` to use a vLLM server at `interaction.vllm.base_url`; nothing uses this by default.
 
 - **`interaction.agents`**
-  - Maps logical agents to LLM profiles. Most agents now use **fine-tuned vLLM profiles** for lower latency:
+  - Maps logical agents to LLM profiles. Most agents use the **fine-tuned profiles**:
     - `intention_classifier` → `ft_intent_classifier`
     - `orchestration_agent` → `ft_orchestration_agent`
     - `affective_appraisal` → `ft_affective_appraisal`
     - `memory_update_agent` → `ft_memory_update`
     - `contextualizer` → `ft_episodic_memory`
-    - `search_router` → `vllm_small`
-    - `search_answer` → `vllm_small`
-    - `vision_router` → `vllm_small`
+    - `search_router` → `small_llm`
+    - `search_answer` → `small_llm`
+    - `vision_router` → `small_llm`
     - `vision_description` → `vision_llm` (Ollama)
     - `response_agent` → `response_llm` (Ollama, Mistral Small 3.2)
 
 - **`interaction.visual_memory`**
-  - `similarity_threshold` – CLIP similarity cut-off for using visual memory.  
-  - `retrieval_alpha` – weight between image vs. description similarity.
+  - `similarity_threshold` (0.15) – minimum combined CLIP similarity for a stored scene to be used.  
+  - `retrieval_alpha` (0.3) – weight of the image similarity versus the description similarity; at 0.3 the scene description counts more than the image.
 
 These settings are read mainly via `nadine.agents.utils.load_agent_llm` and the visual-memory helpers in `memory_retrieval_agent.py`.
 
@@ -161,5 +163,15 @@ These settings are read mainly via `nadine.agents.utils.load_agent_llm` and the 
 - **Interaction Layer / Runtime & MQTT** – deep dive into the DialogueManager, STT/UI, and MQTT topics.  
 - **Interaction Layer / Agents & Graph** – detailed description of the LangGraph workflow and each agent.  
 - **Interaction Layer / Memory & RAG** – how user profiles, episodic memory, visual memory, and RAG work together.
+
+---
+
+!!! note "Differences in the Hybrid Cloud version (nadine_phd)"
+    The `nadine_phd` fork keeps this code base and adds:
+
+    - **Merged pipeline.** With `interaction.pipeline.mode: merged`, a single `understand` node (`turn_understanding.py`) replaces `intention_classifier`, `affective_appraisal`, and `orchestrator`; it returns intent, emotion, and the routing plan in one structured call. The three-node pipeline remains available as `legacy`.
+    - **Cloud profiles.** Profiles with `backend: openai` (gpt-5.4-mini: `understand_gpt`, `response_gpt`, `gpt_json`, `gpt_text`, `vision_gpt`) and `backend: anthropic` (claude-haiku-4-5: `claude_response`, `claude_understand`). By default `turn_understanding`, `response_agent`, `memory_update_agent`, `search_router`, and `vision_router` use the OpenAI profiles; `intention_classifier`, `affective_appraisal`, `orchestration_agent`, and `contextualizer` stay on the local fine-tuned models, and `vision_description` stays local so camera frames never leave the machine.
+    - **Observation memory.** `observation_memory.py` stores user-directed vision moments as observation scenes, and `visual_memory` gains `recall_threshold` and `first_meeting_recall_threshold` (with `similarity_threshold: 0.35`, `retrieval_alpha: 0.0`).
+    - **Study logging.** A per-session `StudyLogger` (`common/study_logger.py`) records timestamped transcripts, memory events, and latency fields.
 
 

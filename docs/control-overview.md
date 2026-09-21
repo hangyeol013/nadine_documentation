@@ -1,6 +1,6 @@
 # Control Layer – Overview
 
-The control layer drives Nadine’s **physical embodiment**: head/eye pose, gestures, and speech (audio + lip movements).
+The control layer drives Nadine's **physical embodiment**: head/eye pose, gestures, and speech (audio + lip movements).
 
 If you are new to the project, start with **Project Overview**, then use this page to understand what the control component does and how to run it.
 
@@ -8,10 +8,10 @@ If you are new to the project, start with **Project Overview**, then use this pa
 
 ## Responsibilities
 
-- **Receive high‑level commands** via MQTT from interaction/perception:  
-  - speak, look_at, play animation
-- **Execute joint‑level motion** using XML animation files and per‑joint trajectories
-- **Generate speech audio and lip movements** using [Azure Text-to-Speech](https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech) and a lip animation generator
+- **Receive high-level commands** via MQTT from the interaction and perception layers:  
+  - `speak`, `look_at`, `look_at_target`, `animation`
+- **Execute joint-level motion** using XML animation files and per-joint trajectories
+- **Generate speech audio and lip movements** with [Azure Text-to-Speech](https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech); the lips are driven live from Azure viseme events
 - **Send feedback events** (start/end speaking) back to the interaction layer
 
 ---
@@ -20,21 +20,24 @@ If you are new to the project, start with **Project Overview**, then use this pa
 
 Main files under `control/`:
 
-- **`main.py`** – entrypoint; loads config, parses CLI arguments, and starts `NadineServer`.
-- **`config.yaml`** – default paths for voice data and animation XMLs.
+- **`main.py`** – entrypoint; loads `control/.env` and `config.yaml`, parses CLI arguments, and starts `NadineServer`.
+- **`config.yaml`** – animation XML path, TTS provider, and legacy voice-path keys.
+- **`checker.ini`** – motion-controller profile: serial port, channel count, and one line per channel with name, default, min, and max.
 - **`run.sh`** – convenience script to activate the `nadine_new` env and run `main.py`.
 
 Key modules in `nadine/control/`:
 
 - **`NadineServer.py`** – owns the MQTT client, subscribes to control topics, and dispatches messages to `AgentControlHandler`.
-- **`AgentControlHandler.py`** – high‑level adapter that maps commands (look_at, speak, playAnimation) to `NadineControl` methods.
-- **`NadineControl.py`** – core robot controller; loads animation library, initializes joints, manages idle movements, and coordinates TTS + lip animation.
-- **`Animations.py`** – `AnimationLibrary` for loading/querying animation sequences from XML.
-- **`AzureTTS.py`** – Azure Text‑to‑Speech integration and lip animation generation.
-- **`LipAnimationGenerator.py`** – converts audio/phoneme data into mouth/jaw trajectories.
+- **`AgentControlHandler.py`** – thin adapter that maps commands (`lookAtPosition`, `lookAtTarget`, `speak`, `touchTarget`) to `NadineControl` methods.
+- **`NadineControl.py`** – core robot controller; loads the animation library, initializes joints, runs the 30 ms motion loop, and coordinates TTS and lip-sync.
+- **`Animations.py`** – `AnimationLibrary` for loading animation sequences from XML.
+- **`AzureTTS.py`** – Azure Text-to-Speech integration; receives viseme events and updates the lip channels.
+- **`LipAnimationGenerator.py`** – lookup table from Azure viseme IDs (0–21) to the three lip motor values.
 - **`Joint.py`** – simple joint model for servo trajectories.
-- **`SerialComm.py`**, **`Checker.py`**, **`StructDef.py`** – low‑level communication and playback protocol with Nadine’s motion controller.
+- **`SerialComm.py`**, **`Checker.py`**, **`StructDef.py`** – low-level serial protocol with Nadine's motion controller.
 - **`XMLAnimations/`** – XML animation scenes defining gestures and postures.
+
+Animations are addressed by the `<animation_name>` element inside each XML file, not by the file name. For example, `LOOKUP_PostureDefault.xml` defines the animation `LOOKUPPostureDefault`.
 
 ---
 
@@ -44,18 +47,19 @@ Key modules in `nadine/control/`:
 
 - **Environment**: `nadine_new` conda environment (from `control/environment.yml`).  
 - **Hardware**:
-  - Nadine’s motion controller connected via serial (port configured in `SerialComm`/`Checker`).
+  - Nadine's motion controller on the serial port named in `checker.ini` (`/dev/ttyUSB0`, 115200 baud, 28 channels). The port is opened as soon as `NadineControl` initializes, so startup fails without it.
   - Speakers connected to the control machine.  
 - **Services**: MQTT broker at `localhost` or `emqx`.  
+- **Credentials**: `control/.env` with `AZURE_SERVICE_KEY` and `AZURE_SERVICE_REGION` (see **TTS settings** in Runtime & MQTT).
 - **Paths**:
-  - `control/config.yaml` defines default voice and animation paths.
+  - `control/config.yaml` sets the animation XML directory.
 
 ### Start command
 
 From the control directory:
 
 ```bash
-cd /home/miralab/Development/nadine_Jan_2026/control
+cd /home/miralab/Development/nadine_local/control
 conda activate nadine_new
 ./run.sh
 ```
@@ -63,39 +67,35 @@ conda activate nadine_new
 or:
 
 ```bash
-cd /home/miralab/Development/nadine_Jan_2026/control
+cd /home/miralab/Development/nadine_local/control
 conda activate nadine_new
 python3 main.py
 ```
 
-You can override paths on the command line:
+`start_nadine.sh` at the project root starts control as its last step. You can override the animation directory on the command line:
 
 ```bash
-python3 main.py \
-  -voicepath <path_to_default_voice> \
-  -voicepathGerman <path_to_german_voice> \
-  -voicepathFrench <path_to_french_voice> \
-  -animationXMLPath XMLAnimations
+python3 main.py -animationXMLPath XMLAnimations
 ```
+
+`main.py` also accepts `-voicepath`, `-voicepathGerman`, and `-voicepathFrench`. These are legacy options: the values are stored on `NadineServer` and never read, because speech comes from Azure TTS rather than local voice files.
 
 ---
 
 ## Configuration (`control/config.yaml`)
 
-Control‑layer configuration lives under the `control:` key:
-
-- **`voice`**
-  - `default_path` – default (e.g. English) voice data.
-  - `german_path` – German voice data.
-  - `french_path` – French voice data.
+Control-layer configuration lives under the `control:` key:
 
 - **`animations`**
-  - `animation_xml_path` – directory containing animation XML files (relative to `control/` or absolute).
+  - `animation_xml_path` – directory containing animation XML files (relative to `control/` or absolute). Defaults to `XMLAnimations`.
 
-`main.py` loads this via `load_control_config()` and passes:
+- **`tts`**
+  - `provider` – `"azure"`. The only provider implemented; voice, rate, and style are set in `AzureTTS.py`.
 
-- Voice paths to `NadineServer`  
-- Animation XML path to `AgentControlHandler` → `NadineControl.load_animation_library(...)`
+- **`voice`**
+  - `default_path`, `german_path`, `french_path` – legacy voice-file paths, empty by default and unused.
+
+`main.py` loads this via `load_control_config()` and passes the animation XML path to `NadineServer` → `AgentControlHandler` → `NadineControl.load_animation_library(...)`.
 
 ---
 
@@ -103,5 +103,3 @@ Control‑layer configuration lives under the `control:` key:
 
 - See **Control Layer / Runtime & MQTT** for details on how MQTT commands are turned into motions and speech.  
 - Use the **Project Overview** page for how control interacts with the other layers.
-
-

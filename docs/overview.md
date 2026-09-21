@@ -23,6 +23,7 @@ Nadine is designed as a companion, assistant, and research collaborator that can
 
 The rest of the **Project Overview** section is split across multiple pages:
 
+- **Platforms** – the three maintained versions, how they relate, and the constraints behind each.  
 - **Installation & Setup** – hardware/software prerequisites, conda environments, MQTT broker, models.  
 - **Usage** – how to start Nadine (quick start and per-component commands).  
 - **Architecture & Features** – system components, workflow, project structure, and key features.  

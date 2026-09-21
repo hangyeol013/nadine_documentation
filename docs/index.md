@@ -1,6 +1,6 @@
-## Nadine Project Documentation
+# Nadine Project Documentation
 
-This site documents the main layers of the Nadine social robot system and is aimed at new developers joining the project.
+This site documents the Nadine social robot system: the platform versions, and the perception, interaction, and control layers that make up each one.
 
 - **Perception layer**: camera input, face detection and recognition, 3D tracking, and selective visual memory.
 - **Interaction layer**: dialogue, memory, and reasoning components.
