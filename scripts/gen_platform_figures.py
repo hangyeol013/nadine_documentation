@@ -100,7 +100,7 @@ def lineage():
         ([("Merged pipeline,", "t"), ("cloud routing,", "t"), ("scene memory", "t"), ("Jun – Jul 2026", "s")], "n-ma"),
     ]
     ra_nodes = [
-        ([("SoR-ReAct v2", "t"), ("demo deployments", "t"), ("2025", "s")], "n-ra"),
+        ([("SoR-ReAct v2", "t"), ("Social Robotics ReAct", "s"), ("2025 demo deployments", "s")], "n-ra"),
         ([("ReAct, Cloud", "b"), ("recording build", "t"), ("Jun 2026", "s")], "n-ra-hi"),
         ([("Singing pipeline,", "t"), ("song library", "t"), ("Jul 2026", "s")], "n-ra"),
         ([("Barge-in and", "t"), ("lip-sync recovery", "t"), ("Jul 2026", "s")], "n-ra"),

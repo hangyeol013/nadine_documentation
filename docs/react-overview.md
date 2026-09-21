@@ -48,7 +48,7 @@ nadine_stable/
 └── singing_pipeline/              # Offline tooling: DiffSinger renderer, RVC, datasets
 ```
 
-The directory names carry their history: `SoR_v2` is the second version of the SoR-ReAct interaction design, `asd_depth` refers to depth-based active-speaker selection in perception, and `StopMic` refers to muting the microphone while Nadine speaks.
+The directory names carry their history: `SoR_v2` is the second version of the SoR-ReAct (Social Robotics ReAct) interaction design, `asd_depth` refers to depth-based active-speaker selection in perception, and `StopMic` refers to muting the microphone while Nadine speaks.
 
 ---
 
