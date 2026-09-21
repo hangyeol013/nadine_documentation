@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../perception-runtime/">
+        <link rel="prev" href="../control-runtime/">
       
       
-        <link rel="next" href="../interaction-overview/">
+        <link rel="next" href="../react-agent/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Selective Memory - Nadine Social Robot</title>
+        <title>Overview & Architecture - Nadine Social Robot</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#perception-layer-selective-memory" class="md-skip">
+        <a href="#react-platform-overview-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Selective Memory
+              Overview & Architecture
             
           </span>
         </div>
@@ -231,12 +231,10 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../perception-overview/" class="md-tabs__link">
           
   
@@ -293,11 +291,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../react-overview/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -573,31 +573,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   
@@ -615,7 +610,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -686,37 +681,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Selective Memory
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../perception-memory/" class="md-nav__link">
         
   
   
@@ -732,109 +700,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#purpose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Purpose
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#storage-policies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage Policies
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Storage Policies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pad_arousal-default-padarousalmemorymodule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pad_arousal (default) – PADArousalMemoryModule
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vision-fallback-selectivememorymodule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        vision (fallback) – SelectiveMemoryModule
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared Components
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#storage-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage Layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration Hooks
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1193,26 +1058,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -1230,7 +1100,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1245,10 +1115,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../react-overview/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1264,6 +1161,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repository-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-layers-map-to-the-shared-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Layers Map to the Shared Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environments-and-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environments and Credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starting-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starting the Platform
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1398,49 +1370,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#storage-policies" class="md-nav__link">
+  <a href="#repository-layout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Storage Policies
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Storage Policies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pad_arousal-default-padarousalmemorymodule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pad_arousal (default) – PADArousalMemoryModule
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vision-fallback-selectivememorymodule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        vision (fallback) – SelectiveMemoryModule
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared Components
+        Repository Layout
       
     </span>
   </a>
@@ -1448,10 +1381,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#storage-layout" class="md-nav__link">
+  <a href="#how-the-layers-map-to-the-shared-stack" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Storage Layout
+        How the Layers Map to the Shared Stack
       
     </span>
   </a>
@@ -1459,10 +1392,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration-hooks" class="md-nav__link">
+  <a href="#environments-and-credentials" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration Hooks
+        Environments and Credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starting-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starting the Platform
       
     </span>
   </a>
@@ -1486,173 +1430,104 @@
 
 
 
-<h1 id="perception-layer-selective-memory">Perception Layer – Selective Memory<a class="headerlink" href="#perception-layer-selective-memory" title="Permanent link">&para;</a></h1>
-<p>This page focuses on the <strong>selective memory module</strong> (<code>selective_memory.py</code>), which decides which visual scenes are memorable enough to store for each user.</p>
+<h1 id="react-platform-overview-architecture">ReAct Platform – Overview &amp; Architecture<a class="headerlink" href="#react-platform-overview-architecture" title="Permanent link">&para;</a></h1>
+<p>This section documents the <strong>ReAct, Cloud</strong> version of Nadine (<code>nadine_stable</code>), the platform used for public demonstrations and recorded sessions. It runs the same three-layer MQTT stack as the multi-agent platform but with a different interaction layer and older, leaner perception and control modules. For how it relates to the other versions, see <a href="../platforms/">Platforms</a>.</p>
+<p>The three pages that follow cover the <a href="../react-agent/">dialogue manager and tools</a>, the <a href="../react-runtime/">runtime, audio path, and MQTT topics</a>, and the <a href="../react-singing/">singing pipeline</a>.</p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
-<p>For every recognized user, the system periodically evaluates the current visual scene and decides whether to keep it. A kept scene is stored as image + CLIP embedding + metadata in the user's memory folder, together with a short natural-language description, for later retrieval by the interaction layer.</p>
-<p>Two storage policies are implemented and selected with <code>selective_memory.policy</code> in <code>perception/config.yaml</code>:</p>
-<ul>
-<li><strong><code>pad_arousal</code></strong> (default) – the decision comes from Nadine's own affective state, as appraised by the interaction layer during the conversation.</li>
-<li><strong><code>vision</code></strong> (fallback) – the decision is computed from the user's facial emotion and the novelty of the scene.</li>
-</ul>
+<p>The platform is built for sessions where robustness matters more than the memory model: a fixed set of capabilities, cloud language models, and an audio path that survives interruption. Everything the dialogue manager can do is a tool it can select; adding a capability means adding a tool.</p>
 <hr />
-<h2 id="storage-policies">Storage Policies<a class="headerlink" href="#storage-policies" title="Permanent link">&para;</a></h2>
-<h3 id="pad_arousal-default-padarousalmemorymodule"><code>pad_arousal</code> (default) – <code>PADArousalMemoryModule</code><a class="headerlink" href="#pad_arousal-default-padarousalmemorymodule" title="Permanent link">&para;</a></h3>
-<p>The interaction layer publishes <code>nadine/affect/state</code> after every affective appraisal with Nadine's current emotion <code>label</code>, PAD <code>arousal</code>, and <code>intensity</code>. Perception keeps the latest values and uses them when the memorability check runs.</p>
-<p><strong>Memorability</strong></p>
-<div class="arithmatex">\[
-\text{memorability} = \text{base}(\text{label}) \times \text{intensity}
-\]</div>
-<p>where <code>base</code> is the <code>MEMORABILITY_AROUSAL_BASE</code> table in <code>selective_memory.py</code>. All emotions have a positive base value, so the score measures activation rather than valence:</p>
+<h2 id="repository-layout">Repository Layout<a class="headerlink" href="#repository-layout" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>nadine_stable/
+├── compose.yaml                   # EMQX MQTT broker
+├── start_nadine.sh                # Launcher: audio setup, broker, three module tabs
+├── requirements.txt               # Pinned packages for the nadine_mqtt conda env
+├── scripts/
+│   ├── zoom_audio_setup.sh        # PulseAudio routing for hybrid Zoom interviews
+│   ├── zoom_audio_teardown.sh
+│   └── zoom_listen_toggle.sh      # Mute/unmute the remote Zoom feed into STT
+├── perception_asd_depth/
+│   ├── rs_asd.py                  # RealSense + YOLOv8 face tracking, publishes look_at
+│   ├── models/                    # yolov8n-face.pt
+│   └── run.sh
+├── interaction_SoR_v2/
+│   ├── nadine/
+│   │   ├── __main__.py            # Entry point: STT, UI, MQTT, dialogue manager
+│   │   ├── dm/                    # ReAct agent, prompt, tools, memory, RAG, singing
+│   │   ├── stt/                   # Google Cloud Speech streaming
+│   │   ├── communication/         # Perception state bridge
+│   │   ├── common/                # MQTT client, languages, translation, logging
+│   │   └── ui/                    # Tkinter monitor window
+│   ├── data/                      # ChromaDB stores: knowledge/, memory/
+│   ├── rag_files/                 # Nadine_Platform.pdf for the knowledge base
+│   └── run.sh
+├── control_StopMic_asd_depth/
+│   ├── main.py                    # Entry point
+│   ├── nadine/control/            # MQTT server, robot controller, Azure TTS, serial
+│   ├── XMLAnimations/             # Animation and posture XML files
+│   ├── songs/                     # Pre-rendered songs: en/, fr/, makeup/
+│   ├── checker.ini                # Serial port and 28-channel table
+│   └── run.sh
+└── singing_pipeline/              # Offline tooling: DiffSinger renderer, RVC, datasets
+</code></pre></div>
+<p>The directory names carry their history: <code>SoR_v2</code> is the second version of the SoR-ReAct interaction design, <code>asd_depth</code> refers to depth-based active-speaker selection in perception, and <code>StopMic</code> refers to muting the microphone while Nadine speaks.</p>
+<hr />
+<h2 id="how-the-layers-map-to-the-shared-stack">How the Layers Map to the Shared Stack<a class="headerlink" href="#how-the-layers-map-to-the-shared-stack" title="Permanent link">&para;</a></h2>
+<p>The MQTT topics, the Azure TTS voice, the XML animation format, and the serial protocol are the same as in the multi-agent platform, so the <a href="../control-overview/">Control</a> and <a href="../perception-overview/">Perception</a> sections apply to the mechanisms. The modules themselves differ:</p>
 <table>
 <thead>
 <tr>
-<th>Emotion label</th>
-<th>Base</th>
+<th>Layer</th>
+<th><code>nadine_stable</code></th>
+<th>Multi-agent platform (<code>nadine_local</code>)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>anger / angry</td>
-<td>0.85</td>
+<td>Perception</td>
+<td>One script, <code>rs_asd.py</code>: YOLOv8 face detection with tracking, closest-face selection by depth, and 3D eye position published to <code>nadine/agent/control/look_at</code>. No face recognition, no emotion detection, no selective memory.</td>
+<td>Face recognition with InsightFace, user profiles, emotion analysis, selective visual memory, several topics.</td>
 </tr>
 <tr>
-<td>fear / fearful</td>
-<td>0.80</td>
+<td>Interaction</td>
+<td>Retrieval-augmented ReAct agent with a fixed tool set; per-user conversation memory and a knowledge base in ChromaDB; Google STT; Tkinter UI with gaze and Zoom controls.</td>
+<td>LangGraph multi-agent graph with fine-tuned local models, PAD affect, visual memory.</td>
 </tr>
 <tr>
-<td>surprise / surprised</td>
-<td>0.75</td>
-</tr>
-<tr>
-<td>joy / happy</td>
-<td>0.60</td>
-</tr>
-<tr>
-<td>disgust / disgusted</td>
-<td>0.55</td>
-</tr>
-<tr>
-<td>sadness / sad</td>
-<td>0.40</td>
-</tr>
-<tr>
-<td>goodbye</td>
-<td>0.30</td>
-</tr>
-<tr>
-<td>neutral</td>
-<td>0.10</td>
-</tr>
-<tr>
-<td>any other label</td>
-<td>0.10</td>
+<td>Control</td>
+<td>Same module set plus singing playback, gaze locking for interviewer and Zoom postures, per-utterance Azure synthesizer serialized by a lock, PulseAudio-routed playback. Speak payloads are JSON with a locale.</td>
+<td>Plain-text speak payloads; no singing; gaze target latch without the interviewer and Zoom lock.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Decision</strong> (<code>should_store</code>)</p>
+<p>Two consequences of the perception module follow directly from the code:</p>
 <ul>
-<li>If the user has no stored scenes yet (first meeting), the scene is always stored.</li>
-<li>Otherwise the scene is stored when <code>memorability ≥ arousal_threshold</code>.</li>
-<li><code>main.py</code> additionally enforces a 15 s cooldown per user between stores.</li>
+<li>Nothing in this repository publishes <code>nadine/user/name</code>, <code>nadine/user/emotion</code>, or <code>nadine/user/speech</code>. The interaction layer subscribes to them and has handlers, but in this build the user ID stays <code>unknown</code> and the user emotion stays <code>neutral</code> unless an external publisher provides them. Because long-term memory is stored and retrieved only for identified users, it is inactive without such a publisher.</li>
+<li>The look-at position bypasses the interaction layer: perception publishes straight to the control topic.</li>
 </ul>
-<p><strong>Parameters</strong></p>
+<hr />
+<h2 id="environments-and-credentials">Environments and Credentials<a class="headerlink" href="#environments-and-credentials" title="Permanent link">&para;</a></h2>
+<p>All three modules run in one conda environment, <code>nadine_mqtt</code>, activated by each module's <code>run.sh</code>. <code>requirements.txt</code> at the repository root pins the packages.</p>
+<p>Two <code>.env</code> files hold credentials and are never committed:</p>
 <ul>
-<li><code>arousal_threshold</code> – config.yaml: 0.25 (lowered from 0.40 to capture more everyday moments); code fallback: 0.3.</li>
-<li><code>memorability_check_interval</code> – config.yaml: 3.0 s; code fallback: 2.0 s.</li>
+<li><code>interaction_SoR_v2/.env</code>: <code>GOOGLE_APPLICATION_CREDENTIALS</code> (path to the service-account JSON used for Speech-to-Text and Translation), <code>GOOGLE_CLOUD_PROJECT</code>, <code>OPENAI_API_KEY</code>, <code>SERPER_API_KEY</code> (web search and news), <code>LANGCHAIN_API_KEY</code> (optional tracing). <code>OPENWEATHERMAP_API_KEY</code> enables the weather tool if present.</li>
+<li><code>control_StopMic_asd_depth/.env</code>: <code>AZURE_SERVICE_KEY</code>, <code>AZURE_SERVICE_REGION</code>.</li>
 </ul>
-<p>This module loads only CLIP (retrieval embeddings) and Moondream2 (scene descriptions); OpenFace is not needed.</p>
-<h3 id="vision-fallback-selectivememorymodule"><code>vision</code> (fallback) – <code>SelectiveMemoryModule</code><a class="headerlink" href="#vision-fallback-selectivememorymodule" title="Permanent link">&para;</a></h3>
-<p>Kept for comparison. It combines facial emotion salience with scene novelty.</p>
-<p><strong>Emotion analysis</strong></p>
-<ul>
-<li><a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace 3.0</a> (<code>MultitaskPredictor</code> + <code>FaceDetector</code>) with the weights in <code>perception/weights/</code>, run on a padded face crop.</li>
-<li>Produces probabilities over <code>['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>.</li>
-<li><code>happy_boost_factor</code> multiplies the <code>happy</code> probability and rescales the others, as a stopgap for OpenFace's under-detection of happiness.</li>
-</ul>
-<p><strong>Emotion salience</strong></p>
-<p>Given a probability <span class="arithmatex">\(p_e\)</span> and a per-emotion threshold <span class="arithmatex">\(t_e\)</span>:</p>
-<div class="arithmatex">\[
-\text{salience}(p_e, t_e) = \max\left(0, \frac{p_e - t_e}{1 - t_e}\right)
-\]</div>
-<p>The per-emotion thresholds are code defaults in <code>SelectiveMemoryModule</code> (not read from config): <code>neutral</code> 1.0, <code>happy</code> 0.5, <code>sad</code> 0.7, <code>surprise</code> 0.7, <code>anger</code> 0.7, <code>contempt</code> 0.7, <code>fear</code> 0.8, <code>disgust</code> 0.8. The final emotion salience is the maximum over the active set <code>['happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>; the emotion that produced it is the dominant emotion.</p>
-<p><strong>Novelty</strong></p>
+<p>The interaction module also reads the control module's <code>.env</code> when it needs Azure credentials for song rendering. <code>OPENAI_API_KEY</code> is required: the agent, the contextualizer, and both ChromaDB stores use OpenAI models and embeddings.</p>
+<p>The knowledge base is built on first start from the <code>Nadine Social Robot</code> Wikipedia article and <code>rag_files/Nadine_Platform.pdf</code>, split into 1000-character chunks with 200 overlap, and persisted under <code>data/knowledge/</code>. Delete that folder to rebuild it.</p>
+<hr />
+<h2 id="starting-the-platform">Starting the Platform<a class="headerlink" href="#starting-the-platform" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>nadine_stable
+./start_nadine.sh<span class="w"> </span><span class="o">[</span>--mic-volume<span class="o">=</span>&lt;<span class="m">0</span>-150&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--zoom-audio<span class="o">]</span>
+</code></pre></div>
+<p>The launcher:</p>
 <ol>
-<li>Compute the CLIP embedding of the current frame.</li>
-<li>Load all previous scene embeddings for the user from <code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/embeddings/</code>.</li>
-<li>Novelty score = minimum over stored scenes of <span class="arithmatex">\(1 - \text{cosine similarity}\)</span>; higher means more novel.</li>
-<li>Novelty salience uses the same threshold mapping with <code>novelty_threshold</code>.</li>
+<li>Configures audio. By default it reloads PulseAudio echo cancellation on the default devices and sets the microphone gain (default 20%). With <code>--zoom-audio</code> it instead runs <code>scripts/zoom_audio_setup.sh</code> and pins TTS to the <code>nadine_tts</code> sink and STT to the <code>nadine_mic.monitor</code> source (see <a href="../react-runtime/">Runtime, Audio &amp; MQTT</a>).</li>
+<li>Restarts the EMQX broker with <code>docker compose up -d</code>. The two data volumes are declared external and must exist.</li>
+<li>Makes <code>/dev/ttyUSB0</code> writable and opens three <code>gnome-terminal</code> tabs: control, interaction, perception, each running its <code>run.sh</code>.</li>
 </ol>
-<p><strong>Combined memorability</strong></p>
-<div class="arithmatex">\[
-\text{memorability} = w_{\text{emotion}} \cdot \text{emotion\_salience} + w_{\text{novelty}} \cdot \text{novelty\_salience}
-\]</div>
-<p>The scene is stored when <code>memorability ≥ memorability_threshold</code>, subject to the same 15 s cooldown.</p>
-<p><strong>Parameters</strong> (config.yaml value, code fallback in parentheses)</p>
-<ul>
-<li><code>w_emotion</code> 0.8 (0.5), <code>w_novelty</code> 0.2 (0.5)</li>
-<li><code>novelty_threshold</code> 0.45 (0.3)</li>
-<li><code>memorability_threshold</code> 0.4 (0.5)</li>
-<li><code>happy_boost_factor</code> 1.2 (1.0)</li>
-</ul>
-<hr />
-<h2 id="shared-components">Shared Components<a class="headerlink" href="#shared-components" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Scene embedding (CLIP)</strong> – <code>openai/clip-vit-base-patch32</code> embeds the full RGB frame; embeddings are <span class="arithmatex">\(L_2\)</span>-normalized for cosine comparisons. The interaction layer uses the same model for visual-memory retrieval.</li>
-<li><strong>Scene description (VLM)</strong> – <code>vikhyatk/moondream2</code>, pinned to revision <code>2025-06-21</code>, generates a one-sentence caption for each stored scene. If the model fails to load, storage proceeds without a description.</li>
-<li>All models are loaded once at initialization on the best available device (<code>cuda:0</code>, then MPS, then CPU). Ollama fills GPU 1 first, so perception models take GPU 0.</li>
-</ul>
-<hr />
-<h2 id="storage-layout">Storage Layout<a class="headerlink" href="#storage-layout" title="Permanent link">&para;</a></h2>
-<p>For each user, memorable scenes are stored under:</p>
-<p><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/</code></p>
-<p>Within that directory:</p>
-<ul>
-<li><strong><code>images/</code></strong>  </li>
-<li>Raw RGB images (no bounding boxes drawn).  </li>
-<li>
-<p>Filename: <code>scene_YYYYMMDD_HHMMSS.jpg</code></p>
-</li>
-<li>
-<p><strong><code>embeddings/</code></strong>  </p>
-</li>
-<li>Numpy <code>.npy</code> files with CLIP embeddings.  </li>
-<li>
-<p>Filename: <code>scene_YYYYMMDD_HHMMSS_embedding.npy</code></p>
-</li>
-<li>
-<p><strong><code>metadata/</code></strong>  </p>
-</li>
-<li>JSON files, filename <code>scene_YYYYMMDD_HHMMSS_metadata.json</code>. Common fields: <code>scene_id</code>, <code>timestamp</code>, <code>image_path</code>, <code>memorability</code>, <code>description</code>.</li>
-<li>Under <code>pad_arousal</code>: <code>emotion_label</code>, <code>intensity</code>, and a human-readable <code>reason</code> string.</li>
-<li>Under <code>vision</code>: <code>emotion_salience</code>, <code>novelty_salience</code>, and the full <code>emotion_probs</code> distribution.</li>
-</ul>
-<p>This structure lets the interaction layer's memory retrieval agent discover and rank scenes for a user.</p>
-<hr />
-<h2 id="configuration-hooks">Configuration Hooks<a class="headerlink" href="#configuration-hooks" title="Permanent link">&para;</a></h2>
-<p>Tune selective memory via the <code>selective_memory</code> block of <code>perception/config.yaml</code>:</p>
-<ul>
-<li><code>policy</code> – <code>"pad_arousal"</code> (default) or <code>"vision"</code>.</li>
-<li><code>arousal_threshold</code> – <code>pad_arousal</code> store threshold (0.25).</li>
-<li><code>w_emotion</code>, <code>w_novelty</code>, <code>novelty_threshold</code>, <code>memorability_threshold</code>, <code>happy_boost_factor</code> – <code>vision</code> policy parameters.</li>
-<li><code>memorability_check_interval</code> – seconds between checks per user (3.0).</li>
-</ul>
-<p>Constants that require a code change:</p>
-<ul>
-<li><code>SCENE_STORE_COOLDOWN</code> (15 s) and <code>FACE_STORE_COOLDOWN</code> (10 s) in <code>main.py</code>.</li>
-<li><code>MEMORABILITY_AROUSAL_BASE</code> and the per-emotion thresholds in <code>selective_memory.py</code>.</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Differences in the Hybrid Cloud version (nadine_phd)</p>
-<ul>
-<li>The default policy is renamed <code>intensity</code> (<code>IntensityMemoryModule</code>, <code>intensity_threshold: 0.5</code>); <code>pad_arousal</code> is accepted as a legacy alias.</li>
-<li>Storage is event-driven by default: one evaluation per dialogue turn when a new <code>nadine/affect/state</code> arrives (<code>NADINE_STORAGE_TRIGGER=event</code>), instead of the frame-loop interval and cooldown (<code>interval</code>).</li>
-<li>The affect message also carries the user's expressed emotion (<code>user_label</code>, <code>user_intensity</code>), the user's utterance (<code>user_message</code>, stamped onto the scene so it can be retrieved by what was said), and a <code>suppress_storage</code> flag for recall turns. <code>NADINE_STORAGE_EMOTION_SOURCE</code> selects <code>user</code> (default) or <code>robot</code> as the driving signal.</li>
-<li><code>store_first_meeting_scene()</code> stores a dedicated <code>scene_type: "first_meeting"</code> scene on first face registration; other scenes are <code>"moment"</code>.</li>
-<li><code>NADINE_ENABLE_VISUAL_MEMORY=0</code> disables the module entirely (A/B study condition), and <code>fer_sampler.py</code> logs continuous facial-emotion samples for offline analysis.</li>
-</ul>
-</div>
+<p>Each module can also be started alone from its own directory with <code>./run.sh</code>. The interaction module accepts <code>--nomqtt</code> (no broker, user always present) and <code>--chatmode</code> (text REPL against the dialogue manager, no STT or UI).</p>
+<p>The interaction layer's <code>run.sh</code> filters known ALSA and JACK probe messages from stderr so real errors stay visible.</p>
 
 
 

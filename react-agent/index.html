@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../perception-runtime/">
+        <link rel="prev" href="../react-overview/">
       
       
-        <link rel="next" href="../interaction-overview/">
+        <link rel="next" href="../react-runtime/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Selective Memory - Nadine Social Robot</title>
+        <title>Dialogue Manager & Tools - Nadine Social Robot</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#perception-layer-selective-memory" class="md-skip">
+        <a href="#react-platform-dialogue-manager-tools" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Selective Memory
+              Dialogue Manager & Tools
             
           </span>
         </div>
@@ -231,12 +231,10 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../perception-overview/" class="md-tabs__link">
           
   
@@ -293,10 +291,12 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../react-overview/" class="md-tabs__link">
           
   
@@ -573,31 +573,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   
@@ -615,7 +610,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -686,37 +681,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Selective Memory
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../perception-memory/" class="md-nav__link">
         
   
   
@@ -732,109 +700,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#purpose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Purpose
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#storage-policies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage Policies
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Storage Policies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pad_arousal-default-padarousalmemorymodule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        pad_arousal (default) – PADArousalMemoryModule
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vision-fallback-selectivememorymodule" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        vision (fallback) – SelectiveMemoryModule
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#shared-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shared Components
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#storage-layout" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage Layout
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-hooks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration Hooks
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1193,26 +1058,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -1230,7 +1100,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1273,10 +1143,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../react-agent/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dialogue Manager & Tools
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1292,6 +1189,131 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#per-turn-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-Turn Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conversation-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conversation history
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#long-term-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Long-term memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge base
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-react-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The ReAct Agent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-identity-emotion-and-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Identity, Emotion, and Language
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing and Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1387,10 +1409,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#purpose" class="md-nav__link">
+  <a href="#per-turn-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Purpose
+        Per-Turn Pipeline
       
     </span>
   </a>
@@ -1398,22 +1420,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#storage-policies" class="md-nav__link">
+  <a href="#memory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Storage Policies
+        Memory
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Storage Policies">
+    <nav class="md-nav" aria-label="Memory">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pad_arousal-default-padarousalmemorymodule" class="md-nav__link">
+  <a href="#conversation-history" class="md-nav__link">
     <span class="md-ellipsis">
       
-        pad_arousal (default) – PADArousalMemoryModule
+        Conversation history
       
     </span>
   </a>
@@ -1421,10 +1443,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#vision-fallback-selectivememorymodule" class="md-nav__link">
+  <a href="#long-term-memory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        vision (fallback) – SelectiveMemoryModule
+        Long-term memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge base
       
     </span>
   </a>
@@ -1437,10 +1470,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#shared-components" class="md-nav__link">
+  <a href="#the-react-agent" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Shared Components
+        The ReAct Agent
       
     </span>
   </a>
@@ -1448,10 +1481,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#storage-layout" class="md-nav__link">
+  <a href="#tools" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Storage Layout
+        Tools
       
     </span>
   </a>
@@ -1459,10 +1492,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration-hooks" class="md-nav__link">
+  <a href="#user-identity-emotion-and-language" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration Hooks
+        User Identity, Emotion, and Language
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timing-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timing and Logging
       
     </span>
   </a>
@@ -1486,173 +1530,129 @@
 
 
 
-<h1 id="perception-layer-selective-memory">Perception Layer – Selective Memory<a class="headerlink" href="#perception-layer-selective-memory" title="Permanent link">&para;</a></h1>
-<p>This page focuses on the <strong>selective memory module</strong> (<code>selective_memory.py</code>), which decides which visual scenes are memorable enough to store for each user.</p>
+<h1 id="react-platform-dialogue-manager-tools">ReAct Platform – Dialogue Manager &amp; Tools<a class="headerlink" href="#react-platform-dialogue-manager-tools" title="Permanent link">&para;</a></h1>
+<p>This page documents the interaction layer of <code>nadine_stable</code>: how one user turn becomes a spoken reply. The code lives in <code>interaction_SoR_v2/nadine/dm/</code>.</p>
 <hr />
-<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
-<p>For every recognized user, the system periodically evaluates the current visual scene and decides whether to keep it. A kept scene is stored as image + CLIP embedding + metadata in the user's memory folder, together with a short natural-language description, for later retrieval by the interaction layer.</p>
-<p>Two storage policies are implemented and selected with <code>selective_memory.policy</code> in <code>perception/config.yaml</code>:</p>
+<h2 id="per-turn-pipeline">Per-Turn Pipeline<a class="headerlink" href="#per-turn-pipeline" title="Permanent link">&para;</a></h2>
+<p><code>DialogueManager.processInput(text, language)</code> is called once per final transcript. It normalizes whitespace, logs the input, and calls <code>NadineReactAgent.execute(input, user_id, user_emotion)</code>, which runs these steps:</p>
+<ol>
+<li><strong>Contextualize.</strong> A separate LLM call (<code>contextualize_q_prompt | llm</code>) rewrites the input into a standalone question using the chat history, so follow-ups such as "and tomorrow?" retrieve correctly. The answer is not generated here.</li>
+<li><strong>Retrieve long-term memories.</strong> <code>NadineMemory.retrieve()</code> queries the user's own ChromaDB collection with the standalone question, top 5. Skipped when the user is <code>unknown</code>.</li>
+<li><strong>Retrieve knowledge.</strong> <code>RagManager.retrieve()</code> queries the knowledge collection, top 3.</li>
+<li><strong>Run the ReAct agent.</strong> The retrieved texts, the user's name, the user's facial emotion, and the date and time are placed in the prompt. The agent either calls a tool and loops, or returns a final answer.</li>
+<li><strong>Return the structured answer.</strong> The final JSON carries the reply and Nadine's self-assessed emotion; <code>processInput</code> returns the reply text and logs the turn duration.</li>
+</ol>
+<p>The whole turn is wrapped in <code>RunnableWithMessageHistory</code>, keyed by <code>user_id</code> and a conversation ID created when the agent starts, so the chat history is threaded through the contextualizer and the agent automatically.</p>
+<p>If the agent raises, <code>processInput</code> logs the traceback and returns the fixed text "Sorry, I am unable to answer this question." There is no tool-free fallback chain.</p>
+<p>The dialogue manager uses one <code>ChatOpenAI</code> instance, model <code>gpt-5.4-mini</code>, temperature 1, for the agent, the contextualizer, and the knowledge base. Because newer OpenAI models reject the <code>stop</code> parameter, no stop sequence is bound; the parser takes the first action in the output and the executor supplies the real observation.</p>
+<hr />
+<h2 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h2>
+<h3 id="conversation-history">Conversation history<a class="headerlink" href="#conversation-history" title="Permanent link">&para;</a></h3>
+<p><code>NadineMemory</code> is a <code>BaseChatMessageHistory</code> that keeps an in-process list of messages per user and conversation. Each message is stamped with a Unix timestamp in its metadata. The list is a sliding window of 20 messages.</p>
+<h3 id="long-term-memory">Long-term memory<a class="headerlink" href="#long-term-memory" title="Permanent link">&para;</a></h3>
+<p>The same class persists conversation chunks to ChromaDB under <code>data/memory/</code>, one collection per user, embedded with OpenAI <code>text-embedding-3-large</code>:</p>
 <ul>
-<li><strong><code>pad_arousal</code></strong> (default) – the decision comes from Nadine's own affective state, as appraised by the interaction layer during the conversation.</li>
-<li><strong><code>vision</code></strong> (fallback) – the decision is computed from the user's facial emotion and the novelty of the scene.</li>
+<li>When the window first reaches 20 messages, and again every 14 messages after that, the current window is stored as one document. Consecutive chunks therefore overlap by 6 messages.</li>
+<li>When the interaction ends (<code>end_user_interaction</code>, called when the user disappears), the remaining messages are stored and the history cleared.</li>
+<li>Each document is the transcript with timestamps and speaker names, plus <code>date</code>, <code>time</code>, and <code>conversation_id</code> metadata.</li>
+<li>Nothing is stored or retrieved for the user <code>unknown</code>.</li>
 </ul>
+<p>Memories are raw conversation text, not extracted facts. The prompt receives the top 5 chunks under a "LONG-TERM MEMORY" heading and is told to use them if relevant.</p>
+<h3 id="knowledge-base">Knowledge base<a class="headerlink" href="#knowledge-base" title="Permanent link">&para;</a></h3>
+<p><code>RagManager</code> loads the ChromaDB collection <code>nadine-knowledge</code> from <code>data/knowledge/</code>, or builds it from the Wikipedia article and the platform PDF if the folder is missing. Retrieval is plain similarity, top 3, on the contextualized question.</p>
 <hr />
-<h2 id="storage-policies">Storage Policies<a class="headerlink" href="#storage-policies" title="Permanent link">&para;</a></h2>
-<h3 id="pad_arousal-default-padarousalmemorymodule"><code>pad_arousal</code> (default) – <code>PADArousalMemoryModule</code><a class="headerlink" href="#pad_arousal-default-padarousalmemorymodule" title="Permanent link">&para;</a></h3>
-<p>The interaction layer publishes <code>nadine/affect/state</code> after every affective appraisal with Nadine's current emotion <code>label</code>, PAD <code>arousal</code>, and <code>intensity</code>. Perception keeps the latest values and uses them when the memorability check runs.</p>
-<p><strong>Memorability</strong></p>
-<div class="arithmatex">\[
-\text{memorability} = \text{base}(\text{label}) \times \text{intensity}
-\]</div>
-<p>where <code>base</code> is the <code>MEMORABILITY_AROUSAL_BASE</code> table in <code>selective_memory.py</code>. All emotions have a positive base value, so the score measures activation rather than valence:</p>
+<h2 id="the-react-agent">The ReAct Agent<a class="headerlink" href="#the-react-agent" title="Permanent link">&para;</a></h2>
+<p><code>NadineReactAgent</code> assembles a LangChain <code>AgentExecutor</code> from four parts.</p>
+<p><strong>Prompt</strong> (<code>prompt.py</code>). A chat prompt with a system message, the chat history, the human turn, and the scratchpad. The human turn is one template with these sections:</p>
+<ul>
+<li><code>PHYSICAL SITUATION</code> (in the system message): where Nadine is, that she speaks by voice with people she sees through a camera, that she is a social robot rather than an assistant, her origin and who she is modeled on.</li>
+<li><code>RULES</code>: answer in the first person; reply in the language of the latest input, defaulting to English, and never mix languages; use formal address in French; be social and polite; react emotionally, and more sharply when insulted; never say you do not understand; use Celsius; use the search tools for anything current; keep answers to two sentences; never repeat an answer; no URLs or code in the reply.</li>
+<li><code>TOOLS</code>: the rendered name and description of every tool.</li>
+<li><code>KNOWLEDGE BASE</code> and <code>LONG-TERM MEMORY</code>: the retrieved texts.</li>
+<li><code>RESPONSE FORMAT INSTRUCTIONS</code>: the two output options below.</li>
+<li><code>CONTEXTUAL INFORMATION</code>: user name, the emotion the vision component detected on the user's face, date, and time.</li>
+<li><code>HUMAN'S INPUT</code>.</li>
+</ul>
+<p>After a tool runs, the observation is fed back as a human message that reminds the model to answer the original input, to mention information obtained from tools without naming them, and to keep the JSON format.</p>
+<p><strong>Output format.</strong> The model must emit one JSON code block in one of two shapes:</p>
+<ul>
+<li>A tool call: <code>{"action": "&lt;tool name&gt;", "action_input": "&lt;input&gt;"}</code>.</li>
+<li>A final answer: <code>{"action": "Final Answer", "action_input": "&lt;reply&gt;", "category": ..., "emotion": ..., "emotion_intensity": ..., "causing_person": ...}</code> where <code>category</code> is one of greeting, farewell, insult, complement, information request, other; <code>emotion</code> is one of joy, sadness, fear, disgust, anger, surprise; <code>emotion_intensity</code> is 0 to 10; and <code>causing_person</code> is the user's name, <code>SELF</code>, <code>human</code>, or <code>SOMEONE ELSE</code>.</li>
+</ul>
+<p><strong>Parser</strong> (<code>NadineReactParser</code>). Parses the JSON from the markdown block. If the model returns a list of actions it takes the first. A <code>Final Answer</code> becomes an <code>AgentFinish</code> whose output carries the reply and the four emotion fields; anything else becomes an <code>AgentAction</code>. Unparseable output raises, and the executor is configured with <code>handle_parsing_errors=True</code>, so the error text is fed back to the model for another attempt.</p>
+<p><strong>Executor.</strong> <code>AgentExecutor(agent, tools, verbose=True, handle_parsing_errors=True)</code>, wrapped with the memory function.</p>
+<p>Nadine's own emotion is appraised on every final answer, but nothing stores it between turns. There is no persistent affective state.</p>
+<hr />
+<h2 id="tools">Tools<a class="headerlink" href="#tools" title="Permanent link">&para;</a></h2>
+<p><code>DialogueManager.get_tools()</code> registers the tools below. Search, news, and weather are registered only when their API keys are present in the environment.</p>
 <table>
 <thead>
 <tr>
-<th>Emotion label</th>
-<th>Base</th>
+<th>Tool name</th>
+<th>The prompt says to use it when</th>
+<th>Input</th>
+<th>What it does</th>
+<th>Needs</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>anger / angry</td>
-<td>0.85</td>
+<td><code>Google Search</code></td>
+<td>Questions about current events, the state of the world, or people</td>
+<td>A natural-language question</td>
+<td>Serper web search with the Switzerland locale. Rewrites degree symbols to words for weather results and prefixes long results with an instruction to keep the reply under 40 words.</td>
+<td><code>SERPER_API_KEY</code></td>
 </tr>
 <tr>
-<td>fear / fearful</td>
-<td>0.80</td>
+<td><code>Google News</code></td>
+<td>Top headlines of current news</td>
+<td>A natural-language question</td>
+<td>Serper search of type <code>news</code>, same locale and reply-length instruction.</td>
+<td><code>SERPER_API_KEY</code></td>
 </tr>
 <tr>
-<td>surprise / surprised</td>
-<td>0.75</td>
+<td><code>Weather App</code></td>
+<td>Current weather for a location</td>
+<td>A location string such as <code>London,GB</code>; empty input defaults to Carouge, Switzerland</td>
+<td>OpenWeatherMap lookup, Celsius, with an instruction to summarize in under 25 words.</td>
+<td><code>OPENWEATHERMAP_API_KEY</code></td>
 </tr>
 <tr>
-<td>joy / happy</td>
-<td>0.60</td>
+<td><code>Nadine behaviour</code></td>
+<td>The user asks Nadine to smile, be angry, or wave</td>
+<td>One of <code>smile</code>, <code>anger</code>, <code>wave</code></td>
+<td>Publishes the matching animation over MQTT, waits two seconds, and returns a sentence for Nadine to say.</td>
+<td>–</td>
 </tr>
 <tr>
-<td>disgust / disgusted</td>
-<td>0.55</td>
+<td><code>Sing a song</code></td>
+<td>The user talks about singing or asks for a song</td>
+<td>A song name, <code>new\|en\|&lt;topic&gt;</code>, <code>new\|fr\|&lt;topic&gt;</code>, <code>lyrics</code>, or <code>any</code></td>
+<td>Offers the song list, plays a library song, makes up a new song in a background thread, or recites the last made-up lyrics. See <a href="../react-singing/">Singing Pipeline</a>.</td>
+<td>–</td>
 </tr>
 <tr>
-<td>sadness / sad</td>
-<td>0.40</td>
-</tr>
-<tr>
-<td>goodbye</td>
-<td>0.30</td>
-</tr>
-<tr>
-<td>neutral</td>
-<td>0.10</td>
-</tr>
-<tr>
-<td>any other label</td>
-<td>0.10</td>
+<td><code>Languages Switcher</code></td>
+<td>The user asks Nadine to speak another language</td>
+<td>A language name</td>
+<td>Matches the name, or any word of a multi-word name, against the <code>Language</code> enum and calls back into the main process to switch STT and TTS. Returns a sentence confirming the new language.</td>
+<td>–</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Decision</strong> (<code>should_store</code>)</p>
+<p><code>StatementCategories</code> (greeting, farewell, insult, complement, mapped to smile, wave, and anger animations) exists in <code>tools.py</code> but is not registered, so the agent never sees it. An image-generation tool is present only as commented-out code.</p>
+<p>Tool observations are written as instructions to Nadine ("Tell the human 'I am smiling now'") rather than as data, which is how a physical action and its verbal acknowledgment stay in one turn.</p>
+<hr />
+<h2 id="user-identity-emotion-and-language">User Identity, Emotion, and Language<a class="headerlink" href="#user-identity-emotion-and-language" title="Permanent link">&para;</a></h2>
 <ul>
-<li>If the user has no stored scenes yet (first meeting), the scene is always stored.</li>
-<li>Otherwise the scene is stored when <code>memorability ≥ arousal_threshold</code>.</li>
-<li><code>main.py</code> additionally enforces a 15 s cooldown per user between stores.</li>
-</ul>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>arousal_threshold</code> – config.yaml: 0.25 (lowered from 0.40 to capture more everyday moments); code fallback: 0.3.</li>
-<li><code>memorability_check_interval</code> – config.yaml: 3.0 s; code fallback: 2.0 s.</li>
-</ul>
-<p>This module loads only CLIP (retrieval embeddings) and Moondream2 (scene descriptions); OpenFace is not needed.</p>
-<h3 id="vision-fallback-selectivememorymodule"><code>vision</code> (fallback) – <code>SelectiveMemoryModule</code><a class="headerlink" href="#vision-fallback-selectivememorymodule" title="Permanent link">&para;</a></h3>
-<p>Kept for comparison. It combines facial emotion salience with scene novelty.</p>
-<p><strong>Emotion analysis</strong></p>
-<ul>
-<li><a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace 3.0</a> (<code>MultitaskPredictor</code> + <code>FaceDetector</code>) with the weights in <code>perception/weights/</code>, run on a padded face crop.</li>
-<li>Produces probabilities over <code>['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>.</li>
-<li><code>happy_boost_factor</code> multiplies the <code>happy</code> probability and rescales the others, as a stopgap for OpenFace's under-detection of happiness.</li>
-</ul>
-<p><strong>Emotion salience</strong></p>
-<p>Given a probability <span class="arithmatex">\(p_e\)</span> and a per-emotion threshold <span class="arithmatex">\(t_e\)</span>:</p>
-<div class="arithmatex">\[
-\text{salience}(p_e, t_e) = \max\left(0, \frac{p_e - t_e}{1 - t_e}\right)
-\]</div>
-<p>The per-emotion thresholds are code defaults in <code>SelectiveMemoryModule</code> (not read from config): <code>neutral</code> 1.0, <code>happy</code> 0.5, <code>sad</code> 0.7, <code>surprise</code> 0.7, <code>anger</code> 0.7, <code>contempt</code> 0.7, <code>fear</code> 0.8, <code>disgust</code> 0.8. The final emotion salience is the maximum over the active set <code>['happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>; the emotion that produced it is the dominant emotion.</p>
-<p><strong>Novelty</strong></p>
-<ol>
-<li>Compute the CLIP embedding of the current frame.</li>
-<li>Load all previous scene embeddings for the user from <code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/embeddings/</code>.</li>
-<li>Novelty score = minimum over stored scenes of <span class="arithmatex">\(1 - \text{cosine similarity}\)</span>; higher means more novel.</li>
-<li>Novelty salience uses the same threshold mapping with <code>novelty_threshold</code>.</li>
-</ol>
-<p><strong>Combined memorability</strong></p>
-<div class="arithmatex">\[
-\text{memorability} = w_{\text{emotion}} \cdot \text{emotion\_salience} + w_{\text{novelty}} \cdot \text{novelty\_salience}
-\]</div>
-<p>The scene is stored when <code>memorability ≥ memorability_threshold</code>, subject to the same 15 s cooldown.</p>
-<p><strong>Parameters</strong> (config.yaml value, code fallback in parentheses)</p>
-<ul>
-<li><code>w_emotion</code> 0.8 (0.5), <code>w_novelty</code> 0.2 (0.5)</li>
-<li><code>novelty_threshold</code> 0.45 (0.3)</li>
-<li><code>memorability_threshold</code> 0.4 (0.5)</li>
-<li><code>happy_boost_factor</code> 1.2 (1.0)</li>
+<li><code>user_id</code> defaults to <code>unknown</code> and is set by <code>Perception.user_recognized()</code> when a name arrives on <code>nadine/user/name</code>. The ID selects the memory collection and appears in the prompt as the user's name. This repository's perception module does not publish names, so in this build the ID changes only if an external publisher provides one.</li>
+<li><code>user_emotion</code> defaults to <code>neutral</code> and is set from <code>nadine/user/emotion</code>; it is passed into the prompt as text and lowercased.</li>
+<li>Language is owned by the main process. The UI combo box, the <code>Languages Switcher</code> tool, and <code>set_language</code> all update the STT language; the reply is published to control with the language's locale tag so TTS speaks it explicitly. Before publishing, <code>MQTTCommunication.ensure_language()</code> detects the reply's language with <code>fast-langdetect</code> and translates it with Google Translate if it does not match. When the session language is not English, the UI shows English translations of both the input and the reply.</li>
+<li>The singing tool is told the current language each turn so it offers only songs in that language, English or French.</li>
 </ul>
 <hr />
-<h2 id="shared-components">Shared Components<a class="headerlink" href="#shared-components" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Scene embedding (CLIP)</strong> – <code>openai/clip-vit-base-patch32</code> embeds the full RGB frame; embeddings are <span class="arithmatex">\(L_2\)</span>-normalized for cosine comparisons. The interaction layer uses the same model for visual-memory retrieval.</li>
-<li><strong>Scene description (VLM)</strong> – <code>vikhyatk/moondream2</code>, pinned to revision <code>2025-06-21</code>, generates a one-sentence caption for each stored scene. If the model fails to load, storage proceeds without a description.</li>
-<li>All models are loaded once at initialization on the best available device (<code>cuda:0</code>, then MPS, then CPU). Ollama fills GPU 1 first, so perception models take GPU 0.</li>
-</ul>
-<hr />
-<h2 id="storage-layout">Storage Layout<a class="headerlink" href="#storage-layout" title="Permanent link">&para;</a></h2>
-<p>For each user, memorable scenes are stored under:</p>
-<p><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/</code></p>
-<p>Within that directory:</p>
-<ul>
-<li><strong><code>images/</code></strong>  </li>
-<li>Raw RGB images (no bounding boxes drawn).  </li>
-<li>
-<p>Filename: <code>scene_YYYYMMDD_HHMMSS.jpg</code></p>
-</li>
-<li>
-<p><strong><code>embeddings/</code></strong>  </p>
-</li>
-<li>Numpy <code>.npy</code> files with CLIP embeddings.  </li>
-<li>
-<p>Filename: <code>scene_YYYYMMDD_HHMMSS_embedding.npy</code></p>
-</li>
-<li>
-<p><strong><code>metadata/</code></strong>  </p>
-</li>
-<li>JSON files, filename <code>scene_YYYYMMDD_HHMMSS_metadata.json</code>. Common fields: <code>scene_id</code>, <code>timestamp</code>, <code>image_path</code>, <code>memorability</code>, <code>description</code>.</li>
-<li>Under <code>pad_arousal</code>: <code>emotion_label</code>, <code>intensity</code>, and a human-readable <code>reason</code> string.</li>
-<li>Under <code>vision</code>: <code>emotion_salience</code>, <code>novelty_salience</code>, and the full <code>emotion_probs</code> distribution.</li>
-</ul>
-<p>This structure lets the interaction layer's memory retrieval agent discover and rank scenes for a user.</p>
-<hr />
-<h2 id="configuration-hooks">Configuration Hooks<a class="headerlink" href="#configuration-hooks" title="Permanent link">&para;</a></h2>
-<p>Tune selective memory via the <code>selective_memory</code> block of <code>perception/config.yaml</code>:</p>
-<ul>
-<li><code>policy</code> – <code>"pad_arousal"</code> (default) or <code>"vision"</code>.</li>
-<li><code>arousal_threshold</code> – <code>pad_arousal</code> store threshold (0.25).</li>
-<li><code>w_emotion</code>, <code>w_novelty</code>, <code>novelty_threshold</code>, <code>memorability_threshold</code>, <code>happy_boost_factor</code> – <code>vision</code> policy parameters.</li>
-<li><code>memorability_check_interval</code> – seconds between checks per user (3.0).</li>
-</ul>
-<p>Constants that require a code change:</p>
-<ul>
-<li><code>SCENE_STORE_COOLDOWN</code> (15 s) and <code>FACE_STORE_COOLDOWN</code> (10 s) in <code>main.py</code>.</li>
-<li><code>MEMORABILITY_AROUSAL_BASE</code> and the per-emotion thresholds in <code>selective_memory.py</code>.</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Differences in the Hybrid Cloud version (nadine_phd)</p>
-<ul>
-<li>The default policy is renamed <code>intensity</code> (<code>IntensityMemoryModule</code>, <code>intensity_threshold: 0.5</code>); <code>pad_arousal</code> is accepted as a legacy alias.</li>
-<li>Storage is event-driven by default: one evaluation per dialogue turn when a new <code>nadine/affect/state</code> arrives (<code>NADINE_STORAGE_TRIGGER=event</code>), instead of the frame-loop interval and cooldown (<code>interval</code>).</li>
-<li>The affect message also carries the user's expressed emotion (<code>user_label</code>, <code>user_intensity</code>), the user's utterance (<code>user_message</code>, stamped onto the scene so it can be retrieved by what was said), and a <code>suppress_storage</code> flag for recall turns. <code>NADINE_STORAGE_EMOTION_SOURCE</code> selects <code>user</code> (default) or <code>robot</code> as the driving signal.</li>
-<li><code>store_first_meeting_scene()</code> stores a dedicated <code>scene_type: "first_meeting"</code> scene on first face registration; other scenes are <code>"moment"</code>.</li>
-<li><code>NADINE_ENABLE_VISUAL_MEMORY=0</code> disables the module entirely (A/B study condition), and <code>fer_sampler.py</code> logs continuous facial-emotion samples for offline analysis.</li>
-</ul>
-</div>
+<h2 id="timing-and-logging">Timing and Logging<a class="headerlink" href="#timing-and-logging" title="Permanent link">&para;</a></h2>
+<p>Every turn logs the user input, the tool calls and their results, the reply, and the elapsed seconds through the shared <code>LoggersFactory</code> logger. The executor runs with <code>verbose=True</code>, so the model's reasoning and actions are printed to the terminal. <code>LANGCHAIN_API_KEY</code> in the environment enables LangSmith tracing if the LangChain tracing variables are also set.</p>
 
 
 
