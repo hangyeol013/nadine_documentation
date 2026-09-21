@@ -33,6 +33,8 @@ nav:
       - Runtime & MQTT: interaction-runtime.md
       - Agents & Graph: interaction-agents.md
       - Memory & RAG: interaction-memory-rag.md
+      - Multimodal Memory (nadine_phd): interaction-multimodal-memory.md
+      - Cloud Configuration (nadine_phd): interaction-cloud-config.md
   - Control Layer:
       - Overview: control-overview.md
       - Runtime & MQTT: control-runtime.md
