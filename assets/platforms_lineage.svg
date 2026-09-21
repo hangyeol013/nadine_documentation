@@ -66,8 +66,8 @@
 <text x="42" y="300" class="lane ra">ReAct family</text>
 <rect x="34" y="316" width="146" height="84" rx="6" class="n-ra"/>
 <text x="107.0" y="345.0" text-anchor="middle" class="t">SoR-ReAct v2</text>
-<text x="107.0" y="363.0" text-anchor="middle" class="t">demo deployments</text>
-<text x="107.0" y="381.0" text-anchor="middle" class="s">2025</text>
+<text x="107.0" y="363.0" text-anchor="middle" class="s">Social Robotics ReAct</text>
+<text x="107.0" y="381.0" text-anchor="middle" class="s">2025 demo deployments</text>
 <rect x="192" y="316" width="146" height="84" rx="6" class="n-ra-hi"/>
 <text x="265.0" y="345.0" text-anchor="middle" class="b">ReAct, Cloud</text>
 <text x="265.0" y="363.0" text-anchor="middle" class="t">recording build</text>
