@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -387,6 +389,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -861,6 +891,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Intent Classifier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-classification-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-classification overrides
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -987,10 +1034,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#search-agent-get_search_results" class="md-nav__link">
+  <a href="#tool-agent-contract" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Search Agent (get_search_results)
+        Tool-agent contract
       
     </span>
   </a>
@@ -998,10 +1045,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#vision-agent-get_vision_results" class="md-nav__link">
+  <a href="#search-agent-search_agent-get_search_results" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Vision Agent (get_vision_results)
+        Search Agent (search_agent, get_search_results)
       
     </span>
   </a>
@@ -1009,10 +1056,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#knowledge-rag-agent-get_knowledge_retrieval" class="md-nav__link">
+  <a href="#vision-agent-vision_agent-get_vision_results" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Knowledge RAG Agent (get_knowledge_retrieval)
+        Vision Agent (vision_agent, get_vision_results)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-rag-agent-knowledge_rag_agent-get_knowledge_retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge RAG Agent (knowledge_rag_agent, get_knowledge_retrieval)
       
     </span>
   </a>
@@ -1262,6 +1320,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Intent Classifier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-classification-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-classification overrides
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1388,10 +1463,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#search-agent-get_search_results" class="md-nav__link">
+  <a href="#tool-agent-contract" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Search Agent (get_search_results)
+        Tool-agent contract
       
     </span>
   </a>
@@ -1399,10 +1474,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#vision-agent-get_vision_results" class="md-nav__link">
+  <a href="#search-agent-search_agent-get_search_results" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Vision Agent (get_vision_results)
+        Search Agent (search_agent, get_search_results)
       
     </span>
   </a>
@@ -1410,10 +1485,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#knowledge-rag-agent-get_knowledge_retrieval" class="md-nav__link">
+  <a href="#vision-agent-vision_agent-get_vision_results" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Knowledge RAG Agent (get_knowledge_retrieval)
+        Vision Agent (vision_agent, get_vision_results)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#knowledge-rag-agent-knowledge_rag_agent-get_knowledge_retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Knowledge RAG Agent (knowledge_rag_agent, get_knowledge_retrieval)
       
     </span>
   </a>
@@ -1486,25 +1572,27 @@
 <li>
 <p>Holds:</p>
 <ul>
-<li><code>messages</code> (chat history)</li>
-<li><code>user_info</code> (ID, name, profile)</li>
-<li><code>conversation_memory</code>, <code>episode_memory</code></li>
-<li><code>visual_memory</code></li>
+<li><code>messages</code> (chat history), <code>intent</code>, <code>language</code></li>
+<li><code>user_info</code> (ID, name, profile), <code>name_confirmation</code>, <code>name_checked</code></li>
+<li><code>affect</code> (personality, emotion, mood, params)</li>
+<li><code>conversation_memory</code>, <code>episode_memory</code>, <code>visual_memory</code></li>
 <li><code>search_results</code>, <code>vision_results</code>, <code>knowledge_retrieval</code></li>
-<li><code>intent</code>, <code>affect</code>, <code>plan_steps</code>, <code>language</code></li>
-<li><code>name_confirmation</code>, <code>name_checked</code></li>
+<li><code>assistant_note</code> (memory update status text)</li>
+<li><code>plan_steps</code> (orchestrator plan)</li>
+<li><code>final_message</code> (response text)</li>
+<li><code>first_greeting_done</code>, <code>greeted_user_id</code> (greeting bookkeeping)</li>
 </ul>
 </li>
 <li>
-<p><strong>Top-level nodes</strong>:</p>
+<p><strong>Top-level nodes</strong> (node name, followed by the function that implements it):</p>
 </li>
-<li><code>intention_classifier</code></li>
-<li><code>memory_update_agent</code> / <code>memory_retrieve_agent</code> (ChromaDB‑backed textual memory + CLIP‑backed visual memory)</li>
-<li><code>affective_appraisal</code> / <code>affective_update</code></li>
-<li><code>orchestrator</code></li>
-<li>Tool agents: <code>search_agent</code>, <code>vision_agent</code>, <code>knowledge_rag_agent</code></li>
+<li><code>intention_classifier</code> (<code>classify_intent</code>)</li>
+<li><code>memory_update_agent</code> (<code>update_memory</code>) and <code>memory_retrieve_agent</code> (<code>retrieve_memory</code>): ChromaDB-backed textual memory plus CLIP-backed visual memory</li>
+<li><code>affective_appraisal</code> (<code>affective_appraisal</code>) and <code>affective_update</code> (<code>affective_update</code>)</li>
+<li><code>orchestrator</code> (<code>orchestrate</code>)</li>
+<li>Tool agents: <code>search_agent</code> (<code>get_search_results</code>), <code>vision_agent</code> (<code>get_vision_results</code>), <code>knowledge_rag_agent</code> (<code>get_knowledge_retrieval</code>)</li>
 <li>
-<p><code>response_agent</code></p>
+<p><code>response_agent</code> (<code>get_final_response</code>)</p>
 </li>
 <li>
 <p><strong>Execution entry</strong>:</p>
@@ -1517,7 +1605,7 @@
 <p>Responsibilities:</p>
 <ul>
 <li>Reads the latest user message from <code>state["messages"][-1].content</code>.  </li>
-<li>Uses a <strong>fine-tuned</strong> LLM (via <code>load_agent_llm("intention_classifier")</code>, served by vLLM) to classify the message into one of:</li>
+<li>Uses a <strong>fine-tuned</strong> LLM (via <code>load_agent_llm("intention_classifier")</code>, the <code>nadine-intent_classifier</code> Ollama model) to classify the message into one of:</li>
 <li><code>first_greeting</code></li>
 <li><code>update_user_info</code></li>
 <li><code>end_conversation</code></li>
@@ -1526,8 +1614,16 @@
 </ul>
 <p>Special behavior:</p>
 <ul>
-<li>If <code>language_change</code> is detected, tries to infer the requested language from the message content and updates <code>state["language"]</code> accordingly, then collapses intent back to <code>continue_conversation</code>.</li>
+<li>If <code>language_change</code> is detected, tries to infer the requested language from the message content, updates <code>state["language"]</code> and the persisted runtime language, then collapses intent back to <code>continue_conversation</code>.</li>
 <li>If <code>state["name_confirmation"]</code> contains <code>similar_names</code> and <code>name_checked</code> is <code>False</code>, forces <code>intent = "update_user_info"</code> so memory update logic can resolve the name.</li>
+</ul>
+<h3 id="post-classification-overrides">Post-classification overrides<a class="headerlink" href="#post-classification-overrides" title="Permanent link">&para;</a></h3>
+<p>After the model's label is validated, deterministic rules correct the cases the classifier gets wrong most often:</p>
+<ul>
+<li><code>first_greeting</code> becomes <code>update_user_info</code> when the message contains a name introduction ("I'm Alex", "my name is", "call me"), so the memory update agent can extract the name. If no real name is found the agent stores nothing, so false positives are harmless.</li>
+<li><code>update_user_info</code> becomes <code>continue_conversation</code> when the message is a question about Nadine ("tell me about yourself", "who are you").</li>
+<li><code>end_conversation</code> becomes <code>continue_conversation</code> unless the message contains an explicit farewell word ("bye", "see you", "have to go now"), so future plans such as "I'm going to Paris" do not end the conversation.</li>
+<li><code>first_greeting</code> is only accepted once per user: <code>first_greeting_done</code> and <code>greeted_user_id</code> are set the first time, and a repeated greeting from the same user is downgraded to <code>continue_conversation</code>. When no user ID is known, greetings are never suppressed.</li>
 </ul>
 <p>Graph wiring:</p>
 <ul>
@@ -1542,17 +1638,17 @@
 <p><strong>Function</strong>: <code>retrieve_memory(state: CustomState) -&gt; CustomState</code></p>
 <ul>
 <li>If memory agents are disabled (<code>NADINE_ENABLE_MEMORY_AGENTS=0</code>), logs and returns immediately.  </li>
+<li>Retrieval only runs for a known user: if <code>user_info.user_name</code> is missing or <code>"Unknown"</code>, the node returns the state unchanged.  </li>
 <li>Otherwise:</li>
 <li>Calls <code>get_user_specific_memory(state)</code> from <code>memory_retrieval_agent.py</code>:<ul>
 <li>Loads user profile from disk (<code>user_info.json</code>).</li>
-<li>Queries Chroma DB for:</li>
+<li>Queries ChromaDB for:</li>
 <li>Best matching <strong>episode</strong> memory (events).</li>
 <li>Best matching <strong>conversation</strong> memory (past exchanges).</li>
 <li>Queries <strong>visual memory</strong> (memorable scenes) using CLIP similarity.</li>
 </ul>
 </li>
-<li>If name confirmation is needed, places details into <code>state["name_confirmation"]</code>.  </li>
-<li>Otherwise, updates:<ul>
+<li>Updates:<ul>
 <li><code>state["user_info"]</code></li>
 <li><code>state["conversation_memory"]</code></li>
 <li><code>state["episode_memory"]</code></li>
@@ -1578,7 +1674,7 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li>Calls <code>memory_update_agent(mem_state)</code> to:</li>
 <li>Extract user profile fields from conversation (name, company, location, hobbies, interests).</li>
 <li>Save/update <code>user_info.json</code> and <code>user_ids.json</code>.</li>
-<li>Optionally summarize and save episodic memory to Chroma.</li>
+<li>On <code>end_conversation</code>, summarize and save episodic memory to ChromaDB.</li>
 <li>Merges results back into <code>state</code>:</li>
 <li><code>user_info</code>, <code>name_checked</code>, <code>name_confirmation</code>, <code>episodic_memory</code> flags, etc.</li>
 <li>If <code>name_checked</code> and <code>user_info</code> are valid:</li>
@@ -1604,7 +1700,7 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li><strong>User shares their name</strong> (e.g., “My name is Alex”):  </li>
 <li>The intent classifier sets <code>intent = "update_user_info"</code>.  </li>
 <li><code>memory_update_agent</code> extracts <code>user_name="Alex"</code> and compares it against names in <code>user_ids.json</code> using fuzzy matching.</li>
-<li><strong>Three possible outcomes</strong> from <code>save_user_info</code>:</li>
+<li><strong>Four possible outcomes</strong> from <code>save_user_info</code>:</li>
 <li><strong>Strong match</strong> (score ≥ <code>HIGH_SIMILARITY_THRESHOLD</code>):  <ul>
 <li>Immediately link to the existing profile for that user ID.  </li>
 <li>Return updated <code>user_info</code> and <code>name_checked=True</code> with no <code>name_confirmation</code>.</li>
@@ -1618,6 +1714,10 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 </li>
 <li><strong>No match</strong> (below <code>LOW_SIMILARITY_THRESHOLD</code>):  <ul>
 <li>Proceed as a new user; create/update a profile with <code>user_name</code> and mark <code>name_checked=True</code>.</li>
+</ul>
+</li>
+<li><strong>Identity conflict</strong>: face recognition already loaded a known user (say "Alex") but the person states a different, unmatched name ("Han").  <ul>
+<li>A new user ID is generated for the stated name instead of overwriting Alex's profile.</li>
 </ul>
 </li>
 <li><strong>User answers the confirmation question</strong>:  </li>
@@ -1650,6 +1750,7 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li>Take the latest user message and contextual info (e.g. retrieved episode memories).  </li>
 <li>Produce a new emotion label/intensity.</li>
 <li>Calls <code>update_affect_state(...)</code> to update PAD mood/emotion state.</li>
+<li>Publishes the new emotion to <code>nadine/affect/state</code> as <code>{"label", "arousal", "intensity"}</code>; the perception layer's selective memory uses it to decide whether the current scene is worth storing.</li>
 </ul>
 <p>Graph wiring:</p>
 <ul>
@@ -1678,17 +1779,17 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li><strong>Purpose</strong>: Summarizes conversation history to provide context to the orchestrator without passing the full chat history (which can cause invalid JSON output with long conversations).</li>
 <li><strong>Location</strong>: <code>nadine/agents/context_summarizer.py</code></li>
 <li><strong>Behavior</strong>:</li>
-<li>Takes chat history and the latest user message.</li>
-<li>Generates a concise summary/contextualized question that includes relevant context from the conversation.</li>
-<li>Returns a standalone question that can be understood without the full history.</li>
-<li>If no history exists or the question is standalone, returns the original question unchanged.</li>
-<li><strong>Usage</strong>: Called automatically by the orchestrator when chat history exists.</li>
+<li>Receives only the chat history (all messages except the latest one).</li>
+<li>Asks the <code>contextualizer</code> model (<code>ft_episodic_memory</code>) to summarize the conversation in one sentence.</li>
+<li>Returns "No context found" when there is nothing to summarize.</li>
+<li><strong>Usage</strong>: Called by the orchestrator when chat history exists; the sentence is passed to the orchestration model as <code>context</code> alongside the latest user message.</li>
 </ul>
 <h3 id="orchestrator-orchestrate">Orchestrator (<code>orchestrate</code>)<a class="headerlink" href="#orchestrator-orchestrate" title="Permanent link">&para;</a></h3>
 <p><strong>Function</strong>: <code>orchestrate(state: CustomState) -&gt; CustomState</code></p>
 <ul>
 <li>Ensures <code>state["plan_steps"]</code> is a list.  </li>
 <li>If a plan already exists, returns immediately.  </li>
+<li><strong>Fast path</strong>: for <code>end_conversation</code> and <code>first_greeting</code> it leaves the plan empty, so the graph goes straight to <code>response_agent</code> without calling the contextualizer or the orchestration model.  </li>
 <li>Otherwise:</li>
 <li><strong>Context Generation</strong>: If chat history exists, calls <code>contextualizer()</code> to generate conversation context (prevents invalid JSON from long histories).</li>
 <li>Builds an <code>orchestration_agent()</code> chain from <code>orchestration_agent.py</code>.  </li>
@@ -1711,56 +1812,23 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li>If <code>plan_steps</code> empty → <code>response_agent</code>.  </li>
 <li>Else → first planned agent, e.g. <code>search_agent</code>, <code>vision_agent</code>, or <code>knowledge_rag_agent</code>.</li>
 </ul>
-<h3 id="search-agent-get_search_results">Search Agent (<code>get_search_results</code>)<a class="headerlink" href="#search-agent-get_search_results" title="Permanent link">&para;</a></h3>
-<p><strong>Function</strong>: <code>get_search_results(state: CustomState) -&gt; CustomState</code></p>
+<h3 id="tool-agent-contract">Tool-agent contract<a class="headerlink" href="#tool-agent-contract" title="Permanent link">&para;</a></h3>
+<p>The three tool agents share one contract. Each is entered from <code>orchestrator</code> when it is the first step of the plan, takes its query from <code>state["plan_steps"][0]["message"]</code>, writes its result to its own state field, and pops the executed step from <code>plan_steps</code>. The conditional edge after every tool agent is the same: if <code>plan_steps</code> is now empty, go to <code>response_agent</code>; otherwise go back to <code>orchestrator</code>, which dispatches the next planned step without re-planning.</p>
+<h3 id="search-agent-search_agent-get_search_results">Search Agent (<code>search_agent</code>, <code>get_search_results</code>)<a class="headerlink" href="#search-agent-search_agent-get_search_results" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Uses <code>search_agent()</code> to run a question-answering pipeline (web or external search).  </li>
-<li>Takes <code>state["plan_steps"][0]["message"]</code> as the query.  </li>
-<li>Stores the result in <code>state["search_results"]</code>.  </li>
-<li>Pops the executed step from <code>plan_steps</code>.</li>
+<li>Uses <code>search_agent()</code> to run a question-answering pipeline (web search routed by <code>search_router</code>, answer summarized by <code>search_answer</code>).  </li>
+<li>Result field: <code>state["search_results"]</code>.</li>
 </ul>
-<p>Graph wiring:</p>
+<h3 id="vision-agent-vision_agent-get_vision_results">Vision Agent (<code>vision_agent</code>, <code>get_vision_results</code>)<a class="headerlink" href="#vision-agent-vision_agent-get_vision_results" title="Permanent link">&para;</a></h3>
 <ul>
-<li>From <code>orchestrator</code> → <code>search_agent</code>.  </li>
-<li>Conditional edge:</li>
-<li>If <code>plan_steps</code> is now empty → <code>response_agent</code>.  </li>
-<li>Else → <code>orchestrator</code> (to schedule remaining steps).</li>
+<li>If vision agents are disabled (<code>NADINE_ENABLE_VISION_AGENT=0</code>), sets <code>state["vision_results"]</code> to a fallback string and pops the step.  </li>
+<li>Otherwise calls <code>vision_agent()</code> with the planned question.  </li>
+<li>Result field: <code>state["vision_results"]</code>.</li>
 </ul>
-<h3 id="vision-agent-get_vision_results">Vision Agent (<code>get_vision_results</code>)<a class="headerlink" href="#vision-agent-get_vision_results" title="Permanent link">&para;</a></h3>
-<p><strong>Function</strong>: <code>get_vision_results(state: CustomState) -&gt; CustomState</code></p>
+<h3 id="knowledge-rag-agent-knowledge_rag_agent-get_knowledge_retrieval">Knowledge RAG Agent (<code>knowledge_rag_agent</code>, <code>get_knowledge_retrieval</code>)<a class="headerlink" href="#knowledge-rag-agent-knowledge_rag_agent-get_knowledge_retrieval" title="Permanent link">&para;</a></h3>
 <ul>
-<li>If vision agents are disabled (<code>NADINE_ENABLE_VISION_AGENT=0</code>):</li>
-<li>Logs and sets <code>state["vision_results"]</code> to a fallback string.  </li>
-<li>Otherwise:</li>
-<li>Calls <code>vision_agent()</code> with the user question from <code>plan_steps</code>.  </li>
-<li>Stores the result in <code>state["vision_results"]</code>.  </li>
-<li>Pops the executed step from <code>plan_steps</code>.</li>
-</ul>
-<p>Graph wiring:</p>
-<ul>
-<li>From <code>orchestrator</code> → <code>vision_agent</code>.  </li>
-<li>Conditional edge:</li>
-<li>If <code>plan_steps</code> empty → <code>response_agent</code>.  </li>
-<li>Else → <code>orchestrator</code>.</li>
-</ul>
-<h3 id="knowledge-rag-agent-get_knowledge_retrieval">Knowledge RAG Agent (<code>get_knowledge_retrieval</code>)<a class="headerlink" href="#knowledge-rag-agent-get_knowledge_retrieval" title="Permanent link">&para;</a></h3>
-<p><strong>Function</strong>: <code>get_knowledge_retrieval(state: CustomState) -&gt; CustomState</code></p>
-<ul>
-<li>Calls <code>get_related_knowledge(state)</code> from <code>knowledge_RAG_agent.py</code>.  </li>
-<li>This function:</li>
-<li>Builds/loads a Chroma vectorstore from <code>interaction/db/knowledge/rag_files/</code>.  </li>
-<li>Uses <code>OllamaEmbeddings</code> to embed knowledge sections.  </li>
-<li>Retrieves top‑k relevant chunks for the current question.  </li>
-<li>Optionally displays related visuals in the UI.  </li>
-<li>Stores the retrieved text in <code>state["knowledge_retrieval"]</code>.  </li>
-<li>Pops the executed step from <code>plan_steps</code>.</li>
-</ul>
-<p>Graph wiring:</p>
-<ul>
-<li>From <code>orchestrator</code> → <code>knowledge_rag_agent</code>.  </li>
-<li>Conditional edge:</li>
-<li>If <code>plan_steps</code> empty → <code>response_agent</code>.  </li>
-<li>Else → <code>orchestrator</code>.</li>
+<li>Calls <code>get_related_knowledge(state)</code> from <code>knowledge_RAG_agent.py</code>, which builds or loads a ChromaDB vectorstore from <code>interaction/db/knowledge/rag_files/</code>, embeds sections with <code>OllamaEmbeddings</code>, retrieves the most relevant chunk for the current question, and optionally displays a related visual in the UI.  </li>
+<li>Result field: <code>state["knowledge_retrieval"]</code>.</li>
 </ul>
 <hr />
 <h2 id="response-agent">Response Agent<a class="headerlink" href="#response-agent" title="Permanent link">&para;</a></h2>
@@ -1775,8 +1843,8 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li>Search, vision, knowledge results.</li>
 <li>Current time/date.</li>
 <li>Affective state (emotion + mood text).</li>
-<li>Optional visual memory image (encoded as a data URL).</li>
-<li>Sends a system prompt describing Nadine’s persona and language rules.</li>
+<li>Optional visual memory: the stored scene image (encoded as a data URL) plus a "VISUAL MEMORY" text block carrying the scene description generated by perception.</li>
+<li>Sends a system prompt describing Nadine’s persona and language rules, including a recall rule: when the user asks whether Nadine remembers them or a previous meeting, the model weaves specific visual details from the attached scene into the reply as a memory of its own, without saying that it sees an image.</li>
 <li>Invokes the configured <code>response_llm</code>.</li>
 <li>Returns the final message text.</li>
 </ul>
@@ -1827,7 +1895,8 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
 <li><code>memory_update_agent</code> (for profile updates) or <code>memory_retrieve_agent</code> (for context recall).  </li>
 <li><code>affective_appraisal</code> → update emotion/mood.  </li>
 <li><code>orchestrator</code> → decide which sub-agents (if any) to call:</li>
-<li><strong>Contextualizer</strong> (if history exists) → generates conversation context.</li>
+<li>Fast path: <code>first_greeting</code> and <code>end_conversation</code> go straight to <code>response_agent</code>.</li>
+<li><strong>Contextualizer</strong> (if history exists) → one-sentence summary of the history.</li>
 <li>Orchestrator uses context + user message to route requests.</li>
 <li><code>search_agent</code> / <code>vision_agent</code> / <code>knowledge_rag_agent</code> (optional).  </li>
 <li><code>response_agent</code> → final reply.  </li>
@@ -1899,7 +1968,11 @@ Wrapper around <code>memory_update_agent(state)</code> in <code>memory_update_ag
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

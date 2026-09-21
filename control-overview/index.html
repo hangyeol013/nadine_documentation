@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -387,6 +389,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -1210,87 +1240,87 @@
 
 
 <h1 id="control-layer-overview">Control Layer – Overview<a class="headerlink" href="#control-layer-overview" title="Permanent link">&para;</a></h1>
-<p>The control layer drives Nadine’s <strong>physical embodiment</strong>: head/eye pose, gestures, and speech (audio + lip movements).</p>
+<p>The control layer drives Nadine's <strong>physical embodiment</strong>: head/eye pose, gestures, and speech (audio + lip movements).</p>
 <p>If you are new to the project, start with <strong>Project Overview</strong>, then use this page to understand what the control component does and how to run it.</p>
 <hr />
 <h2 id="responsibilities">Responsibilities<a class="headerlink" href="#responsibilities" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Receive high‑level commands</strong> via MQTT from interaction/perception:  </li>
-<li>speak, look_at, play animation</li>
-<li><strong>Execute joint‑level motion</strong> using XML animation files and per‑joint trajectories</li>
-<li><strong>Generate speech audio and lip movements</strong> using <a href="https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech">Azure Text-to-Speech</a> and a lip animation generator</li>
+<li><strong>Receive high-level commands</strong> via MQTT from the interaction and perception layers:  </li>
+<li><code>speak</code>, <code>look_at</code>, <code>look_at_target</code>, <code>animation</code></li>
+<li><strong>Execute joint-level motion</strong> using XML animation files and per-joint trajectories</li>
+<li><strong>Generate speech audio and lip movements</strong> with <a href="https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech">Azure Text-to-Speech</a>; the lips are driven live from Azure viseme events</li>
 <li><strong>Send feedback events</strong> (start/end speaking) back to the interaction layer</li>
 </ul>
 <hr />
 <h2 id="files-and-modules">Files and Modules<a class="headerlink" href="#files-and-modules" title="Permanent link">&para;</a></h2>
 <p>Main files under <code>control/</code>:</p>
 <ul>
-<li><strong><code>main.py</code></strong> – entrypoint; loads config, parses CLI arguments, and starts <code>NadineServer</code>.</li>
-<li><strong><code>config.yaml</code></strong> – default paths for voice data and animation XMLs.</li>
+<li><strong><code>main.py</code></strong> – entrypoint; loads <code>control/.env</code> and <code>config.yaml</code>, parses CLI arguments, and starts <code>NadineServer</code>.</li>
+<li><strong><code>config.yaml</code></strong> – animation XML path, TTS provider, and legacy voice-path keys.</li>
+<li><strong><code>checker.ini</code></strong> – motion-controller profile: serial port, channel count, and one line per channel with name, default, min, and max.</li>
 <li><strong><code>run.sh</code></strong> – convenience script to activate the <code>nadine_new</code> env and run <code>main.py</code>.</li>
 </ul>
 <p>Key modules in <code>nadine/control/</code>:</p>
 <ul>
 <li><strong><code>NadineServer.py</code></strong> – owns the MQTT client, subscribes to control topics, and dispatches messages to <code>AgentControlHandler</code>.</li>
-<li><strong><code>AgentControlHandler.py</code></strong> – high‑level adapter that maps commands (look_at, speak, playAnimation) to <code>NadineControl</code> methods.</li>
-<li><strong><code>NadineControl.py</code></strong> – core robot controller; loads animation library, initializes joints, manages idle movements, and coordinates TTS + lip animation.</li>
-<li><strong><code>Animations.py</code></strong> – <code>AnimationLibrary</code> for loading/querying animation sequences from XML.</li>
-<li><strong><code>AzureTTS.py</code></strong> – Azure Text‑to‑Speech integration and lip animation generation.</li>
-<li><strong><code>LipAnimationGenerator.py</code></strong> – converts audio/phoneme data into mouth/jaw trajectories.</li>
+<li><strong><code>AgentControlHandler.py</code></strong> – thin adapter that maps commands (<code>lookAtPosition</code>, <code>lookAtTarget</code>, <code>speak</code>, <code>touchTarget</code>) to <code>NadineControl</code> methods.</li>
+<li><strong><code>NadineControl.py</code></strong> – core robot controller; loads the animation library, initializes joints, runs the 30 ms motion loop, and coordinates TTS and lip-sync.</li>
+<li><strong><code>Animations.py</code></strong> – <code>AnimationLibrary</code> for loading animation sequences from XML.</li>
+<li><strong><code>AzureTTS.py</code></strong> – Azure Text-to-Speech integration; receives viseme events and updates the lip channels.</li>
+<li><strong><code>LipAnimationGenerator.py</code></strong> – lookup table from Azure viseme IDs (0–21) to the three lip motor values.</li>
 <li><strong><code>Joint.py</code></strong> – simple joint model for servo trajectories.</li>
-<li><strong><code>SerialComm.py</code></strong>, <strong><code>Checker.py</code></strong>, <strong><code>StructDef.py</code></strong> – low‑level communication and playback protocol with Nadine’s motion controller.</li>
+<li><strong><code>SerialComm.py</code></strong>, <strong><code>Checker.py</code></strong>, <strong><code>StructDef.py</code></strong> – low-level serial protocol with Nadine's motion controller.</li>
 <li><strong><code>XMLAnimations/</code></strong> – XML animation scenes defining gestures and postures.</li>
 </ul>
+<p>Animations are addressed by the <code>&lt;animation_name&gt;</code> element inside each XML file, not by the file name. For example, <code>LOOKUP_PostureDefault.xml</code> defines the animation <code>LOOKUPPostureDefault</code>.</p>
 <hr />
 <h2 id="how-to-run">How to Run<a class="headerlink" href="#how-to-run" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Environment</strong>: <code>nadine_new</code> conda environment (from <code>control/environment.yml</code>).  </li>
 <li><strong>Hardware</strong>:</li>
-<li>Nadine’s motion controller connected via serial (port configured in <code>SerialComm</code>/<code>Checker</code>).</li>
+<li>Nadine's motion controller on the serial port named in <code>checker.ini</code> (<code>/dev/ttyUSB0</code>, 115200 baud, 28 channels). The port is opened as soon as <code>NadineControl</code> initializes, so startup fails without it.</li>
 <li>Speakers connected to the control machine.  </li>
 <li><strong>Services</strong>: MQTT broker at <code>localhost</code> or <code>emqx</code>.  </li>
+<li><strong>Credentials</strong>: <code>control/.env</code> with <code>AZURE_SERVICE_KEY</code> and <code>AZURE_SERVICE_REGION</code> (see <strong>TTS settings</strong> in Runtime &amp; MQTT).</li>
 <li><strong>Paths</strong>:</li>
-<li><code>control/config.yaml</code> defines default voice and animation paths.</li>
+<li><code>control/config.yaml</code> sets the animation XML directory.</li>
 </ul>
 <h3 id="start-command">Start command<a class="headerlink" href="#start-command" title="Permanent link">&para;</a></h3>
 <p>From the control directory:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/home/miralab/Development/nadine_Jan_2026/control
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/home/miralab/Development/nadine_local/control
 conda<span class="w"> </span>activate<span class="w"> </span>nadine_new
 ./run.sh
 </code></pre></div>
 <p>or:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/home/miralab/Development/nadine_Jan_2026/control
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/home/miralab/Development/nadine_local/control
 conda<span class="w"> </span>activate<span class="w"> </span>nadine_new
 python3<span class="w"> </span>main.py
 </code></pre></div>
-<p>You can override paths on the command line:</p>
-<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>main.py<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-voicepath<span class="w"> </span>&lt;path_to_default_voice&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-voicepathGerman<span class="w"> </span>&lt;path_to_german_voice&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-voicepathFrench<span class="w"> </span>&lt;path_to_french_voice&gt;<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-animationXMLPath<span class="w"> </span>XMLAnimations
+<p><code>start_nadine.sh</code> at the project root starts control as its last step. You can override the animation directory on the command line:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>main.py<span class="w"> </span>-animationXMLPath<span class="w"> </span>XMLAnimations
 </code></pre></div>
+<p><code>main.py</code> also accepts <code>-voicepath</code>, <code>-voicepathGerman</code>, and <code>-voicepathFrench</code>. These are legacy options: the values are stored on <code>NadineServer</code> and never read, because speech comes from Azure TTS rather than local voice files.</p>
 <hr />
 <h2 id="configuration-controlconfigyaml">Configuration (<code>control/config.yaml</code>)<a class="headerlink" href="#configuration-controlconfigyaml" title="Permanent link">&para;</a></h2>
-<p>Control‑layer configuration lives under the <code>control:</code> key:</p>
+<p>Control-layer configuration lives under the <code>control:</code> key:</p>
 <ul>
-<li><strong><code>voice</code></strong></li>
-<li><code>default_path</code> – default (e.g. English) voice data.</li>
-<li><code>german_path</code> – German voice data.</li>
+<li><strong><code>animations</code></strong></li>
 <li>
-<p><code>french_path</code> – French voice data.</p>
+<p><code>animation_xml_path</code> – directory containing animation XML files (relative to <code>control/</code> or absolute). Defaults to <code>XMLAnimations</code>.</p>
 </li>
 <li>
-<p><strong><code>animations</code></strong></p>
+<p><strong><code>tts</code></strong></p>
 </li>
-<li><code>animation_xml_path</code> – directory containing animation XML files (relative to <code>control/</code> or absolute).</li>
+<li>
+<p><code>provider</code> – <code>"azure"</code>. The only provider implemented; voice, rate, and style are set in <code>AzureTTS.py</code>.</p>
+</li>
+<li>
+<p><strong><code>voice</code></strong></p>
+</li>
+<li><code>default_path</code>, <code>german_path</code>, <code>french_path</code> – legacy voice-file paths, empty by default and unused.</li>
 </ul>
-<p><code>main.py</code> loads this via <code>load_control_config()</code> and passes:</p>
-<ul>
-<li>Voice paths to <code>NadineServer</code>  </li>
-<li>Animation XML path to <code>AgentControlHandler</code> → <code>NadineControl.load_animation_library(...)</code></li>
-</ul>
+<p><code>main.py</code> loads this via <code>load_control_config()</code> and passes the animation XML path to <code>NadineServer</code> → <code>AgentControlHandler</code> → <code>NadineControl.load_animation_library(...)</code>.</p>
 <hr />
 <h2 id="where-to-go-next">Where to Go Next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1362,7 +1392,11 @@ python3<span class="w"> </span>main.py
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -387,6 +389,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -1219,39 +1249,41 @@
 <li><strong>Detect and track faces</strong> using <a href="https://docs.ultralytics.com/">YOLOv8</a>  </li>
 <li><strong>Recognize known users</strong> with <a href="https://github.com/deepinsight/insightface">InsightFace</a> and a local face database  </li>
 <li><strong>Publish user position and identity</strong> via MQTT to other layers  </li>
-<li><strong>Trigger visual memory updates</strong>, delegating memorability decisions to the selective-memory module</li>
+<li><strong>Store memorable scenes</strong> for each recognized user. Under the default policy the decision is driven by the affect state that the interaction layer publishes; under the fallback policy it is computed from facial emotion and scene novelty (see <strong>Selective Memory</strong>).</li>
 </ul>
 <hr />
 <h2 id="files-and-modules">Files and Modules<a class="headerlink" href="#files-and-modules" title="Permanent link">&para;</a></h2>
 <p>Main perception files under <code>perception/</code>:</p>
 <ul>
 <li><strong><code>main.py</code></strong>: main runtime loop (camera, detection, recognition, MQTT, selective memory integration).</li>
-<li><strong><code>config.yaml</code></strong>: configuration for MQTT, YOLO face model, and selective memory (weights/thresholds).</li>
-<li><strong><code>selective_memory.py</code></strong>: <code>SelectiveMemoryModule</code> class for computing memorability and writing memorable scenes.</li>
+<li><strong><code>config.yaml</code></strong>: configuration for MQTT, the YOLO face model, and the selective-memory policy and thresholds.</li>
+<li><strong><code>selective_memory.py</code></strong>: <code>PADArousalMemoryModule</code> (default policy) and <code>SelectiveMemoryModule</code> (vision fallback) for deciding memorability and writing memorable scenes.</li>
 <li><strong><code>utils.py</code></strong>: logging (<code>LoggersFactory</code>) and <code>user_info_init</code> helper.</li>
 <li><strong><code>run.sh</code></strong>: activates the <code>nadine</code> conda env and runs <code>main.py</code>.</li>
-<li><strong><code>models/</code> and <code>weights/</code></strong>: model checkpoints for YOLO and <a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace</a>/OpenFace‑based models.</li>
+<li><strong><code>models/</code></strong>: the YOLOv8 face checkpoint (<code>yolov8n-face.pt</code>). InsightFace's <code>buffalo_s</code> pack is downloaded automatically on first use.</li>
+<li><strong><code>weights/</code></strong>: <a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace 3.0</a> weights (<code>MTL_backbone.pth</code>, <code>Alignment_RetinaFace.pth</code>, landmark files), used only by the <code>vision</code> memory policy.</li>
 </ul>
 <hr />
 <h2 id="how-to-run">How to Run<a class="headerlink" href="#how-to-run" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Environment</strong>: <code>nadine</code> conda environment (from <code>interaction/environment.yml</code>).  </li>
-<li><strong>Hardware</strong>: Intel RealSense RGB‑D camera connected and accessible.  </li>
+<li><strong>Hardware</strong>: Intel RealSense RGB‑D camera connected and accessible. <code>main.py</code> exits at startup if the camera cannot be opened.  </li>
 <li><strong>Services</strong>: MQTT broker at <code>localhost</code> or <code>emqx</code> (default ports).  </li>
 <li><strong>Data layout</strong>: interaction DB at <code>interaction/db/memory/user_profiles/</code> (created automatically as needed).</li>
 </ul>
 <h3 id="start-command">Start command<a class="headerlink" href="#start-command" title="Permanent link">&para;</a></h3>
-<p>From the project root:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/home/miralab/Development/nadine_Jan_2026
-bash<span class="w"> </span>perception/run.sh
+<p><code>run.sh</code> runs <code>python3 main.py</code> with relative paths, so start it from the <code>perception/</code> directory:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/home/miralab/Development/nadine_local/perception
+./run.sh
 </code></pre></div>
 <p>This will:</p>
 <ul>
-<li>Activate <code>nadine</code> conda env  </li>
-<li>Run <code>python3 perception/main.py</code>  </li>
-<li>Start RealSense, YOLO, InsightFace, MQTT, and selective memory integration</li>
+<li>Activate the <code>nadine</code> conda env  </li>
+<li>Run <code>python3 main.py</code>  </li>
+<li>Start RealSense, YOLO, InsightFace, MQTT, and the selective-memory module</li>
 </ul>
+<p>In normal operation <code>start_nadine.sh</code> at the project root launches perception this way as its Step 2, after pre-warming the Ollama models, and waits 20 s for the perception models to load (see <strong>Project Overview / Usage</strong>).</p>
 <p>To stop, press <strong><code>q</code></strong> in the OpenCV window or interrupt the process with <strong><code>Ctrl+C</code></strong>.</p>
 <hr />
 <h2 id="configuration-perceptionconfigyaml">Configuration (<code>perception/config.yaml</code>)<a class="headerlink" href="#configuration-perceptionconfigyaml" title="Permanent link">&para;</a></h2>
@@ -1261,19 +1293,19 @@ bash<span class="w"> </span>perception/run.sh
 <li><code>primary_host</code>, <code>fallback_host</code>, <code>port</code>, <code>keepalive</code></li>
 <li><strong><code>yolo_face</code></strong></li>
 <li><code>model_path</code> (default <code>models/yolov8n-face.pt</code>)</li>
-<li><code>confidence</code> (detection threshold)</li>
+<li><code>confidence</code> – present in the file but currently not read; <code>main.py</code> calls the tracker with a hardcoded <code>conf=0.75</code>.</li>
 <li><strong><code>selective_memory</code></strong></li>
-<li><code>w_emotion</code>, <code>w_novelty</code></li>
-<li><code>novelty_threshold</code></li>
-<li><code>memorability_threshold</code></li>
-<li><code>memorability_check_interval</code></li>
+<li><code>policy</code> – <code>"pad_arousal"</code> (default) or <code>"vision"</code></li>
+<li><code>arousal_threshold</code> – used by the <code>pad_arousal</code> policy</li>
+<li><code>w_emotion</code>, <code>w_novelty</code>, <code>novelty_threshold</code>, <code>memorability_threshold</code>, <code>happy_boost_factor</code> – used by the <code>vision</code> policy</li>
+<li><code>memorability_check_interval</code> – seconds between memorability checks per user, both policies</li>
 </ul>
 <p><code>main.py</code> loads this via <code>load_perception_config()</code> into <code>_mqtt_cfg</code>, <code>_yolo_cfg</code>, and <code>_sm_cfg</code>.</p>
 <hr />
 <h2 id="where-to-go-next">Where to Go Next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li>See <strong>Perception Layer / Runtime &amp; MQTT</strong> for a step‑by‑step view of the frame loop and topic usage.  </li>
-<li>See <strong>Perception Layer / Selective Memory</strong> for details on memorability computation and scene storage.</li>
+<li>See <strong>Perception Layer / Selective Memory</strong> for the two storage policies and the scene storage layout.</li>
 </ul>
 
 
@@ -1340,7 +1372,11 @@ bash<span class="w"> </span>perception/run.sh
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

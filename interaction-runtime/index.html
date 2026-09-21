@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -387,6 +389,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -898,6 +928,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pre-graph-short-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-graph short-circuits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#graph-invocation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1244,6 +1285,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pre-graph-short-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-graph short-circuits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#graph-invocation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1318,6 +1370,7 @@
 <p><code>Nadine.__init__(nomqtt: bool)</code>:</p>
 <ul>
 <li>Loads environment variables from <code>interaction/.env</code>.  </li>
+<li>Reads the current language from <code>language_config</code> (default: French).  </li>
 <li>Creates:</li>
 <li><code>logger</code> via <code>LoggersFactory.getLogger()</code>.</li>
 <li><code>Translation</code> for multi-language translations.</li>
@@ -1388,8 +1441,8 @@
 <li><code>user_info</code> – default profile dict via <code>user_info_init(user_id)</code>.</li>
 <li><code>c_state</code> – current graph state (custom state dict).</li>
 <li><code>multi_agent_graph</code> – compiled LangGraph from <code>build_agent_graph()</code>.</li>
-<li><code>conversation_limit</code> – how many recent turns to keep in <code>chat_history</code>.</li>
-<li>Calls <code>warmup_llms()</code> to pre-initialize key LLMs.</li>
+<li><code>conversation_limit</code> – how many recent messages to keep in <code>chat_history</code> (4, i.e. two user–robot exchanges).</li>
+<li>Does not warm up models itself: the Ollama models are pre-warmed by <code>start_nadine.sh</code> before the interaction process starts (<code>warmup_llms</code> in <code>utils.py</code> is an unused helper).</li>
 </ul>
 <h3 id="state-refresh-name-confirmation">State refresh &amp; name confirmation<a class="headerlink" href="#state-refresh-name-confirmation" title="Permanent link">&para;</a></h3>
 <p>Before invoking the graph, DM:</p>
@@ -1397,12 +1450,21 @@
 <li>Checks face-recognition info via <code>mqtt_comm.get_detected_user_info()</code>.  </li>
 <li><code>_refresh_state(detected_user_id)</code>:</li>
 <li>If a different user was detected:<ul>
-<li>Loads their <code>user_info.json</code> from the interaction DB.</li>
-<li>Resets MQTT detection state.</li>
+<li>Saves an episodic memory for the outgoing user (<code>_save_episodic_on_switch</code>, skipped for unknown users).</li>
+<li>Loads the new user's <code>user_info.json</code> from the interaction DB.</li>
+<li>Clears <code>chat_history</code> and resets <code>c_state</code>, so greeting flags, affect, and memories are per user.</li>
+<li>Resets the language to English through <code>set_language_callback</code>.</li>
 </ul>
 </li>
 <li>Updates <code>c_state</code> via <code>default_custom_state(c_state, chat_history, user_info)</code>.</li>
 </ul>
+<h3 id="pre-graph-short-circuits">Pre-graph short-circuits<a class="headerlink" href="#pre-graph-short-circuits" title="Permanent link">&para;</a></h3>
+<p>Before the graph runs, <code>_short_circuit_reply</code> answers two kinds of input directly and appends them to the history:</p>
+<ul>
+<li>A request for a joke returns a random entry from <code>french_kids_jokes.json</code>.</li>
+<li>"stop talking" and similar phrases return "Okay. I will stop talking."</li>
+</ul>
+<p>Independently, <code>should_trigger_handshake</code> matches phrases such as "shake hands" and calls <code>mqtt_comm.give_handshake()</code> before the graph runs.</p>
 <p>If the memory agents previously requested name confirmation, <code>name_confirmation(user_input)</code>:</p>
 <ul>
 <li>Handles:</li>
@@ -1433,7 +1495,7 @@
 <li>Extracts:</li>
 <li>Final text + emotion via <code>_extract_robot_response(results)</code>.  </li>
 <li>Updates <code>chat_history</code> with the new AI message.  </li>
-<li>Resets chat history on <code>end_conversation</code> and trims to <code>conversation_limit</code> messages.</li>
+<li>Resets chat history on <code>end_conversation</code> and trims to <code>conversation_limit</code> messages. After the reply is spoken, <code>__main__.py</code> also resets the language to French on <code>end_conversation</code>.</li>
 </ul>
 <h3 id="motion-side-effects">Motion side-effects<a class="headerlink" href="#motion-side-effects" title="Permanent link">&para;</a></h3>
 <p>For certain intents (<code>first_greeting</code>, <code>end_conversation</code>), DM asks the control layer to wave:</p>
@@ -1494,12 +1556,28 @@
 </li>
 <li>To control layer.</li>
 <li>Payload: animation name.</li>
-<li>Used by helper methods like <code>give_wave</code>, <code>give_greeting</code>, <code>give_smile</code>, etc.</li>
+<li>
+<p>Used by helper methods like <code>give_wave</code>, <code>give_greeting</code>, <code>give_smile</code>, <code>give_handshake</code>, etc.</p>
+</li>
+<li>
+<p><code>nadine/agent/control/look_at_target</code></p>
+</li>
+<li>To control layer.</li>
+<li>Payload: posture name (<code>Posture_LookAtInterviewer</code>, <code>Posture_LookAtZoom</code>, or <code>LOOKUPPostureDefault</code> to clear the target).</li>
+<li>
+<p>Sent by the UI's "Gaze Direction" radio buttons via <code>mqtt_comm.look_at_target</code>.</p>
+</li>
+<li>
+<p><code>nadine/affect/state</code></p>
+</li>
+<li>To perception layer.</li>
+<li>Payload: <code>{"label": str, "arousal": float, "intensity": float}</code>.</li>
+<li>Published by the affective appraisal node after every appraisal; perception's selective memory uses it to decide whether the current scene is memorable.</li>
 </ul>
 <hr />
 <h2 id="quick-dev-tips">Quick Dev Tips<a class="headerlink" href="#quick-dev-tips" title="Permanent link">&para;</a></h2>
 <ul>
-<li>To debug the LangGraph flow in isolation, run <code>graph.py</code> directly (it has a CLI <code>main()</code> loop).  </li>
+<li>To debug the LangGraph flow in isolation, run <code>graph.py</code> directly; its <code>async main()</code> REPL (started with <code>asyncio.run</code>) drives the graph with its own simplified name-confirmation handling.  </li>
 <li>To test the dialogue manager without STT/UI, you can either:</li>
 <li>
 <p>Run the built‑in chat mode:</p>
@@ -1514,11 +1592,11 @@ python<span class="w"> </span>-m<span class="w"> </span>nadine<span class="w"> <
 
 <span class="n">dm</span> <span class="o">=</span> <span class="n">DialogueManager</span><span class="p">()</span>
 <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;You: &quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;exit&quot;</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"You: "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"exit"</span><span class="p">:</span>
         <span class="k">break</span>
     <span class="n">reply</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">processInput</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nadine:&quot;</span><span class="p">,</span> <span class="n">reply</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Nadine:"</span><span class="p">,</span> <span class="n">reply</span><span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
@@ -1590,7 +1668,11 @@ python<span class="w"> </span>-m<span class="w"> </span>nadine<span class="w"> <
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

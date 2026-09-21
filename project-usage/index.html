@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -412,6 +414,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../project-installation/" class="md-nav__link">
         
   
@@ -515,6 +545,17 @@
     <span class="md-ellipsis">
       
         Startup Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chat-mode-start_nadine_chatmodesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chat Mode (start_nadine_chatmode.sh)
       
     </span>
   </a>
@@ -1121,6 +1162,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#chat-mode-start_nadine_chatmodesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chat Mode (start_nadine_chatmode.sh)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#manual-component-startup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1197,63 +1249,94 @@
 <p>This script will:</p>
 <ol>
 <li>Set up audio echo cancellation and microphone volume.</li>
-<li>Launch the <strong>control</strong> component (robot control server).</li>
-<li>Start the <strong>vLLM multi-LoRA server</strong> on GPU 0 (serves fine-tuned Qwen2.5-1.5B adapters).</li>
-<li>Wait for the vLLM server to become healthy (up to 90s).</li>
-<li>Launch the <strong>interaction</strong> component on GPU 1 (dialogue system via Ollama + vLLM).</li>
-<li>Launch the <strong>perception</strong> component on GPU 0 (face recognition + selective memory).</li>
+<li>Pre-warm the seven core Ollama models (Mistral Small 3.2, the five fine-tuned <code>nadine-*</code> models, and Qwen2.5-1.5B-Instruct) so they load onto GPU 1.</li>
+<li>Launch the <strong>perception</strong> component on GPU 0 (face recognition + selective memory) and wait 20 s for its models to load.</li>
+<li>Pre-warm the vision model <code>qwen2.5vl:3b</code>.</li>
+<li>Launch the <strong>interaction</strong> component (dialogue system; uses the pre-warmed Ollama models).</li>
+<li>Launch the <strong>control</strong> component (robot control server, no GPU models).</li>
 </ol>
 <p>Make sure:</p>
 <ul>
-<li>All three conda environments are created: <code>nadine</code>, <code>nadine_new</code>, <code>vllm_serve</code> (see Installation &amp; Setup).</li>
+<li>The conda environments are created (see Installation &amp; Setup).</li>
 <li>EMQX MQTT broker is running (see Installation &amp; Setup).</li>
-<li>Ollama is running with required models (<code>mistral-small3.2</code>, <code>qwen2.5:1.5b-instruct</code>, <code>qwen2.5vl:3b</code>).</li>
+<li>The Ollama service runs with <code>OLLAMA_MAX_LOADED_MODELS=10</code> and <code>CUDA_VISIBLE_DEVICES=1,0</code>, and has all required models: <code>mistral-small3.2</code>, <code>qwen2.5:1.5b-instruct</code>, <code>qwen2.5vl:3b</code>, <code>nomic-embed-text</code>, and the fine-tuned <code>nadine-*</code> models (see Installation &amp; Setup).</li>
 </ul>
 <hr />
 <h2 id="startup-options">Startup Options<a class="headerlink" href="#startup-options" title="Permanent link">&para;</a></h2>
 <p><code>start_nadine.sh</code> supports several flags:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Disable vision agent in the interaction graph</span>
-./start_nadine.sh<span class="w"> </span>--no-vision-agent
-
-<span class="c1"># Disable memory agents (NOTE: memory agents are disabled by default)</span>
-./start_nadine.sh<span class="w"> </span>--no-memory-agents
-
-<span class="c1"># Skip the perception process (no face recognition)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Skip the perception process (no face recognition)</span>
 ./start_nadine.sh<span class="w"> </span>--no-vision-process
 
 <span class="c1"># Set microphone volume (0-150%)</span>
 ./start_nadine.sh<span class="w"> </span>--mic-volume<span class="o">=</span><span class="m">20</span>
+
+<span class="c1"># Accepted but no-ops with this script (see below)</span>
+./start_nadine.sh<span class="w"> </span>--no-vision-agent<span class="w"> </span>--no-memory-agents
 </code></pre></div>
-<p>Default behavior: vision agent is <strong>enabled</strong>, memory agents are <strong>disabled</strong>, perception is <strong>enabled</strong>, mic volume is <strong>20%</strong>.</p>
-<p>These are useful for debugging or running Nadine on systems without a camera or without GPU resources for vision.</p>
+<p>The vision agent and the memory agents are controlled by the environment variables <code>NADINE_ENABLE_VISION_AGENT</code> and <code>NADINE_ENABLE_MEMORY_AGENTS</code>, which the script passes to the interaction process. Their defaults differ by entry point:</p>
+<table>
+<thead>
+<tr>
+<th>Entry point</th>
+<th>Vision agent</th>
+<th>Memory agents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>./start_nadine.sh</code></td>
+<td>disabled</td>
+<td>disabled</td>
+</tr>
+<tr>
+<td><code>./start_nadine_chatmode.sh</code></td>
+<td>enabled</td>
+<td>enabled</td>
+</tr>
+<tr>
+<td><code>python -m nadine</code> run manually</td>
+<td>enabled</td>
+<td>enabled</td>
+</tr>
+</tbody>
+</table>
+<p><code>start_nadine.sh</code> sets both to <code>0</code> and its <code>--no-vision-agent</code> and <code>--no-memory-agents</code> flags only set them to <code>0</code> again; there is no flag that enables them. To run the full graph from the main script, edit the two defaults at the top of the script or export the variables before launching the interaction component manually.</p>
+<p><code>--no-vision-process</code> is useful on systems without a camera or without GPU memory for the perception models.</p>
+<hr />
+<h2 id="chat-mode-start_nadine_chatmodesh">Chat Mode (<code>start_nadine_chatmode.sh</code>)<a class="headerlink" href="#chat-mode-start_nadine_chatmodesh" title="Permanent link">&para;</a></h2>
+<p><code>start_nadine_chatmode.sh</code> launches the same components for text-based testing. It enables both agent groups by default and accepts:</p>
+<div class="highlight"><pre><span></span><code>./start_nadine_chatmode.sh<span class="w"> </span><span class="o">[</span>--no-vision-agent<span class="o">]</span><span class="w"> </span><span class="o">[</span>--no-memory-agents<span class="o">]</span><span class="w"> </span><span class="o">[</span>--no-vision-process<span class="o">]</span><span class="w"> </span><span class="o">[</span>--no-control<span class="o">]</span>
+</code></pre></div>
+<p><code>--no-control</code> skips the control layer, so no robot or serial port is needed. This script has no <code>--mic-volume</code> option.</p>
 <hr />
 <h2 id="manual-component-startup">Manual Component Startup<a class="headerlink" href="#manual-component-startup" title="Permanent link">&para;</a></h2>
 <p>You can also start each component separately.</p>
 <h3 id="control-component">Control Component<a class="headerlink" href="#control-component" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>control
-conda<span class="w"> </span>activate<span class="w"> </span>nadine_new
-./run.sh
-
-<span class="c1"># Or with custom paths:</span>
-python<span class="w"> </span>main.py<span class="w"> </span>-voicepath<span class="w"> </span>&lt;path&gt;<span class="w"> </span>-animationXMLPath<span class="w"> </span>&lt;path&gt;
+./run.sh<span class="w">          </span><span class="c1"># activates the nadine_new environment and runs main.py</span>
 </code></pre></div>
+<p><code>run.sh</code> passes no arguments; paths come from <code>control/config.yaml</code> (<code>animation_xml_path</code>, default <code>XMLAnimations</code>). <code>main.py</code> also accepts <code>-animationXMLPath &lt;path&gt;</code> and the legacy <code>-voicepath</code>, <code>-voicepathGerman</code>, and <code>-voicepathFrench</code> arguments, which are stored but no longer used since TTS is Azure.</p>
 <h3 id="interaction-component">Interaction Component<a class="headerlink" href="#interaction-component" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>interaction
-conda<span class="w"> </span>activate<span class="w"> </span>nadine
-./run.sh
+./run.sh<span class="w">          </span><span class="c1"># activates the nadine environment and runs python3 -m nadine</span>
 
 <span class="c1"># Or run without MQTT:</span>
 python<span class="w"> </span>-m<span class="w"> </span>nadine<span class="w"> </span>--nomqtt
 
-<span class="c1"># Or in chat mode (text-only only, no audio/UI):</span>
+<span class="c1"># Or in chat mode (text-only, no audio):</span>
 python<span class="w"> </span>-m<span class="w"> </span>nadine<span class="w"> </span>--chatmode
 </code></pre></div>
+<p><code>run.sh</code> also registers a cleanup hook that stops every Ollama model the interaction layer uses when the terminal closes. When run manually, the vision and memory agents are enabled unless <code>NADINE_ENABLE_VISION_AGENT</code> or <code>NADINE_ENABLE_MEMORY_AGENTS</code> is set to <code>0</code>.</p>
 <h3 id="perception-component">Perception Component<a class="headerlink" href="#perception-component" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>perception
-conda<span class="w"> </span>activate<span class="w"> </span>nadine
-./run.sh
+./run.sh<span class="w">          </span><span class="c1"># activates the nadine environment and runs main.py</span>
 </code></pre></div>
-<p>Each component will log its status to its own <code>logs/</code> folder and communicate over MQTT as described in the layer-specific docs.</p>
+<p>Run <code>run.sh</code> from inside each component directory: the scripts use relative paths for their config and model files.</p>
+<p>Each component logs its status to its own <code>logs/</code> folder and communicates over MQTT as described in the layer-specific docs.</p>
+<div class="admonition note">
+<p class="admonition-title">Differences in the Hybrid Cloud version (nadine_phd)</p>
+<p>The <code>start_nadine.sh</code> of <code>nadine_phd</code> accepts additional flags: <code>--no-visual-memory</code>, <code>--study</code> (per-session study logging; set <code>NADINE_PARTICIPANT_ID</code> first), and <code>--zoom-audio</code> (routes robot audio through a virtual device for remote sessions using <code>scripts/zoom_audio_setup.sh</code>). It passes further environment variables to perception (<code>NADINE_ENABLE_VISUAL_MEMORY</code>, <code>NADINE_STORAGE_EMOTION_SOURCE</code>, <code>NADINE_STORAGE_TRIGGER</code>, <code>NADINE_ENABLE_FER_SAMPLING</code>, <code>NADINE_FER_NOVELTY</code>, <code>NADINE_FER_INTERVAL</code>) and to interaction (<code>NADINE_STUDY_LOG</code>, <code>NADINE_PARTICIPANT_ID</code>). The pipeline mode is selected by <code>NADINE_PIPELINE_MODE</code> (<code>merged</code> or <code>legacy</code>), overriding <code>pipeline.mode</code> in the interaction config. Because its default agent profiles use the <code>openai</code> backend, <code>OPENAI_API_KEY</code> is required in <code>interaction/.env</code>; <code>ANTHROPIC_API_KEY</code> is only needed if a profile with <code>backend: anthropic</code> is mapped.</p>
+</div>
 
 
 
@@ -1319,7 +1402,11 @@ conda<span class="w"> </span>activate<span class="w"> </span>nadine
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

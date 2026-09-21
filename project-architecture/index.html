@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -392,6 +394,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -1426,19 +1456,20 @@
 <h3 id="2-interaction-component-interaction">2. Interaction Component (<code>interaction/</code>)<a class="headerlink" href="#2-interaction-component-interaction" title="Permanent link">&para;</a></h3>
 <p>Multi-agent dialogue system built with <a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph</a>:</p>
 <ul>
-<li><strong>Orchestration Agent</strong> – routes requests to the right sub-agents.  </li>
-<li><strong>Response Agent</strong> – generates conversational responses with emotional tone.  </li>
-<li><strong>Search Agent</strong> – real-time web information retrieval.  </li>
-<li><strong>Knowledge RAG Agent</strong> – retrieves information from Nadine’s knowledge base.  </li>
-<li><strong>Vision Agent</strong> – interfaces with visual reasoning tools.  </li>
-<li><strong>Memory Agents</strong> – store and retrieve user-specific information.  </li>
-<li><strong>Affective System</strong> – maintains emotional state (PAD model).  </li>
-<li><strong>Dialogue Manager</strong> – coordinates conversation flow.  </li>
-<li>Speech-to-Text (Google Cloud Speech).  </li>
-<li>Multi-language support (English, German, French, Chinese).  </li>
-<li>UI for monitoring.  </li>
+<li><strong>Intent classifier</strong> (<code>graph.py</code>) – labels each turn (greeting, user info, farewell, language change, continue).  </li>
+<li><strong>Orchestrator</strong> (<code>orchestration_agent.py</code>) – plans which tool agents to call.  </li>
+<li><strong>Response agent</strong> (<code>response_agent.py</code>) – generates the reply with emotional tone.  </li>
+<li><strong>Search agent</strong> (<code>search_agent.py</code>) – real-time web information retrieval.  </li>
+<li><strong>Knowledge RAG agent</strong> (<code>knowledge_RAG_agent.py</code>) – retrieves from Nadine’s knowledge base.  </li>
+<li><strong>Vision agent</strong> (<code>vision_agent.py</code>) – describes the current camera view.  </li>
+<li><strong>Memory agents</strong> (<code>memory_update_agent.py</code>, <code>memory_retrieval_agent.py</code>) – store and retrieve user profiles, episodes, and visual memories.  </li>
+<li><strong>Contextualizer</strong> (<code>context_summarizer.py</code>) – summarizes the conversation history for the orchestrator.  </li>
+<li><strong>Affective system</strong> (<code>affective_system.py</code>) – PAD emotional state, appraised and updated each turn.  </li>
+<li><strong>Dialogue manager</strong> (<code>dm.py</code>) – drives the graph and the MQTT handshake with the other layers.  </li>
+<li>Speech-to-text (Google Cloud Speech) and a Tkinter monitoring UI.  </li>
+<li>Multi-language support; the default language is French.  </li>
 </ul>
-<p>Most agents use <strong>fine-tuned Qwen2.5-1.5B LoRA adapters</strong> served by a <strong>vLLM multi-LoRA server</strong> for low-latency inference (2×–5× faster than the generic base models). The response agent uses <strong>Mistral Small 3.2 (22B)</strong> via Ollama for higher-quality generation.</p>
+<p>Most agents use <strong>fine-tuned Qwen2.5-1.5B models</strong>. Each one is a LoRA adapter trained per agent role, merged into the base model, converted to a quantized GGUF file (Q4_K_M), and registered in Ollama as a <code>nadine-*</code> model, so all local inference goes through one Ollama server. The response agent uses <strong>Mistral Small 3.2 (24B)</strong> via Ollama for higher-quality generation. The loader also supports a vLLM backend (<code>backend: vllm</code> on a profile), but no profile uses it in this version.</p>
 <h3 id="3-perception-component-perception">3. Perception Component (<code>perception/</code>)<a class="headerlink" href="#3-perception-component-perception" title="Permanent link">&para;</a></h3>
 <p>Computer vision and face recognition:</p>
 <ul>
@@ -1462,24 +1493,37 @@
 <hr />
 <h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h2>
 <p>Simplified directory layout:</p>
-<div class="highlight"><pre><span></span><code>nadine_Jan_2026/
-├── control/                 # Robot control and animations
-│   ├── main.py             # Control server entry point
-│   ├── nadine/control/    # Control modules
-│   └── XMLAnimations/      # Animation XML files
+<div class="highlight"><pre><span></span><code>nadine_local/
+├── control/                    # Robot control and animations
+│   ├── main.py                 # Control server entry point (loads control/.env)
+│   ├── config.yaml             # Animation path, TTS provider
+│   ├── checker.ini             # Serial port and joint channel table
+│   ├── nadine/control/         # NadineServer, NadineControl, AzureTTS, Checker, ...
+│   └── XMLAnimations/          # Animation XML files
 │
-├── interaction/            # Multi-agent dialogue system
-│   ├── nadine/agents/     # LangGraph agents
-│   ├── nadine/common/     # MQTT, translation, logging
-│   ├── nadine/stt/        # Speech-to-text
-│   └── db/                # Databases (memory, knowledge, images)
+├── interaction/                # Multi-agent dialogue system
+│   ├── config.yaml             # LLM profiles, agent mapping, visual-memory thresholds
+│   ├── nadine/agents/          # LangGraph graph and agents
+│   ├── nadine/common/          # MQTT, language, translation, logging
+│   ├── nadine/stt/             # Google speech-to-text
+│   ├── nadine/ui/              # Tkinter monitoring UI
+│   ├── db/                     # Knowledge and memory stores, user profiles, images
+│   └── google.json             # Google Cloud service-account key
 │
-├── perception/            # Computer vision
-│   ├── main.py            # Face recognition main loop
-│   └── models/            # ML models
+├── perception/                 # Computer vision
+│   ├── main.py                 # Face recognition main loop
+│   ├── selective_memory.py     # Memorability policies and scene storage
+│   ├── config.yaml             # Camera, YOLO, and memory settings
+│   ├── models/                 # YOLOv8 face model
+│   └── weights/                # OpenFace weights
 │
-├── compose.yaml           # Docker Compose for MQTT
-└── start_nadine.sh        # Main startup script
+├── experiments/finetune/       # LoRA training, adapters, Ollama export
+├── models/                     # Shared model files
+├── scripts/                    # Zoom audio setup and teardown
+├── docs/                       # API key guide and session notes
+├── compose.yaml                # Docker Compose for EMQX and the MQTT monitor
+├── start_nadine.sh             # Main startup script
+└── start_nadine_chatmode.sh    # Text-mode startup script
 </code></pre></div>
 <h3 id="gpu-allocation">GPU Allocation<a class="headerlink" href="#gpu-allocation" title="Permanent link">&para;</a></h3>
 <p>The system runs on <strong>2× NVIDIA RTX 4090</strong> GPUs:</p>
@@ -1494,17 +1538,17 @@
 <tbody>
 <tr>
 <td><strong>GPU 0</strong></td>
-<td>vLLM server + Perception</td>
-<td>Fine-tuned LoRA adapters (Qwen2.5-1.5B), YOLOv8, OpenFace, CLIP, Moondream2</td>
+<td>Perception</td>
+<td>YOLOv8, InsightFace, OpenFace, CLIP, Moondream2</td>
 </tr>
 <tr>
 <td><strong>GPU 1</strong></td>
-<td>Interaction (Ollama)</td>
-<td>Mistral Small 3.2 (response), Qwen2.5-VL:3B (vision), CLIP (memory retrieval)</td>
+<td>Ollama (interaction LLMs)</td>
+<td>Mistral Small 3.2 (response), the fine-tuned <code>nadine-*</code> models, Qwen2.5-1.5B-Instruct, Qwen2.5-VL:3B (vision)</td>
 </tr>
 </tbody>
 </table>
-<p>This allocation is configured in <code>start_nadine.sh</code> via <code>CUDA_VISIBLE_DEVICES</code>.</p>
+<p>The placement is not set per process. The Ollama service runs with <code>CUDA_VISIBLE_DEVICES=1,0</code> and <code>OLLAMA_MAX_LOADED_MODELS=10</code>, so it fills GPU 1 first, and <code>start_nadine.sh</code> pre-warms the Ollama models before perception starts so that perception finds free memory on GPU 0. The vision model is pre-warmed after perception, in the space that remains on GPU 1.</p>
 <hr />
 <h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h2>
 <h3 id="multi-agent-system-interaction-layer">Multi-Agent System (Interaction Layer)<a class="headerlink" href="#multi-agent-system-interaction-layer" title="Permanent link">&para;</a></h3>
@@ -1528,12 +1572,12 @@
 <ul>
 <li>Automatic language detection and translation.  </li>
 <li>Language-specific TTS voices.  </li>
-<li>Currently supports: English, German, French, Chinese (with flexibility to extend).  </li>
+<li>Languages are defined in the <code>Language</code> enum (<code>interaction/nadine/common/language.py</code>): English, French, Arabic, Spanish, Russian, Mandarin, Cantonese, Dutch, German, Italian, Hindi, Japanese, Korean, and Portuguese. The default language is French.  </li>
 </ul>
 <h3 id="memory-system">Memory System<a class="headerlink" href="#memory-system" title="Permanent link">&para;</a></h3>
 <ul>
 <li>User profile management (<code>user_info.json</code> per user).  </li>
-<li>Conversation history and episodic memories stored in ChromaDB.  </li>
+<li>Conversation history and episodic memories stored in ChromaDB (local ONNX MiniLM embeddings).  </li>
 <li>Visual memory (memorable scenes) linked to user IDs.  </li>
 </ul>
 <h3 id="affective-system">Affective System<a class="headerlink" href="#affective-system" title="Permanent link">&para;</a></h3>
@@ -1546,17 +1590,9 @@
 <p>Nadine implements a multimodal memory framework that tightly couples <strong>perception</strong> and <strong>interaction</strong>:</p>
 <ul>
 <li><strong>Selective visual memory (perception)</strong>  </li>
-<li>The perception layer computes a memorability score per frame using:<ul>
-<li>Emotion salience from OpenFace, DeepFace, or an ensemble of both (configurable via <code>emotion_detector</code> in <code>perception/config.yaml</code>).</li>
-<li>Novelty from CLIP embeddings vs. past scenes for that user.</li>
-</ul>
-</li>
-<li>A configurable <code>happy_boost_factor</code> (default 1.2) boosts happy emotion detection in the ensemble mode.</li>
+<li>The perception layer decides every few seconds whether the current scene is worth remembering. The default policy (<code>policy: pad_arousal</code> in <code>perception/config.yaml</code>) uses the robot’s own emotional state, published by the interaction layer on <code>nadine/affect/state</code>: the memorability score is an emotion-specific arousal weight times the emotion intensity, compared with <code>arousal_threshold</code>, and a user’s first meeting is always stored. The fallback <code>vision</code> policy scores the frame itself, combining OpenFace emotion salience with CLIP novelty against the user’s past scenes.</li>
 <li>
-<p>Only scenes above a configurable threshold are stored under each user’s profile as:</p>
-<ul>
-<li>RGB images, CLIP embeddings, and JSON metadata (emotions, memorability, optional scene description via Moondream2).</li>
-</ul>
+<p>Stored scenes are saved under the user’s profile as RGB images, CLIP embeddings, and JSON metadata with a Moondream2 scene description.</p>
 </li>
 <li>
 <p><strong>Textual &amp; episodic memory (interaction)</strong>  </p>
@@ -1656,7 +1692,11 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

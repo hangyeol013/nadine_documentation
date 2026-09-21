@@ -1,0 +1,1606 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Nadine social robot project">
+      
+      
+      
+      
+        <link rel="prev" href="../overview/">
+      
+      
+        <link rel="next" href="../project-installation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Platforms - Nadine Social Robot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#project-overview-platforms" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Nadine Social Robot" class="md-header__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Nadine Social Robot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Platforms
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Project Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../perception-overview/" class="md-tabs__link">
+          
+  
+  
+  Perception Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../interaction-overview/" class="md-tabs__link">
+          
+  
+  
+  Interaction Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../control-overview/" class="md-tabs__link">
+          
+  
+  
+  Control Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Nadine Social Robot" class="md-nav__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Nadine Social Robot
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lineage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Rationale
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Agent, Local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-hybrid-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Agent, Hybrid Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReAct, Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation & Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perception Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Perception Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selective Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interaction Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interaction Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents & Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-memory-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory & RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lineage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Rationale
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Agent, Local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-agent-hybrid-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Agent, Hybrid Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReAct, Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="project-overview-platforms">Project Overview – Platforms<a class="headerlink" href="#project-overview-platforms" title="Permanent link">&para;</a></h1>
+<p>Nadine's software has been developed as two platform families that share the same perception and control layers but differ in how the interaction layer is built. This page describes the three currently maintained versions, how they relate to each other, and the constraints that shaped each one.</p>
+<p>All three versions share the same foundation: an MQTT message bus between three layers, a RealSense camera with YOLOv8 and InsightFace for <a href="../perception-overview/">perception</a>, Google Cloud speech recognition, Azure text-to-speech, and the XML animation and joint <a href="../control-overview/">control</a> stack.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Dialogue engine</th>
+<th>Language models</th>
+<th>Memory</th>
+<th>Affect</th>
+<th>Primary use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Multi-Agent, Local</strong></td>
+<td>LangGraph state graph with ten specialized agents (<a href="../interaction-agents/">Agents &amp; Graph</a>)</td>
+<td>Fully on-device via Ollama: fine-tuned Qwen2.5-1.5B models (LoRA adapters merged and exported to GGUF), Mistral Small 3.2, Qwen2.5-VL for vision</td>
+<td>User profile, episodic and visual memory in ChromaDB and CLIP (<a href="../interaction-memory-rag/">Memory &amp; RAG</a>)</td>
+<td>PAD model with per-turn appraisal and update</td>
+<td>Agent development, fine-tuning, offline operation</td>
+</tr>
+<tr>
+<td><strong>Multi-Agent, Hybrid Cloud</strong></td>
+<td>Same graph, with intent, affect and planning merged into one turn-understanding call</td>
+<td>Hybrid: gpt-5.4-mini for turn understanding, response, memory extraction and routing; local adapters for the legacy nodes and episodic context; local vision</td>
+<td>Adds observation scenes that pair user utterances with what the camera saw, and study logging</td>
+<td>PAD model, appraisal folded into turn understanding</td>
+<td>Multimodal memory research and user studies</td>
+</tr>
+<tr>
+<td><strong>ReAct, Cloud</strong></td>
+<td>Contextualizer, memory and knowledge retrieval, then a LangChain ReAct agent with a fixed tool set</td>
+<td>Cloud only: gpt-5.4-mini and gpt-4o-mini via OpenAI</td>
+<td>Per-user long-term conversation memory in ChromaDB plus a knowledge base, both retrieved on the contextualized question</td>
+<td>Per-turn self-appraised emotion with intensity and cause in the structured answer; no persistent state</td>
+<td>Public demonstrations and recorded sessions</td>
+</tr>
+</tbody>
+</table>
+<p>The versions live in three repositories: <code>nadine_local</code> (Multi-Agent, Local), <code>nadine_phd</code> (Multi-Agent, Hybrid Cloud, forked from <code>nadine_local</code>), and <code>nadine_stable</code> (ReAct, Cloud). The layer documentation on this site describes the multi-agent code base unless a page says otherwise.</p>
+<hr />
+<h2 id="lineage">Lineage<a class="headerlink" href="#lineage" title="Permanent link">&para;</a></h2>
+<p>Both families descend from the MQTT-based three-layer stack introduced in 2025. The ReAct family is the older interaction design and has been kept as the deployment platform; the multi-agent family replaced it for research work and was later split into a local and a hybrid-cloud configuration.</p>
+<figure class="platform-figure">
+<a href="../assets/platforms_lineage.svg" target="_blank" rel="noopener" title="Open full size">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 486" role="img" aria-label="Lineage of the Nadine platforms" class="fig" style="overflow:visible">
+
+<style>
+  .fig { font-family: var(--md-text-font-family, Roboto, Helvetica, Arial, sans-serif); color: var(--md-default-fg-color, #222); }
+  .fig text { fill: currentColor; }
+  .fig .t  { font-size: 14px; }
+  .fig .b  { font-size: 14px; font-weight: 700; }
+  .fig .s  { font-size: 14px; fill: var(--md-default-fg-color--light, #555); }
+  .fig .lane { font-size: 14px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .fig .edge { fill: none; stroke: var(--md-default-fg-color--light, #777); stroke-width: 1.5; }
+  .fig .lbl { font-size: 14px; font-style: italic; fill: var(--md-default-fg-color--light, #555); }
+  .fig .band { fill: rgba(120,144,156,0.08); stroke: rgba(120,144,156,0.45); stroke-width: 1; }
+  .fig .band-ma { fill: rgba(63,81,181,0.06); stroke: rgba(63,81,181,0.45); stroke-width: 1; }
+  .fig .band-ra { fill: rgba(0,137,123,0.06); stroke: rgba(0,137,123,0.45); stroke-width: 1; }
+  .fig .n-sh { fill: var(--md-default-bg-color, #fff); stroke: #78909c; stroke-width: 1.4; }
+  .fig .n-ma { fill: var(--md-default-bg-color, #fff); stroke: #3f51b5; stroke-width: 1.4; }
+  .fig .n-ra { fill: var(--md-default-bg-color, #fff); stroke: #00897b; stroke-width: 1.4; }
+  .fig .n-ma-hi { fill: rgba(63,81,181,0.14); stroke: #3f51b5; stroke-width: 2.6; }
+  .fig .n-ra-hi { fill: rgba(0,137,123,0.14); stroke: #00897b; stroke-width: 2.6; }
+  .fig .ma { fill: #3f51b5; }
+  .fig .ra { fill: #00897b; }
+</style>
+
+
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--md-default-fg-color--light, #777)"/>
+  </marker>
+</defs>
+
+<rect x="30" y="16" width="940" height="48" rx="8" class="n-sh"/>
+<text x="500.0" y="45.0" text-anchor="middle" class="b">MQTT three-layer stack  ·  Perception / Interaction / Control  ·  2025</text>
+<rect x="26" y="104" width="948" height="144" rx="8" class="band-ma"/>
+<text x="42" y="126" class="lane ma">Multi-agent family</text>
+<rect x="34" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="107.0" y="171.0" text-anchor="middle" class="t">LangGraph</text>
+<text x="107.0" y="189.0" text-anchor="middle" class="t">multi-agent graph</text>
+<text x="107.0" y="207.0" text-anchor="middle" class="s">2025</text>
+<rect x="192" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="265.0" y="171.0" text-anchor="middle" class="t">Per-agent LoRA</text>
+<text x="265.0" y="189.0" text-anchor="middle" class="t">models via Ollama</text>
+<text x="265.0" y="207.0" text-anchor="middle" class="s">Mar 2026</text>
+<path d="M180,184.0 L192,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="350" y="142" width="146" height="84" rx="6" class="n-ma-hi"/>
+<text x="423.0" y="171.0" text-anchor="middle" class="b">Multi-Agent,</text>
+<text x="423.0" y="189.0" text-anchor="middle" class="b">Local</text>
+<text x="423.0" y="207.0" text-anchor="middle" class="s">Apr 2026</text>
+<path d="M338,184.0 L350,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="508" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="581.0" y="171.0" text-anchor="middle" class="t">Visual memory</text>
+<text x="581.0" y="189.0" text-anchor="middle" class="t">recall</text>
+<text x="581.0" y="207.0" text-anchor="middle" class="s">Jun 2026</text>
+<path d="M496,184.0 L508,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="666" y="142" width="146" height="84" rx="6" class="n-ma-hi"/>
+<text x="739.0" y="171.0" text-anchor="middle" class="b">Multi-Agent,</text>
+<text x="739.0" y="189.0" text-anchor="middle" class="b">Hybrid Cloud</text>
+<text x="739.0" y="207.0" text-anchor="middle" class="s">forked 23 Jun 2026</text>
+<path d="M654,184.0 L666,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="824" y="142" width="146" height="84" rx="6" class="n-ma"/>
+<text x="897.0" y="162.0" text-anchor="middle" class="t">Merged pipeline,</text>
+<text x="897.0" y="180.0" text-anchor="middle" class="t">cloud routing,</text>
+<text x="897.0" y="198.0" text-anchor="middle" class="t">scene memory</text>
+<text x="897.0" y="216.0" text-anchor="middle" class="s">Jun – Jul 2026</text>
+<path d="M812,184.0 L824,184.0" class="edge" marker-end="url(#arr)"/>
+<rect x="26" y="278" width="948" height="144" rx="8" class="band-ra"/>
+<text x="42" y="300" class="lane ra">ReAct family</text>
+<rect x="34" y="316" width="146" height="84" rx="6" class="n-ra"/>
+<text x="107.0" y="345.0" text-anchor="middle" class="t">SoR-ReAct v2</text>
+<text x="107.0" y="363.0" text-anchor="middle" class="t">demo deployments</text>
+<text x="107.0" y="381.0" text-anchor="middle" class="s">2025</text>
+<rect x="192" y="316" width="146" height="84" rx="6" class="n-ra-hi"/>
+<text x="265.0" y="345.0" text-anchor="middle" class="b">ReAct, Cloud</text>
+<text x="265.0" y="363.0" text-anchor="middle" class="t">recording build</text>
+<text x="265.0" y="381.0" text-anchor="middle" class="s">Jun 2026</text>
+<path d="M180,358.0 L192,358.0" class="edge" marker-end="url(#arr)"/>
+<rect x="350" y="316" width="146" height="84" rx="6" class="n-ra"/>
+<text x="423.0" y="345.0" text-anchor="middle" class="t">Singing pipeline,</text>
+<text x="423.0" y="363.0" text-anchor="middle" class="t">song library</text>
+<text x="423.0" y="381.0" text-anchor="middle" class="s">Jul 2026</text>
+<path d="M338,358.0 L350,358.0" class="edge" marker-end="url(#arr)"/>
+<rect x="508" y="316" width="146" height="84" rx="6" class="n-ra"/>
+<text x="581.0" y="345.0" text-anchor="middle" class="t">Barge-in and</text>
+<text x="581.0" y="363.0" text-anchor="middle" class="t">lip-sync recovery</text>
+<text x="581.0" y="381.0" text-anchor="middle" class="s">Jul 2026</text>
+<path d="M496,358.0 L508,358.0" class="edge" marker-end="url(#arr)"/>
+<path d="M107.0,64 L107.0,142" class="edge" marker-end="url(#arr)"/>
+<path d="M30,40 L16,40 L16,358.0 L34,358.0" class="edge" marker-end="url(#arr)"/>
+<path d="M26,452 L974,452" class="edge" marker-end="url(#arr)"/>
+<text x="26" y="470" text-anchor="start" class="lbl">earlier</text>
+<text x="974" y="470" text-anchor="end" class="lbl">later</text>
+<text x="500.0" y="470" text-anchor="middle" class="lbl">Highlighted boxes are the three maintained versions. The two multi-agent versions share one code base.</text>
+</svg>
+</a>
+<figcaption>Lineage of the three maintained versions. Both families share the MQTT three-layer stack.</figcaption>
+</figure>
+
+<p>The two multi-agent versions share one code base. The hybrid-cloud version contains every commit of the local version plus the changes made after the fork, so a feature added to the local graph carries over unless it was deliberately replaced.</p>
+<hr />
+<h2 id="architecture-comparison">Architecture Comparison<a class="headerlink" href="#architecture-comparison" title="Permanent link">&para;</a></h2>
+<p>Perception and control are common to both families and communicate with the interaction layer over MQTT topics. Only the interaction layer differs.</p>
+<figure class="platform-figure">
+<a href="../assets/platforms_architecture.svg" target="_blank" rel="noopener" title="Open full size">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 968" role="img" aria-label="Architecture comparison of the multi-agent and ReAct interaction layers" class="fig" style="overflow:visible">
+
+<style>
+  .fig { font-family: var(--md-text-font-family, Roboto, Helvetica, Arial, sans-serif); color: var(--md-default-fg-color, #222); }
+  .fig text { fill: currentColor; }
+  .fig .t  { font-size: 14px; }
+  .fig .b  { font-size: 14px; font-weight: 700; }
+  .fig .s  { font-size: 14px; fill: var(--md-default-fg-color--light, #555); }
+  .fig .lane { font-size: 14px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .fig .edge { fill: none; stroke: var(--md-default-fg-color--light, #777); stroke-width: 1.5; }
+  .fig .lbl { font-size: 14px; font-style: italic; fill: var(--md-default-fg-color--light, #555); }
+  .fig .band { fill: rgba(120,144,156,0.08); stroke: rgba(120,144,156,0.45); stroke-width: 1; }
+  .fig .band-ma { fill: rgba(63,81,181,0.06); stroke: rgba(63,81,181,0.45); stroke-width: 1; }
+  .fig .band-ra { fill: rgba(0,137,123,0.06); stroke: rgba(0,137,123,0.45); stroke-width: 1; }
+  .fig .n-sh { fill: var(--md-default-bg-color, #fff); stroke: #78909c; stroke-width: 1.4; }
+  .fig .n-ma { fill: var(--md-default-bg-color, #fff); stroke: #3f51b5; stroke-width: 1.4; }
+  .fig .n-ra { fill: var(--md-default-bg-color, #fff); stroke: #00897b; stroke-width: 1.4; }
+  .fig .n-ma-hi { fill: rgba(63,81,181,0.14); stroke: #3f51b5; stroke-width: 2.6; }
+  .fig .n-ra-hi { fill: rgba(0,137,123,0.14); stroke: #00897b; stroke-width: 2.6; }
+  .fig .ma { fill: #3f51b5; }
+  .fig .ra { fill: #00897b; }
+</style>
+
+
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--md-default-fg-color--light, #777)"/>
+  </marker>
+</defs>
+
+<rect x="20" y="16" width="960" height="100" rx="8" class="band"/>
+<text x="34" y="38" class="lane">Perception layer · shared</text>
+<rect x="31.0" y="54" width="230" height="46" rx="6" class="n-sh"/>
+<text x="146.0" y="82.0" text-anchor="middle" class="t">RealSense RGB-D camera</text>
+<path d="M261.0,77.0 L295.0,77.0" class="edge" marker-end="url(#arr)"/>
+<rect x="295.0" y="54" width="380" height="46" rx="6" class="n-sh"/>
+<text x="485.0" y="82.0" text-anchor="middle" class="t">YOLOv8 detection · InsightFace recognition</text>
+<path d="M675.0,77.0 L709.0,77.0" class="edge" marker-end="url(#arr)"/>
+<rect x="709.0" y="54" width="260" height="46" rx="6" class="n-sh"/>
+<text x="839.0" y="82.0" text-anchor="middle" class="t">Identity, 3D position, frames</text>
+<rect x="20" y="160" width="960" height="648" rx="8" class="band"/>
+<text x="34" y="182" class="lane">Interaction layer · differs by family</text>
+<rect x="34" y="196" width="560" height="598" rx="8" class="band-ma"/>
+<text x="50" y="220" class="lane ma">Multi-agent graph · LangGraph</text>
+<text x="50" y="240" class="s">Multi-Agent, Local  ·  Multi-Agent, Hybrid Cloud</text>
+<rect x="99.0" y="258" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="286.0" text-anchor="middle" class="t">Google STT</text>
+<rect x="99.0" y="324" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="352.0" text-anchor="middle" class="t">Intent classifier</text>
+<rect x="99.0" y="390" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="418.0" text-anchor="middle" class="t">Affective appraisal · PAD</text>
+<rect x="99.0" y="456" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="484.0" text-anchor="middle" class="t">Orchestrator</text>
+<rect x="99.0" y="522" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="550.0" text-anchor="middle" class="t">Memory retrieval</text>
+<path d="M214,304 L214,324" class="edge" marker-end="url(#arr)"/>
+<path d="M214,370 L214,390" class="edge" marker-end="url(#arr)"/>
+<path d="M214,436 L214,456" class="edge" marker-end="url(#arr)"/>
+<path d="M214,502 L214,522" class="edge" marker-end="url(#arr)"/>
+<rect x="89.0" y="314" width="250" height="198" rx="8" fill="none" stroke="#3f51b5" stroke-width="1.4" stroke-dasharray="6 4"/>
+<text x="351.0" y="402" text-anchor="start" class="s">Merged into one</text>
+<text x="351.0" y="420" text-anchor="start" class="s">turn-understanding call</text>
+<text x="351.0" y="438" text-anchor="start" class="s">in Hybrid Cloud</text>
+<rect x="50.0" y="588" width="90" height="46" rx="6" class="n-ma"/>
+<text x="95.0" y="616.0" text-anchor="middle" class="t">Search</text>
+<path d="M214,568 L95.0,588" class="edge" marker-end="url(#arr)"/>
+<rect x="152.0" y="588" width="90" height="46" rx="6" class="n-ma"/>
+<text x="197.0" y="616.0" text-anchor="middle" class="t">Vision</text>
+<path d="M214,568 L197.0,588" class="edge" marker-end="url(#arr)"/>
+<rect x="254.0" y="588" width="124" height="46" rx="6" class="n-ma"/>
+<text x="316.0" y="616.0" text-anchor="middle" class="t">Knowledge RAG</text>
+<path d="M214,568 L316.0,588" class="edge" marker-end="url(#arr)"/>
+<rect x="99.0" y="654" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="682.0" text-anchor="middle" class="t">Response agent</text>
+<path d="M95.0,634 L214,654" class="edge" marker-end="url(#arr)"/>
+<path d="M197.0,634 L214,654" class="edge" marker-end="url(#arr)"/>
+<path d="M316.0,634 L214,654" class="edge" marker-end="url(#arr)"/>
+<rect x="99.0" y="720" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="748.0" text-anchor="middle" class="t">Memory update</text>
+<path d="M214,700 L214,720" class="edge" marker-end="url(#arr)"/>
+<rect x="402" y="643.0" width="176" height="92" rx="6" class="n-ma"/>
+<text x="490.0" y="667.0" text-anchor="middle" class="b">Memory stores</text>
+<text x="490.0" y="685.0" text-anchor="middle" class="s">text · episodic</text>
+<text x="490.0" y="703.0" text-anchor="middle" class="s">visual scenes</text>
+<text x="490.0" y="721.0" text-anchor="middle" class="s">ChromaDB · CLIP</text>
+<path d="M402,663.0 L388,667.0 L388,545.0 L329.0,545.0" class="edge" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+<path d="M329.0,743.0 L388,743.0 L388,711.0 L402,711.0" class="edge" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+<text x="461.5" y="288" text-anchor="middle" class="lbl">Every node is a separately</text>
+<text x="461.5" y="306" text-anchor="middle" class="lbl">replaceable model. Intent,</text>
+<text x="461.5" y="324" text-anchor="middle" class="lbl">affect and orchestration run</text>
+<text x="461.5" y="342" text-anchor="middle" class="lbl">on local fine-tuned models.</text>
+<rect x="608" y="196" width="358" height="598" rx="8" class="band-ra"/>
+<text x="624" y="220" class="lane ra">ReAct agent · LangChain</text>
+<text x="624" y="240" class="s">ReAct, Cloud</text>
+<rect x="672.0" y="258" width="230" height="46" rx="6" class="n-ra"/>
+<text x="787.0" y="286.0" text-anchor="middle" class="t">Google STT</text>
+<path d="M787.0,304 L787.0,324" class="edge" marker-end="url(#arr)"/>
+<rect x="672.0" y="324" width="230" height="46" rx="6" class="n-ra"/>
+<text x="787.0" y="352.0" text-anchor="middle" class="t">Contextualizer · chat history</text>
+<rect x="621.0" y="390" width="160" height="62" rx="6" class="n-ra"/>
+<text x="701.0" y="417.0" text-anchor="middle" class="b">Long-term memory</text>
+<text x="701.0" y="435.0" text-anchor="middle" class="s">per-user · ChromaDB</text>
+<rect x="793.0" y="390" width="160" height="62" rx="6" class="n-ra"/>
+<text x="873.0" y="417.0" text-anchor="middle" class="b">Knowledge base</text>
+<text x="873.0" y="435.0" text-anchor="middle" class="s">ChromaDB</text>
+<path d="M747.0,370 L701.0,390" class="edge" marker-end="url(#arr)"/>
+<path d="M827.0,370 L873.0,390" class="edge" marker-end="url(#arr)"/>
+<path d="M701.0,452 L747.0,474" class="edge" marker-end="url(#arr)"/>
+<path d="M873.0,452 L827.0,474" class="edge" marker-end="url(#arr)"/>
+<rect x="672.0" y="474" width="230" height="62" rx="6" class="n-ra"/>
+<text x="787.0" y="501.0" text-anchor="middle" class="b">ReAct reasoning loop</text>
+<text x="787.0" y="519.0" text-anchor="middle" class="s">gpt-5.4-mini</text>
+<rect x="621.0" y="566" width="160" height="80" rx="6" class="n-ra"/>
+<text x="701.0" y="584.0" text-anchor="middle" class="b">Fixed tool set</text>
+<text x="701.0" y="602.0" text-anchor="middle" class="s">search · news</text>
+<text x="701.0" y="620.0" text-anchor="middle" class="s">weather · language</text>
+<text x="701.0" y="638.0" text-anchor="middle" class="s">behaviors · sing</text>
+<rect x="793.0" y="566" width="160" height="80" rx="6" class="n-ra"/>
+<text x="873.0" y="584.0" text-anchor="middle" class="b">Structured answer</text>
+<text x="873.0" y="602.0" text-anchor="middle" class="s">reply · category</text>
+<text x="873.0" y="620.0" text-anchor="middle" class="s">emotion · intensity</text>
+<text x="873.0" y="638.0" text-anchor="middle" class="s">cause</text>
+<path d="M747.0,536 L701.0,566" class="edge" marker-end="url(#arr)" marker-start="url(#arr)"/>
+<path d="M827.0,536 L873.0,566" class="edge" marker-end="url(#arr)"/>
+<text x="787.0" y="680" text-anchor="middle" class="lbl">Retrieval feeds one reasoning loop;</text>
+<text x="787.0" y="698" text-anchor="middle" class="lbl">adding a capability adds a tool.</text>
+<text x="787.0" y="726" text-anchor="middle" class="lbl">Emotion is appraised per turn;</text>
+<text x="787.0" y="744" text-anchor="middle" class="lbl">no persistent affect, no visual memory.</text>
+<rect x="20" y="852" width="960" height="100" rx="8" class="band"/>
+<text x="34" y="874" class="lane">Control layer · shared</text>
+<rect x="66.0" y="890" width="200" height="46" rx="6" class="n-sh"/>
+<text x="166.0" y="918.0" text-anchor="middle" class="t">Azure TTS</text>
+<path d="M266.0,913.0 L300.0,913.0" class="edge" marker-end="url(#arr)"/>
+<rect x="300.0" y="890" width="300" height="46" rx="6" class="n-sh"/>
+<text x="450.0" y="918.0" text-anchor="middle" class="t">Lip-sync and animation</text>
+<path d="M600.0,913.0 L634.0,913.0" class="edge" marker-end="url(#arr)"/>
+<rect x="634.0" y="890" width="300" height="46" rx="6" class="n-sh"/>
+<text x="784.0" y="918.0" text-anchor="middle" class="t">Joint control and gaze</text>
+<path d="M210,116 L210,160" class="edge" marker-end="url(#arr)"/>
+<text x="222" y="143" text-anchor="start" class="lbl">MQTT  ·  user id, position, frames</text>
+<path d="M210,808 L210,852" class="edge" marker-end="url(#arr)"/>
+<text x="222" y="835" text-anchor="start" class="lbl">MQTT  ·  speech text, emotion, behavior</text>
+</svg>
+</a>
+<figcaption>Perception and control are common; the interaction layer is either a LangGraph multi-agent graph or a retrieval-augmented ReAct agent. The dashed outline marks the nodes that the hybrid-cloud version merges into one turn-understanding call.</figcaption>
+</figure>
+
+<p>The multi-agent graph separates understanding, memory, affect, and generation into distinct nodes so that each step can be evaluated, swapped, or fine-tuned independently. The ReAct agent (SoR-ReAct v2) keeps retrieval as fixed steps before the loop: a contextualizer rewrites the input into a standalone question using the chat history, and that question retrieves the user's long-term memories and the knowledge base. Everything else happens in one reasoning loop that selects tools and returns a structured answer carrying the reply, an input category, and Nadine's own emotion with its intensity and cause. This keeps the control flow simple and the failure surface small.</p>
+<p>The hybrid-cloud version keeps the graph but changes its front half. The intent classifier, affective appraisal, and orchestrator are replaced by a single structured call that returns intent, emotion, and a routing plan together; the rest of the turn is deterministic routing over that plan. The guards that the separate nodes applied, such as the name-confirmation short circuit, are kept around the merged call, and the original three-node pipeline remains available as a configuration option.</p>
+<hr />
+<h2 id="design-rationale">Design Rationale<a class="headerlink" href="#design-rationale" title="Permanent link">&para;</a></h2>
+<h3 id="multi-agent-local">Multi-Agent, Local<a class="headerlink" href="#multi-agent-local" title="Permanent link">&para;</a></h3>
+<p><strong>Constraint.</strong> All inference runs on the robot's workstation. No user speech, camera frames, or memory content leave the machine, and there is no per-turn API cost.</p>
+<p><strong>Consequence.</strong> On-device inference limits the models to a few billion parameters, and generic small models were too slow and too unreliable across ten agent roles. Each agent was therefore fine-tuned as a LoRA adapter on Qwen2.5-1.5B, merged, quantized to GGUF, and registered as its own Ollama model, so every local model is served by one Ollama instance and can be kept resident in GPU memory. The response agent, where quality matters most, runs the larger Mistral Small 3.2 through the same server.</p>
+<p><strong>Cost.</strong> Small fine-tuned models reproduce their training behavior closely. When the memory extraction rules were later tightened, the fine-tuned extractor kept following its original training and recorded stale facts as current ones. Improving that behavior requires new training data and a new adapter rather than a prompt change.</p>
+<h3 id="multi-agent-hybrid-cloud">Multi-Agent, Hybrid Cloud<a class="headerlink" href="#multi-agent-hybrid-cloud" title="Permanent link">&para;</a></h3>
+<p><strong>Constraint.</strong> The platform was prepared for a user study on multimodal memory, which required reliable memory extraction, stable turn understanding, and predictable latency under continuous use.</p>
+<p><strong>Consequence.</strong> Agents whose failures would corrupt the study data moved to gpt-5.4-mini: turn understanding, the response agent, memory extraction, and the search and vision routers. Merging intent, affect, and planning into one call also removed two sequential model calls from every turn. Extraction and episodic encoding run at most once per conversation, so the cloud cost of this change is negligible, and moving the routers off the GPU freed VRAM. Episodic contextualization stayed on a local adapter, and the original local nodes remain selectable.</p>
+<p>Vision description stayed local by design. Sending camera frames of study participants to an external provider was a privacy decision, not a latency one.</p>
+<p><strong>Cost.</strong> User speech text and the facts extracted from it now leave the machine; only camera frames stay local. The platform depends on network availability and an API key for its central agents, and its behavior is tied to a hosted model version that can change outside the project's control.</p>
+<h3 id="react-cloud">ReAct, Cloud<a class="headerlink" href="#react-cloud" title="Permanent link">&para;</a></h3>
+<p><strong>Constraint.</strong> Public demonstrations and recorded sessions need a system that fails rarely and recovers cleanly when it does, in front of an audience and without an operator intervening.</p>
+<p><strong>Consequence.</strong> A single ReAct agent with a fixed tool set has a small, predictable control flow, and cloud models remove the on-device inference path as a failure source. Engineering effort went to the audio and animation path instead of the dialogue model: user interruption (barge-in) with correct lip-sync recovery, Google STT stream-size limits, PulseAudio routing for the TTS SDK, and a singing pipeline with a multilingual song library.</p>
+<p><strong>Cost.</strong> Long-term memory is stored as raw conversation chunks rather than extracted facts and episodes, emotion is appraised per turn without a persistent affective state, and there is no visual memory. Adding a capability means adding a tool rather than a graph node, which is quick but does not scale to the memory and affect work carried out on the multi-agent platform.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 <a href="https://github.com/hangyeol013" target="_blank" rel="noopener">Hangyeol Kang</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

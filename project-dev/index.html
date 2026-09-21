@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -392,6 +394,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -1458,42 +1488,94 @@
 <hr />
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
-<p>Create <code>.env</code> files in the relevant component directories with:</p>
+<p>Two <code>.env</code> files hold credentials (see Installation &amp; Setup for the full contents):</p>
 <ul>
-<li>API keys for <a href="https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech">Azure Text-to-Speech</a> and <a href="https://cloud.google.com/">Google Cloud</a> services.  </li>
-<li>LLM configuration (e.g. <a href="https://ollama.com/">Ollama</a> endpoint, API keys).  </li>
-<li>MQTT broker settings (if different from defaults).  </li>
+<li><code>control/.env</code> – <a href="https://learn.microsoft.com/azure/ai-services/speech-service/text-to-speech">Azure Speech</a> key and region for text-to-speech.  </li>
+<li><code>interaction/.env</code> – <a href="https://cloud.google.com/">Google Cloud</a> service-account path and project, Serper key, optional LangSmith and OpenAI keys.  </li>
 </ul>
+<p>LLM profiles and the agent-to-profile mapping live in <code>interaction/config.yaml</code>; MQTT hosts and ports are in each layer's <code>config.yaml</code>.</p>
 <h3 id="agent-toggles">Agent Toggles<a class="headerlink" href="#agent-toggles" title="Permanent link">&para;</a></h3>
-<p>Control which agents are active via environment variables:</p>
+<p><code>graph.py</code> reads two environment variables at import time and skips the corresponding nodes when they are <code>0</code>:</p>
 <ul>
-<li><code>NADINE_ENABLE_VISION_AGENT</code> – enable/disable vision agent.  </li>
-<li><code>NADINE_ENABLE_MEMORY_AGENTS</code> – enable/disable memory agents.  </li>
+<li><code>NADINE_ENABLE_VISION_AGENT</code> – vision agent.  </li>
+<li><code>NADINE_ENABLE_MEMORY_AGENTS</code> – memory retrieval and update agents.  </li>
 </ul>
-<p>These are read by <code>graph.py</code> to skip certain agents when running on resource-constrained systems.</p>
+<p>Both default to <code>1</code> when the interaction layer is started manually. <code>start_nadine.sh</code> sets both to <code>0</code>; <code>start_nadine_chatmode.sh</code> sets both to <code>1</code> (see Usage).</p>
 <hr />
 <h2 id="mqtt-topics-summary">MQTT Topics (Summary)<a class="headerlink" href="#mqtt-topics-summary" title="Permanent link">&para;</a></h2>
 <p>The system uses MQTT for inter-component communication.</p>
-<p><strong>Perception -&gt; Interaction</strong></p>
-<ul>
-<li><code>nadine/graph/user_detected</code> – user recognition events.  </li>
-<li><code>nadine/graph/face_stored</code> – face storage confirmations.  </li>
-</ul>
-<p><strong>Interaction -&gt; Control</strong></p>
-<ul>
-<li><code>nadine/agent/control/speak</code> – text-to-speech requests.  </li>
-<li><code>nadine/agent/control/look_at</code> – gaze (3D position) control commands.  </li>
-<li><code>nadine/agent/control/animation</code> – animation requests.  </li>
-</ul>
-<p><strong>Perception -&gt; Control</strong></p>
-<ul>
-<li><code>nadine/agent/control/look_at</code> – 3D position for gaze.  </li>
-</ul>
-<p><strong>Interaction -&gt; Perception</strong></p>
-<ul>
-<li><code>nadine/face_recognition/user_info</code> – user information for face storage.  </li>
-<li><code>nadine/perception/capture_current_view</code> – request the current camera view.  </li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Direction</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nadine/graph/user_detected</code></td>
+<td>Perception → Interaction</td>
+<td>Recognized user (name, id, confidence); also sent with empty fields after 5 s without a face.</td>
+</tr>
+<tr>
+<td><code>nadine/graph/face_stored</code></td>
+<td>Perception → Interaction</td>
+<td>Confirmation that a new face image was stored.</td>
+</tr>
+<tr>
+<td><code>nadine/memory/scene_stored</code></td>
+<td>Perception → (unused)</td>
+<td>A memorable scene was stored; published but no layer subscribes to it.</td>
+</tr>
+<tr>
+<td><code>nadine/agent/control/look_at</code></td>
+<td>Perception → Control</td>
+<td>3D position of the tracked face for gaze.</td>
+</tr>
+<tr>
+<td><code>nadine/face_recognition/user_info</code></td>
+<td>Interaction → Perception</td>
+<td>User name and id to attach to the tracked face.</td>
+</tr>
+<tr>
+<td><code>nadine/perception/capture_current_view</code></td>
+<td>Interaction → Perception</td>
+<td>Request the current camera frame for the vision agent.</td>
+</tr>
+<tr>
+<td><code>nadine/affect/state</code></td>
+<td>Interaction → Perception</td>
+<td>Robot emotion label, arousal, and intensity after each appraisal; drives the memorability decision.</td>
+</tr>
+<tr>
+<td><code>nadine/agent/control/speak</code></td>
+<td>Interaction → Control</td>
+<td>Text to synthesize and speak.</td>
+</tr>
+<tr>
+<td><code>nadine/agent/control/animation</code></td>
+<td>Interaction → Control</td>
+<td>Animation name to play.</td>
+</tr>
+<tr>
+<td><code>nadine/agent/control/look_at_target</code></td>
+<td>Interaction → Control</td>
+<td>Named gaze posture from the UI (interviewer, Zoom, default).</td>
+</tr>
+<tr>
+<td><code>nadine/agent/feedback/start_speak</code></td>
+<td>Control → Interaction</td>
+<td>Speech synthesis started.</td>
+</tr>
+<tr>
+<td><code>nadine/agent/feedback/end_speak</code></td>
+<td>Control → Interaction</td>
+<td>Speech finished; the microphone is re-enabled.</td>
+</tr>
+</tbody>
+</table>
+<p>Control subscribes to the whole <code>nadine/agent/control/#</code> tree.</p>
 <p>For topic-by-topic payload details, see the individual Perception, Interaction, and Control layer docs.</p>
 <hr />
 <h2 id="development-tips">Development Tips<a class="headerlink" href="#development-tips" title="Permanent link">&para;</a></h2>
@@ -1533,13 +1615,13 @@ python<span class="w"> </span>context_summarizer.py
 </ol>
 <h3 id="extending-the-knowledge-base">Extending the Knowledge Base<a class="headerlink" href="#extending-the-knowledge-base" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Add documents to <code>interaction/db/knowledge/rag_files/</code>.  </li>
-<li>They will be indexed automatically by the knowledge RAG pipeline on first use.  </li>
+<li>Add text documents to <code>interaction/db/knowledge/rag_files/</code> (create the folder if it does not exist).  </li>
+<li>On the next start the knowledge RAG agent embeds them with the <code>nomic-embed-text</code> Ollama model and stores the index in <code>interaction/db/knowledge/chroma/</code>; delete that folder to force a rebuild.  </li>
 </ul>
 <h3 id="custom-animations-control-layer">Custom Animations (Control Layer)<a class="headerlink" href="#custom-animations-control-layer" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Add XML animation files to <code>control/XMLAnimations/</code> following existing examples.  </li>
-<li>Map them from logical names in <code>AgentControlHandler</code> or in higher-level interaction logic.  </li>
+<li>Animations are addressed by the <code>&lt;animation_name&gt;</code> value inside the XML, not the filename; publish that name on <code>nadine/agent/control/animation</code> or reference it from <code>interaction/nadine/common/mqtt_comm.py</code>.  </li>
 </ul>
 <hr />
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
@@ -1580,7 +1662,7 @@ python<span class="w"> </span>context_summarizer.py
 <li>Check that <code>format="json"</code> is set in <code>load_agent_llm()</code> calls where needed.</li>
 </ul>
 <h3 id="prompt-optimization">Prompt Optimization<a class="headerlink" href="#prompt-optimization" title="Permanent link">&para;</a></h3>
-<p>All agent prompts have been optimized for small LLMs (e.g., <code>granite4:350m</code>, <code>qwen2.5:1.5b-instruct</code>) to improve:
+<p>All agent prompts are written for small LLMs (Qwen2.5-1.5B and its fine-tuned variants) to improve:
 - <strong>Speed</strong>: Shorter, more directive prompts reduce latency.
 - <strong>Accuracy</strong>: Explicit rules and examples guide the LLM to correct outputs.
 - <strong>JSON Output</strong>: Prompts explicitly require JSON format with examples.
@@ -1670,7 +1752,11 @@ python<span class="w"> </span>context_summarizer.py
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

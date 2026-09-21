@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../overview/">
+        <link rel="prev" href="../platforms/">
       
       
         <link rel="next" href="../project-usage/">
@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -409,6 +411,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -583,13 +613,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#environment-file-interactionenv" class="md-nav__link">
+  <a href="#environment-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Environment File (interaction/.env)
+        Environment Files
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Environment Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controlenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        control/.env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactionenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        interaction/.env
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1260,13 +1318,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#environment-file-interactionenv" class="md-nav__link">
+  <a href="#environment-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Environment File (interaction/.env)
+        Environment Files
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Environment Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controlenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        control/.env
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactionenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        interaction/.env
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1299,24 +1385,23 @@
 </ul>
 <h3 id="software">Software<a class="headerlink" href="#software" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Python 3.10  </li>
+<li>Python 3.10 (control) and 3.11 (interaction and perception), installed through the conda environments below  </li>
 <li><a href="https://docs.conda.io/">Conda</a> (Anaconda/Miniconda)  </li>
 <li><a href="https://www.docker.com/">Docker</a> and Docker Compose (for the MQTT broker)  </li>
-<li>CUDA-capable GPU (recommended for faster inference)  </li>
+<li><a href="https://ollama.com/">Ollama</a> as a systemd service  </li>
+<li>Two CUDA GPUs. The start script is written for 2× RTX 4090 and calls <code>nvidia-smi</code>, <code>pactl</code> (PulseAudio), and <code>gnome-terminal</code>  </li>
 </ul>
 <h3 id="api-keys-and-services">API Keys and Services<a class="headerlink" href="#api-keys-and-services" title="Permanent link">&para;</a></h3>
-<p>Create a <code>.env</code> file in the <code>interaction/</code> directory with:</p>
+<p>Two <code>.env</code> files hold the credentials; see the Environment Files section below and <code>docs/API_KEYS.md</code> in the repository for how to obtain each key:</p>
 <ul>
-<li>Azure TTS credentials  </li>
-<li>Google Cloud Speech API credentials  </li>
-<li>Google Cloud Translate API credentials  </li>
-<li>LLM API keys / configuration (e.g. for Ollama or other providers)  </li>
+<li><code>control/.env</code> – Azure Speech (text-to-speech)  </li>
+<li><code>interaction/.env</code> – Google Cloud (speech-to-text and translation), Serper (web search), and optional LangSmith tracing and OpenAI keys  </li>
 </ul>
 <hr />
 <h2 id="conda-environments">Conda Environments<a class="headerlink" href="#conda-environments" title="Permanent link">&para;</a></h2>
 <h3 id="1-clone-the-repository">1. Clone the Repository<a class="headerlink" href="#1-clone-the-repository" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>&lt;repository-url&gt;
-<span class="nb">cd</span><span class="w"> </span>nadine_Jan_2026
+<span class="nb">cd</span><span class="w"> </span>nadine_local
 </code></pre></div>
 <h3 id="2-set-up-conda-environments">2. Set Up Conda Environments<a class="headerlink" href="#2-set-up-conda-environments" title="Permanent link">&para;</a></h3>
 <p><strong>Control component</strong></p>
@@ -1333,19 +1418,24 @@ pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </s
 </code></pre></div>
 <p><strong>Perception component</strong></p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>perception
-conda<span class="w"> </span>activate<span class="w"> </span>nadine<span class="w">  </span><span class="c1"># Uses same environment as interaction</span>
+conda<span class="w"> </span>activate<span class="w"> </span>nadine<span class="w">  </span><span class="c1"># Uses the interaction environment; there is no separate environment file</span>
 </code></pre></div>
-<p><strong>vLLM server</strong> (for fine-tuned model serving)</p>
-<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>vllm_serve<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
-conda<span class="w"> </span>activate<span class="w"> </span>vllm_serve
-pip<span class="w"> </span>install<span class="w"> </span>vllm
+<p><strong>Fine-tuned models</strong></p>
+<p>The fine-tuned agents are served by Ollama, not by a separate server. Each LoRA adapter under <code>experiments/finetune/adapters/</code> is merged with <code>Qwen/Qwen2.5-1.5B-Instruct</code>, converted to a Q4_K_M GGUF file, and registered as an Ollama model from the matching Modelfile:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>experiments/finetune/scripts/deployment
+python<span class="w"> </span>export_to_ollama.py<span class="w"> </span>--agent<span class="w"> </span>all<span class="w">        </span><span class="c1"># needs llama-cpp-python or a local llama.cpp build</span>
+ollama<span class="w"> </span>create<span class="w"> </span>nadine-intent_classifier<span class="w"> </span>-f<span class="w"> </span>exported/Modelfile.intent_classifier
+<span class="c1"># repeat for orchestration_agent, affective_appraisal, memory_update, episodic_memory, search_router</span>
 </code></pre></div>
-<p>This environment is used by <code>start_nadine.sh</code> to run the vLLM multi-LoRA server that serves the fine-tuned Qwen2.5-1.5B adapters on GPU 0.</p>
+<p>The exported GGUF files and Modelfiles are already in <code>experiments/finetune/exported/</code>, so on a machine that has them only the <code>ollama create</code> step is needed. Check that the <code>FROM</code> path in each Modelfile points at the GGUF file on your machine.</p>
 <hr />
 <h2 id="mqtt-broker-emqx">MQTT Broker (EMQX)<a class="headerlink" href="#mqtt-broker-emqx" title="Permanent link">&para;</a></h2>
 <p>From the project root:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>foo-emqx-data
+docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>foo-emqx-log
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
+<p>The two volumes are declared as external in <code>compose.yaml</code>, so <code>docker compose up</code> fails until they exist. Compose also starts an <code>mqtt-monitor</code> container that logs every <code>nadine/#</code> message to <code>mqtt-monitor-logs/</code>.</p>
 <p>The broker will be available at:</p>
 <ul>
 <li>MQTT: <code>localhost:1883</code>  </li>
@@ -1355,36 +1445,40 @@ pip<span class="w"> </span>install<span class="w"> </span>vllm
 <h2 id="models">Models<a class="headerlink" href="#models" title="Permanent link">&para;</a></h2>
 <p>On first run, the system will automatically download required models. You can also pre-download:</p>
 <ul>
-<li>YOLOv8 face detection model (already placed in <code>perception/models/</code>).  </li>
-<li>InsightFace models (downloaded automatically on first use).  </li>
-<li>LLM models via Ollama: <code>mistral-small3.2:latest</code>, <code>qwen2.5:1.5b-instruct</code>, <code>qwen2.5vl:3b</code>.  </li>
-<li>Fine-tuned LoRA adapters (in <code>interaction/finetune/adapters/</code>) are served by the vLLM server.  </li>
+<li>YOLOv8 face detection model <code>yolov8n-face.pt</code> (already placed in <code>perception/models/</code>).  </li>
+<li>OpenFace weights <code>MTL_backbone.pth</code> and <code>Alignment_RetinaFace.pth</code> in <code>perception/weights/</code> (used by the vision memory policy).  </li>
+<li>InsightFace <code>buffalo_s</code> and the Moondream2 scene-description model (downloaded automatically on first use).  </li>
+<li>LLM models via Ollama: <code>mistral-small3.2:latest</code>, <code>qwen2.5:1.5b-instruct</code>, <code>qwen2.5vl:3b</code>, and <code>nomic-embed-text</code> (knowledge RAG embeddings).  </li>
+<li>Fine-tuned models <code>nadine-intent_classifier</code>, <code>nadine-orchestration_agent</code>, <code>nadine-affective_appraisal</code>, <code>nadine-memory_update</code>, <code>nadine-episodic_memory</code>, and <code>nadine-search_router</code>, created in Ollama as described under Conda Environments.  </li>
 </ul>
 <hr />
-<h2 id="environment-file-interactionenv">Environment File (<code>interaction/.env</code>)<a class="headerlink" href="#environment-file-interactionenv" title="Permanent link">&para;</a></h2>
-<p>Before running the <strong>interaction</strong> layer, create an <code>.env</code> file in the <code>interaction/</code> directory.<br />
-This file should contain the API keys and configuration for all external services used by Nadine:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># OpenAI / Azure OpenAI</span>
-<span class="na">OPENAI_API_KEY</span><span class="o">=</span><span class="s">&lt;your_openai_key&gt;</span><span class="w">              </span><span class="c1"># If you call OpenAI models directly</span>
-<span class="na">azure_openai_endpoint</span><span class="o">=</span><span class="s">&lt;https://...&gt;.openai.azure.com/</span>
-<span class="na">azure_openai_api_key</span><span class="o">=</span><span class="s">&lt;your_azure_openai_key&gt;</span>
-
-<span class="c1"># Google Cloud (STT, Translate, etc.)</span>
-<span class="na">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s">/absolute/path/to/google-credentials.json</span>
+<h2 id="environment-files">Environment Files<a class="headerlink" href="#environment-files" title="Permanent link">&para;</a></h2>
+<h3 id="controlenv"><code>control/.env</code><a class="headerlink" href="#controlenv" title="Permanent link">&para;</a></h3>
+<p>Loaded by <code>control/main.py</code> at startup. Required for speech output:</p>
+<div class="highlight"><pre><span></span><code><span class="na">AZURE_SERVICE_KEY</span><span class="o">=</span><span class="s">&lt;azure_speech_key&gt;</span>
+<span class="na">AZURE_SERVICE_REGION</span><span class="o">=</span><span class="s">westeurope</span>
+</code></pre></div>
+<h3 id="interactionenv"><code>interaction/.env</code><a class="headerlink" href="#interactionenv" title="Permanent link">&para;</a></h3>
+<p>Loaded by the interaction layer. Required entries are Google Cloud and Serper; the rest are optional:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Google Cloud (speech-to-text, translation)</span>
+<span class="na">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s">/absolute/path/to/interaction/google.json</span>
 <span class="na">GOOGLE_CLOUD_PROJECT</span><span class="o">=</span><span class="s">&lt;your_gcp_project_id&gt;</span>
 
 <span class="c1"># Web search (Serper)</span>
 <span class="na">SERPER_API_KEY</span><span class="o">=</span><span class="s">&lt;your_serper_api_key&gt;</span>
 
-<span class="c1"># LangChain / LangGraph observability</span>
+<span class="c1"># LangSmith tracing (optional)</span>
 <span class="na">LANGCHAIN_TRACING_V2</span><span class="o">=</span><span class="s">true</span>
-<span class="na">LANGCHAIN_API_KEY</span><span class="o">=</span><span class="s">&lt;your_langsmith_or_langchain_api_key&gt;</span>
+<span class="na">LANGCHAIN_API_KEY</span><span class="o">=</span><span class="s">&lt;your_langsmith_api_key&gt;</span>
+
+<span class="c1"># OpenAI (optional; only needed if an agent is mapped to a profile with backend: openai)</span>
+<span class="c1"># OPENAI_API_KEY=&lt;your_openai_key&gt;</span>
 </code></pre></div>
 <p>Notes:</p>
 <ul>
-<li><code>GOOGLE_APPLICATION_CREDENTIALS</code> should point to a JSON service-account key file with access to the required Google APIs.  </li>
-<li>If you are only using Azure OpenAI (and not OpenAI’s public API), you can leave <code>OPENAI_API_KEY</code> unset.  </li>
-<li>If you don’t want to use LangChain/LangGraph tracing, you can omit <code>LANGCHAIN_TRACING_V2</code> and <code>LANGCHAIN_API_KEY</code>.  </li>
+<li><code>GOOGLE_APPLICATION_CREDENTIALS</code> must point to a service-account JSON key file with the Speech-to-Text and Translation APIs enabled; the repository expects it at <code>interaction/google.json</code>.  </li>
+<li>The default agent profiles run on local Ollama models and need no LLM key. <code>OPENAI_API_KEY</code> is only read when a profile sets <code>backend: openai</code> (the <code>gpt4o_mini</code> profiles), which no agent uses by default.  </li>
+<li>Omit <code>LANGCHAIN_TRACING_V2</code> and <code>LANGCHAIN_API_KEY</code> to disable tracing.  </li>
 </ul>
 
 
@@ -1451,7 +1545,11 @@ This file should contain the API keys and configuration for all external service
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

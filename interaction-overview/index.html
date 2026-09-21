@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -387,6 +389,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -1199,9 +1229,9 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <p>Under <code>interaction/</code>:</p>
 <ul>
 <li><strong><code>config.yaml</code></strong></li>
-<li>LLM profiles: Ollama (<code>small_llm</code>, <code>big_llm</code>, <code>response_llm</code>, <code>vision_llm</code>) and vLLM (<code>vllm_small</code>, <code>ft_*</code> fine-tuned adapters).</li>
-<li>Agent → LLM profile mapping (most agents use fine-tuned vLLM profiles).</li>
-<li>vLLM server URL.</li>
+<li>LLM profiles: generic Ollama models (<code>small_llm</code>, <code>big_llm</code>, <code>response_llm</code>, <code>vision_llm</code>), fine-tuned Ollama models (<code>ft_*</code>), and optional cloud profiles (<code>gpt4o_mini</code>, <code>gpt4o_mini_long</code>, unmapped by default).</li>
+<li>Agent → LLM profile mapping (most agents use the fine-tuned profiles).</li>
+<li>vLLM server URL, used only by profiles that set <code>backend: vllm</code> (none by default).</li>
 <li>
 <p>Visual-memory retrieval parameters.</p>
 </li>
@@ -1235,6 +1265,7 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 </li>
 <li><code>loggers.py</code> – logging utilities (<code>LoggersFactory</code>).</li>
 <li><code>language.py</code> – language enum and helpers.</li>
+<li><code>language_config.py</code> – persisted runtime language (<code>get_current_language</code>, <code>set_current_language</code>, <code>coerce_language</code>); the default is French.</li>
 <li><code>translation.py</code>, <code>translation_llm.py</code> – text translation tools.</li>
 <li>
 <p><code>mqtt_comm.py</code> – interaction-layer MQTT client and helpers.</p>
@@ -1249,7 +1280,7 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <p><strong><code>nadine/ui/</code></strong></p>
 </li>
 <li>
-<p><code>ui.py</code> – Qt/GUI window for monitoring interactions (user text, agent reply, status).</p>
+<p><code>ui.py</code> – Tkinter window for monitoring interactions (user text, agent reply, status), a language selector, and a gaze-direction control that publishes look-at targets to the control layer.</p>
 </li>
 <li>
 <p><strong><code>nadine/agents/</code></strong></p>
@@ -1266,8 +1297,9 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <li>Translates non-English input into English (if needed).</li>
 <li>Calls <code>DialogueManager.processInput(text_en)</code>.</li>
 <li><strong>DialogueManager</strong>:</li>
+<li>Syncs state with any detected face-recognition user (a user switch saves the outgoing user's episodic memory and resets history and state).</li>
+<li>Answers a few requests directly without the graph (jokes, "stop talking"); a handshake request triggers the handshake animation.</li>
 <li>Appends the user message to chat history.</li>
-<li>Syncs state with any detected face-recognition user.</li>
 <li>Runs the LangGraph multi-agent workflow:<ul>
 <li>Intent classification</li>
 <li>Memory retrieval/update</li>
@@ -1282,7 +1314,7 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <li>UI is updated (user input + agent output).  </li>
 <li><strong>MQTTCommunication.speak</strong> sends the English response (translated to target language if needed) over:</li>
 <li><code>nadine/agent/control/speak</code></li>
-<li>After speaking finishes, STT is re-activated to listen for the next utterance.</li>
+<li>After speaking finishes, STT is re-activated to listen for the next utterance. If the intent was <code>end_conversation</code>, the language is reset to the default (French).</li>
 </ol>
 <p>In <strong>chat mode</strong>, steps are similar but:</p>
 <ul>
@@ -1295,45 +1327,45 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <ul>
 <li><strong><code>interaction.vllm</code></strong></li>
 <li>
-<p><code>base_url</code> – URL of the vLLM server (default: <code>http://localhost:8000/v1</code>).</p>
+<p><code>base_url</code> – URL of a vLLM server (default: <code>http://localhost:8000/v1</code>). Only used by profiles with <code>backend: vllm</code>; no profile sets it in this version, so all local models go through Ollama.</p>
 </li>
 <li>
 <p><strong><code>interaction.llm</code></strong></p>
 </li>
-<li><strong>Ollama profiles</strong> (served by Ollama on GPU 1):<ul>
+<li><strong>Generic Ollama profiles</strong>:<ul>
 <li><code>small_llm</code> – <code>qwen2.5:1.5b-instruct</code> (fallback for simple tasks).</li>
 <li><code>big_llm</code> – <code>mistral-small3.2:latest</code> (heavier reasoning).</li>
 <li><code>response_llm</code> – <code>mistral-small3.2:latest</code> (main conversation LLM, T=0.3).</li>
 <li><code>vision_llm</code> – <code>qwen2.5vl:3b</code> (vision agent).</li>
 </ul>
 </li>
-<li>
-<p><strong>vLLM profiles</strong> (served by vLLM multi-LoRA server on GPU 0):</p>
-<ul>
-<li><code>vllm_small</code> – base <code>Qwen2.5-1.5B-Instruct</code> via vLLM.</li>
-<li><code>ft_intent_classifier</code> – fine-tuned LoRA adapter for intent classification.</li>
-<li><code>ft_orchestration_agent</code> – fine-tuned LoRA adapter for orchestration.</li>
-<li><code>ft_affective_appraisal</code> – fine-tuned LoRA adapter for emotion appraisal.</li>
-<li><code>ft_memory_update</code> – fine-tuned LoRA adapter for memory extraction.</li>
-<li><code>ft_episodic_memory</code> – fine-tuned LoRA adapter for episodic summarization.</li>
-<li><code>ft_search_router</code> – fine-tuned LoRA adapter for search routing.</li>
-<li><code>ft_response_agent</code> – fine-tuned LoRA adapter for response generation (not used in production; <code>response_llm</code> via Ollama is preferred).</li>
+<li><strong>Fine-tuned Ollama profiles</strong> (Qwen2.5-1.5B LoRA adapters merged, exported to GGUF, and registered as <code>nadine-*</code> models; see Installation &amp; Setup):<ul>
+<li><code>ft_intent_classifier</code> – <code>nadine-intent_classifier</code>, intent classification.</li>
+<li><code>ft_orchestration_agent</code> – <code>nadine-orchestration_agent</code>, routing plan.</li>
+<li><code>ft_affective_appraisal</code> – <code>nadine-affective_appraisal</code>, emotion appraisal.</li>
+<li><code>ft_memory_update</code> – <code>nadine-memory_update</code>, memory extraction.</li>
+<li><code>ft_episodic_memory</code> – <code>nadine-episodic_memory</code>, episodic summarization.</li>
+<li><code>ft_search_router</code> – <code>nadine-search_router</code>, search routing (defined but not mapped to an agent by default).</li>
 </ul>
+</li>
+<li><strong>Cloud profiles</strong> (<code>backend: openai</code>): <code>gpt4o_mini</code>, <code>gpt4o_mini_long</code>. Defined for experiments; not mapped to any agent by default.</li>
+<li>
+<p>A profile may also set <code>backend: vllm</code> to use a vLLM server at <code>interaction.vllm.base_url</code>; nothing uses this by default.</p>
 </li>
 <li>
 <p><strong><code>interaction.agents</code></strong></p>
 </li>
 <li>
-<p>Maps logical agents to LLM profiles. Most agents now use <strong>fine-tuned vLLM profiles</strong> for lower latency:</p>
+<p>Maps logical agents to LLM profiles. Most agents use the <strong>fine-tuned profiles</strong>:</p>
 <ul>
 <li><code>intention_classifier</code> → <code>ft_intent_classifier</code></li>
 <li><code>orchestration_agent</code> → <code>ft_orchestration_agent</code></li>
 <li><code>affective_appraisal</code> → <code>ft_affective_appraisal</code></li>
 <li><code>memory_update_agent</code> → <code>ft_memory_update</code></li>
 <li><code>contextualizer</code> → <code>ft_episodic_memory</code></li>
-<li><code>search_router</code> → <code>vllm_small</code></li>
-<li><code>search_answer</code> → <code>vllm_small</code></li>
-<li><code>vision_router</code> → <code>vllm_small</code></li>
+<li><code>search_router</code> → <code>small_llm</code></li>
+<li><code>search_answer</code> → <code>small_llm</code></li>
+<li><code>vision_router</code> → <code>small_llm</code></li>
 <li><code>vision_description</code> → <code>vision_llm</code> (Ollama)</li>
 <li><code>response_agent</code> → <code>response_llm</code> (Ollama, Mistral Small 3.2)</li>
 </ul>
@@ -1341,8 +1373,8 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <li>
 <p><strong><code>interaction.visual_memory</code></strong></p>
 </li>
-<li><code>similarity_threshold</code> – CLIP similarity cut-off for using visual memory.  </li>
-<li><code>retrieval_alpha</code> – weight between image vs. description similarity.</li>
+<li><code>similarity_threshold</code> (0.15) – minimum combined CLIP similarity for a stored scene to be used.  </li>
+<li><code>retrieval_alpha</code> (0.3) – weight of the image similarity versus the description similarity; at 0.3 the scene description counts more than the image.</li>
 </ul>
 <p>These settings are read mainly via <code>nadine.agents.utils.load_agent_llm</code> and the visual-memory helpers in <code>memory_retrieval_agent.py</code>.</p>
 <hr />
@@ -1352,6 +1384,17 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
 <li><strong>Interaction Layer / Agents &amp; Graph</strong> – detailed description of the LangGraph workflow and each agent.  </li>
 <li><strong>Interaction Layer / Memory &amp; RAG</strong> – how user profiles, episodic memory, visual memory, and RAG work together.</li>
 </ul>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Differences in the Hybrid Cloud version (nadine_phd)</p>
+<p>The <code>nadine_phd</code> fork keeps this code base and adds:</p>
+<ul>
+<li><strong>Merged pipeline.</strong> With <code>interaction.pipeline.mode: merged</code>, a single <code>understand</code> node (<code>turn_understanding.py</code>) replaces <code>intention_classifier</code>, <code>affective_appraisal</code>, and <code>orchestrator</code>; it returns intent, emotion, and the routing plan in one structured call. The three-node pipeline remains available as <code>legacy</code>.</li>
+<li><strong>Cloud profiles.</strong> Profiles with <code>backend: openai</code> (gpt-5.4-mini: <code>understand_gpt</code>, <code>response_gpt</code>, <code>gpt_json</code>, <code>gpt_text</code>, <code>vision_gpt</code>) and <code>backend: anthropic</code> (claude-haiku-4-5: <code>claude_response</code>, <code>claude_understand</code>). By default <code>turn_understanding</code>, <code>response_agent</code>, <code>memory_update_agent</code>, <code>search_router</code>, and <code>vision_router</code> use the OpenAI profiles; <code>intention_classifier</code>, <code>affective_appraisal</code>, <code>orchestration_agent</code>, and <code>contextualizer</code> stay on the local fine-tuned models, and <code>vision_description</code> stays local so camera frames never leave the machine.</li>
+<li><strong>Observation memory.</strong> <code>observation_memory.py</code> stores user-directed vision moments as observation scenes, and <code>visual_memory</code> gains <code>recall_threshold</code> and <code>first_meeting_recall_threshold</code> (with <code>similarity_threshold: 0.35</code>, <code>retrieval_alpha: 0.0</code>).</li>
+<li><strong>Study logging.</strong> A per-session <code>StudyLogger</code> (<code>common/study_logger.py</code>) records timestamped transcripts, memory events, and latency fields.</li>
+</ul>
+</div>
 
 
 
@@ -1417,7 +1460,11 @@ It runs a multi-agent dialogue system (based on <a href="https://docs.langchain.
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

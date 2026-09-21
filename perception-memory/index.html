@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -407,6 +409,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../project-installation/" class="md-nav__link">
         
   
@@ -710,33 +740,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
+  <a href="#storage-policies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Components
+        Storage Policies
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#emotion-novelty-to-memorability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Emotion &amp; Novelty to Memorability
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Emotion &amp; Novelty to Memorability">
+    <nav class="md-nav" aria-label="Storage Policies">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#emotion-salience" class="md-nav__link">
+  <a href="#pad_arousal-default-padarousalmemorymodule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Emotion salience
+        pad_arousal (default) – PADArousalMemoryModule
       
     </span>
   </a>
@@ -744,21 +763,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#novelty" class="md-nav__link">
+  <a href="#vision-fallback-selectivememorymodule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Novelty
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#combined-memorability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Combined memorability
+        vision (fallback) – SelectiveMemoryModule
       
     </span>
   </a>
@@ -767,6 +775,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Components
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1132,33 +1151,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
+  <a href="#storage-policies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Components
+        Storage Policies
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#emotion-novelty-to-memorability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Emotion &amp; Novelty to Memorability
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Emotion &amp; Novelty to Memorability">
+    <nav class="md-nav" aria-label="Storage Policies">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#emotion-salience" class="md-nav__link">
+  <a href="#pad_arousal-default-padarousalmemorymodule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Emotion salience
+        pad_arousal (default) – PADArousalMemoryModule
       
     </span>
   </a>
@@ -1166,21 +1174,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#novelty" class="md-nav__link">
+  <a href="#vision-fallback-selectivememorymodule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Novelty
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#combined-memorability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Combined memorability
+        vision (fallback) – SelectiveMemoryModule
       
     </span>
   </a>
@@ -1189,6 +1186,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Components
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1232,80 +1240,121 @@
 
 
 <h1 id="perception-layer-selective-memory">Perception Layer – Selective Memory<a class="headerlink" href="#perception-layer-selective-memory" title="Permanent link">&para;</a></h1>
-<p>This page focuses on the <strong>Selective Memory Module</strong> (<code>selective_memory.py</code>), which decides which visual scenes are memorable enough to store for each user.</p>
+<p>This page focuses on the <strong>selective memory module</strong> (<code>selective_memory.py</code>), which decides which visual scenes are memorable enough to store for each user.</p>
 <hr />
 <h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
-<p>For every recognized user, the system occasionally evaluates the current visual scene and computes a <strong>memorability score</strong> based on:</p>
+<p>For every recognized user, the system periodically evaluates the current visual scene and decides whether to keep it. A kept scene is stored as image + CLIP embedding + metadata in the user's memory folder, together with a short natural-language description, for later retrieval by the interaction layer.</p>
+<p>Two storage policies are implemented and selected with <code>selective_memory.policy</code> in <code>perception/config.yaml</code>:</p>
 <ul>
-<li>How emotionally salient the scene is  </li>
-<li>How novel the scene is compared to past scenes for that user  </li>
+<li><strong><code>pad_arousal</code></strong> (default) – the decision comes from Nadine's own affective state, as appraised by the interaction layer during the conversation.</li>
+<li><strong><code>vision</code></strong> (fallback) – the decision is computed from the user's facial emotion and the novelty of the scene.</li>
 </ul>
-<p>If the memorability score is high enough, the scene is stored (image + embedding + metadata) in the user’s memory folder for later use by the interaction layer.</p>
 <hr />
-<h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h2>
-<p><code>SelectiveMemoryModule</code> combines three main pieces:</p>
+<h2 id="storage-policies">Storage Policies<a class="headerlink" href="#storage-policies" title="Permanent link">&para;</a></h2>
+<h3 id="pad_arousal-default-padarousalmemorymodule"><code>pad_arousal</code> (default) – <code>PADArousalMemoryModule</code><a class="headerlink" href="#pad_arousal-default-padarousalmemorymodule" title="Permanent link">&para;</a></h3>
+<p>The interaction layer publishes <code>nadine/affect/state</code> after every affective appraisal with Nadine's current emotion <code>label</code>, PAD <code>arousal</code>, and <code>intensity</code>. Perception keeps the latest values and uses them when the memorability check runs.</p>
+<p><strong>Memorability</strong></p>
+<div class="arithmatex">\[
+\text{memorability} = \text{base}(\text{label}) \times \text{intensity}
+\]</div>
+<p>where <code>base</code> is the <code>MEMORABILITY_AROUSAL_BASE</code> table in <code>selective_memory.py</code>. All emotions have a positive base value, so the score measures activation rather than valence:</p>
+<table>
+<thead>
+<tr>
+<th>Emotion label</th>
+<th>Base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>anger / angry</td>
+<td>0.85</td>
+</tr>
+<tr>
+<td>fear / fearful</td>
+<td>0.80</td>
+</tr>
+<tr>
+<td>surprise / surprised</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>joy / happy</td>
+<td>0.60</td>
+</tr>
+<tr>
+<td>disgust / disgusted</td>
+<td>0.55</td>
+</tr>
+<tr>
+<td>sadness / sad</td>
+<td>0.40</td>
+</tr>
+<tr>
+<td>goodbye</td>
+<td>0.30</td>
+</tr>
+<tr>
+<td>neutral</td>
+<td>0.10</td>
+</tr>
+<tr>
+<td>any other label</td>
+<td>0.10</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision</strong> (<code>should_store</code>)</p>
 <ul>
-<li><strong>Emotion analysis (configurable: OpenFace / DeepFace / Ensemble)</strong></li>
-<li>Supports three modes via <code>emotion_detector</code> in <code>perception/config.yaml</code>:<ul>
-<li><code>"openface"</code> – Uses <a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace 3.0</a> (<code>MultitaskPredictor</code> + <code>FaceDetector</code>).</li>
-<li><code>"deepface"</code> – Uses <a href="https://github.com/serengil/deepface">DeepFace</a> (generally better at detecting 'happy').</li>
-<li><code>"ensemble"</code> (default) – Combines both: averages probability distributions from OpenFace and DeepFace.</li>
+<li>If the user has no stored scenes yet (first meeting), the scene is always stored.</li>
+<li>Otherwise the scene is stored when <code>memorability ≥ arousal_threshold</code>.</li>
+<li><code>main.py</code> additionally enforces a 15 s cooldown per user between stores.</li>
 </ul>
-</li>
-<li>Infers probabilities over: <code>['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>.</li>
-<li>
-<p>A configurable <code>happy_boost_factor</code> (default 1.2) can boost 'happy' probabilities in OpenFace/ensemble mode to compensate for OpenFace's tendency to underweight happiness.</p>
-</li>
-<li>
-<p><strong>Scene embedding (CLIP)</strong></p>
-</li>
-<li>Uses <code>openai/clip-vit-large-patch14</code> to embed the entire RGB frame into a high‑dimensional vector.</li>
-<li>
-<p>Embeddings are (L_2)-normalized for cosine similarity comparisons.</p>
-</li>
-<li>
-<p><strong>Scene description (optional VLM)</strong></p>
-</li>
-<li>Optionally uses <code>moondream2</code> to generate a short textual description for each stored scene.</li>
-<li>If the model is unavailable, description generation is skipped gracefully.</li>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>arousal_threshold</code> – config.yaml: 0.25 (lowered from 0.40 to capture more everyday moments); code fallback: 0.3.</li>
+<li><code>memorability_check_interval</code> – config.yaml: 3.0 s; code fallback: 2.0 s.</li>
 </ul>
-<p>All models are loaded once at initialization and run on the best available device (CUDA/MPS/CPU).</p>
-<hr />
-<h2 id="emotion-novelty-to-memorability">Emotion &amp; Novelty to Memorability<a class="headerlink" href="#emotion-novelty-to-memorability" title="Permanent link">&para;</a></h2>
-<h3 id="emotion-salience">Emotion salience<a class="headerlink" href="#emotion-salience" title="Permanent link">&para;</a></h3>
-<p>Given emotion probabilities (p_e) and thresholds (t_e) per emotion, salience is computed as:</p>
-<p>[
+<p>This module loads only CLIP (retrieval embeddings) and Moondream2 (scene descriptions); OpenFace is not needed.</p>
+<h3 id="vision-fallback-selectivememorymodule"><code>vision</code> (fallback) – <code>SelectiveMemoryModule</code><a class="headerlink" href="#vision-fallback-selectivememorymodule" title="Permanent link">&para;</a></h3>
+<p>Kept for comparison. It combines facial emotion salience with scene novelty.</p>
+<p><strong>Emotion analysis</strong></p>
+<ul>
+<li><a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace 3.0</a> (<code>MultitaskPredictor</code> + <code>FaceDetector</code>) with the weights in <code>perception/weights/</code>, run on a padded face crop.</li>
+<li>Produces probabilities over <code>['neutral', 'happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>.</li>
+<li><code>happy_boost_factor</code> multiplies the <code>happy</code> probability and rescales the others, as a stopgap for OpenFace's under-detection of happiness.</li>
+</ul>
+<p><strong>Emotion salience</strong></p>
+<p>Given a probability <span class="arithmatex">\(p_e\)</span> and a per-emotion threshold <span class="arithmatex">\(t_e\)</span>:</p>
+<div class="arithmatex">\[
 \text{salience}(p_e, t_e) = \max\left(0, \frac{p_e - t_e}{1 - t_e}\right)
-]</p>
-<ul>
-<li>Emotion thresholds are tuned per emotion (e.g., lower thresholds for “happy/sad”, higher for “surprise/disgust”).  </li>
-<li>The final <strong>emotion salience</strong> is the maximum salience value across active emotions:</li>
-<li>Active set: <code>['happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>.</li>
-</ul>
-<h3 id="novelty">Novelty<a class="headerlink" href="#novelty" title="Permanent link">&para;</a></h3>
-<p>Novelty is based on <strong>distance from past scenes</strong> stored for the same user:</p>
+\]</div>
+<p>The per-emotion thresholds are code defaults in <code>SelectiveMemoryModule</code> (not read from config): <code>neutral</code> 1.0, <code>happy</code> 0.5, <code>sad</code> 0.7, <code>surprise</code> 0.7, <code>anger</code> 0.7, <code>contempt</code> 0.7, <code>fear</code> 0.8, <code>disgust</code> 0.8. The final emotion salience is the maximum over the active set <code>['happy', 'sad', 'surprise', 'fear', 'disgust', 'anger', 'contempt']</code>; the emotion that produced it is the dominant emotion.</p>
+<p><strong>Novelty</strong></p>
 <ol>
-<li>Compute CLIP embedding for the current frame.  </li>
-<li>Load all previous embeddings for that user from:</li>
-<li><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/embeddings/</code></li>
-<li>Compute cosine similarity between the current embedding and all stored embeddings:</li>
-<li>Distance = (1 - \text{similarity})</li>
-<li>Define <strong>novelty score</strong> as the minimum distance (closest match); higher = more novel.</li>
+<li>Compute the CLIP embedding of the current frame.</li>
+<li>Load all previous scene embeddings for the user from <code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/embeddings/</code>.</li>
+<li>Novelty score = minimum over stored scenes of <span class="arithmatex">\(1 - \text{cosine similarity}\)</span>; higher means more novel.</li>
+<li>Novelty salience uses the same threshold mapping with <code>novelty_threshold</code>.</li>
 </ol>
-<p>Novelty salience is then computed using the same threshold-based mapping as emotions:</p>
-<p>[
-\text{novelty_salience} = \max\left(0, \frac{\text{novelty_score} - t_{\text{novelty}}}{1 - t_{\text{novelty}}}\right)
-]</p>
-<p>Where (t_{\text{novelty}}) is <code>novelty_threshold</code> from config.</p>
-<h3 id="combined-memorability">Combined memorability<a class="headerlink" href="#combined-memorability" title="Permanent link">&para;</a></h3>
-<p>Memorability is a weighted sum of emotion and novelty salience:</p>
-<p>[
-\text{memorability} = w_{\text{emotion}} \cdot \text{emotion_salience}
-                     + w_{\text{novelty}} \cdot \text{novelty_salience}
-]</p>
+<p><strong>Combined memorability</strong></p>
+<div class="arithmatex">\[
+\text{memorability} = w_{\text{emotion}} \cdot \text{emotion\_salience} + w_{\text{novelty}} \cdot \text{novelty\_salience}
+\]</div>
+<p>The scene is stored when <code>memorability ≥ memorability_threshold</code>, subject to the same 15 s cooldown.</p>
+<p><strong>Parameters</strong> (config.yaml value, code fallback in parentheses)</p>
 <ul>
-<li>Weights <code>w_emotion</code> and <code>w_novelty</code> are configured in <code>perception/config.yaml</code>.  </li>
-<li>If <code>memorability</code> ≥ <code>memorability_threshold</code>, the scene is stored.</li>
+<li><code>w_emotion</code> 0.8 (0.5), <code>w_novelty</code> 0.2 (0.5)</li>
+<li><code>novelty_threshold</code> 0.45 (0.3)</li>
+<li><code>memorability_threshold</code> 0.4 (0.5)</li>
+<li><code>happy_boost_factor</code> 1.2 (1.0)</li>
+</ul>
+<hr />
+<h2 id="shared-components">Shared Components<a class="headerlink" href="#shared-components" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Scene embedding (CLIP)</strong> – <code>openai/clip-vit-base-patch32</code> embeds the full RGB frame; embeddings are <span class="arithmatex">\(L_2\)</span>-normalized for cosine comparisons. The interaction layer uses the same model for visual-memory retrieval.</li>
+<li><strong>Scene description (VLM)</strong> – <code>vikhyatk/moondream2</code>, pinned to revision <code>2025-06-21</code>, generates a one-sentence caption for each stored scene. If the model fails to load, storage proceeds without a description.</li>
+<li>All models are loaded once at initialization on the best available device (<code>cuda:0</code>, then MPS, then CPU). Ollama fills GPU 1 first, so perception models take GPU 0.</li>
 </ul>
 <hr />
 <h2 id="storage-layout">Storage Layout<a class="headerlink" href="#storage-layout" title="Permanent link">&para;</a></h2>
@@ -1328,32 +1377,35 @@
 <li>
 <p><strong><code>metadata/</code></strong>  </p>
 </li>
-<li>JSON files with metadata, including:<ul>
-<li><code>scene_id</code>, <code>timestamp</code>, <code>image_path</code></li>
-<li><code>memorability</code>, <code>emotion_salience</code>, <code>novelty_salience</code></li>
-<li>Full <code>emotion_probs</code></li>
-<li>Optional natural language <code>description</code></li>
+<li>JSON files, filename <code>scene_YYYYMMDD_HHMMSS_metadata.json</code>. Common fields: <code>scene_id</code>, <code>timestamp</code>, <code>image_path</code>, <code>memorability</code>, <code>description</code>.</li>
+<li>Under <code>pad_arousal</code>: <code>emotion_label</code>, <code>intensity</code>, and a human-readable <code>reason</code> string.</li>
+<li>Under <code>vision</code>: <code>emotion_salience</code>, <code>novelty_salience</code>, and the full <code>emotion_probs</code> distribution.</li>
 </ul>
-</li>
-<li>Filename: <code>scene_YYYYMMDD_HHMMSS_metadata.json</code></li>
-</ul>
-<p>This structure lets downstream components (e.g., memory/RAG agents) quickly discover and use memorable scenes.</p>
+<p>This structure lets the interaction layer's memory retrieval agent discover and rank scenes for a user.</p>
 <hr />
 <h2 id="configuration-hooks">Configuration Hooks<a class="headerlink" href="#configuration-hooks" title="Permanent link">&para;</a></h2>
-<p>You can tune selective memory behavior via <code>perception/config.yaml</code>:</p>
+<p>Tune selective memory via the <code>selective_memory</code> block of <code>perception/config.yaml</code>:</p>
 <ul>
-<li><code>w_emotion</code>, <code>w_novelty</code> – balance between emotional and novelty cues (default: 0.8, 0.2).</li>
-<li><code>novelty_threshold</code> – how easily novelty becomes salient (default: 0.45).</li>
-<li><code>memorability_threshold</code> – how “picky” the system is about storing scenes (default: 0.4).</li>
-<li><code>memorability_check_interval</code> – how often memorability is evaluated per user (default: 3.0s).</li>
-<li><code>emotion_detector</code> – <code>”openface”</code>, <code>”deepface”</code>, or <code>”ensemble”</code> (default: <code>”ensemble”</code>).</li>
-<li><code>happy_boost_factor</code> – multiplier for 'happy' probabilities in OpenFace/ensemble mode (default: 1.2).</li>
+<li><code>policy</code> – <code>"pad_arousal"</code> (default) or <code>"vision"</code>.</li>
+<li><code>arousal_threshold</code> – <code>pad_arousal</code> store threshold (0.25).</li>
+<li><code>w_emotion</code>, <code>w_novelty</code>, <code>novelty_threshold</code>, <code>memorability_threshold</code>, <code>happy_boost_factor</code> – <code>vision</code> policy parameters.</li>
+<li><code>memorability_check_interval</code> – seconds between checks per user (3.0).</li>
 </ul>
-<p>For finer control (code changes), you can adjust:</p>
+<p>Constants that require a code change:</p>
 <ul>
-<li>Per‑emotion thresholds in <code>SelectiveMemoryModule.emotion_thresholds</code>.  </li>
-<li>The way novelty is normalized or aggregated if you want more sophisticated behavior.</li>
+<li><code>SCENE_STORE_COOLDOWN</code> (15 s) and <code>FACE_STORE_COOLDOWN</code> (10 s) in <code>main.py</code>.</li>
+<li><code>MEMORABILITY_AROUSAL_BASE</code> and the per-emotion thresholds in <code>selective_memory.py</code>.</li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Differences in the Hybrid Cloud version (nadine_phd)</p>
+<ul>
+<li>The default policy is renamed <code>intensity</code> (<code>IntensityMemoryModule</code>, <code>intensity_threshold: 0.5</code>); <code>pad_arousal</code> is accepted as a legacy alias.</li>
+<li>Storage is event-driven by default: one evaluation per dialogue turn when a new <code>nadine/affect/state</code> arrives (<code>NADINE_STORAGE_TRIGGER=event</code>), instead of the frame-loop interval and cooldown (<code>interval</code>).</li>
+<li>The affect message also carries the user's expressed emotion (<code>user_label</code>, <code>user_intensity</code>), the user's utterance (<code>user_message</code>, stamped onto the scene so it can be retrieved by what was said), and a <code>suppress_storage</code> flag for recall turns. <code>NADINE_STORAGE_EMOTION_SOURCE</code> selects <code>user</code> (default) or <code>robot</code> as the driving signal.</li>
+<li><code>store_first_meeting_scene()</code> stores a dedicated <code>scene_type: "first_meeting"</code> scene on first face registration; other scenes are <code>"moment"</code>.</li>
+<li><code>NADINE_ENABLE_VISUAL_MEMORY=0</code> disables the module entirely (A/B study condition), and <code>fer_sampler.py</code> logs continuous facial-emotion samples for offline analysis.</li>
+</ul>
+</div>
 
 
 
@@ -1419,7 +1471,11 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

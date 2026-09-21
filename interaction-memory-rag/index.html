@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -387,6 +389,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -932,10 +962,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#textual-memory-chroma" class="md-nav__link">
+  <a href="#textual-memory-chromadb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Textual memory (Chroma)
+        Textual memory (ChromaDB)
       
     </span>
   </a>
@@ -1211,10 +1241,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#textual-memory-chroma" class="md-nav__link">
+  <a href="#textual-memory-chromadb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Textual memory (Chroma)
+        Textual memory (ChromaDB)
       
     </span>
   </a>
@@ -1353,12 +1383,14 @@
 <li>The graph then routes to <code>response_agent</code>, which asks the user to confirm the top candidate.</li>
 <li>If no reasonable match is found:</li>
 <li>Proceeds as a new user; <code>name_checked</code> is set and a new profile is created/updated.</li>
+<li>If face recognition had already loaded a known user but the stated name is different and matches nobody (an <strong>identity conflict</strong>):</li>
+<li>Generates a new user ID for the stated name rather than overwriting the recognized user's profile.</li>
 </ul>
 </li>
 </ul>
 <p>The <code>update_memory</code> wrapper in <code>graph.py</code> merges the returned <code>user_info</code>, <code>name_checked</code>, and <code>name_confirmation</code> fields back into the graph state. On the next user turn, the <strong>DialogueManager</strong> consumes this state and either accepts a suggested existing user, creates a new one, or rotates to the next suggestion, before finally sending the confirmed <code>user_name</code>/<code>user_id</code> pair back to perception for face-linking.</p>
 <h3 id="episodic-memory">Episodic memory<a class="headerlink" href="#episodic-memory" title="Permanent link">&para;</a></h3>
-<p>When <code>intent != "update_user_info"</code> (e.g., end of a conversation):</p>
+<p>When <code>intent == "end_conversation"</code> (the graph routes <code>affective_update</code> → <code>memory_update_agent</code> after the farewell reply; the DialogueManager also saves an episode when a different user is detected mid-conversation):</p>
 <ul>
 <li>The agent summarizes the last part of the conversation into an <strong>episode</strong>:</li>
 <li>Builds a short transcript of recent <code>Human</code>/<code>AI</code> turns.</li>
@@ -1367,11 +1399,11 @@
 <li>Skips save if <code>user_name</code> is missing or still <code>"Unknown"</code>.  </li>
 <li>Otherwise:<ul>
 <li>Builds <code>conversation_text</code> and <code>episode_text</code>.</li>
-<li>Creates two new documents in Chroma, tagged with:</li>
+<li>Creates two new documents in ChromaDB, tagged with:</li>
 <li><code>user_id</code></li>
 <li><code>timestamp</code></li>
 <li><code>memory_type</code> = <code>"conversation"</code> or <code>"episode"</code>.</li>
-<li>Stores them in a Chroma collection named after the <code>user_id</code>.</li>
+<li>Stores them in a ChromaDB collection named after the <code>user_id</code>, embedded with ChromaDB's built-in <code>ONNXMiniLM_L6_V2</code> function on the CPU. If an existing collection was created with a different embedding function, it is deleted and recreated.</li>
 </ul>
 </li>
 </ul>
@@ -1379,9 +1411,10 @@
 <hr />
 <h2 id="memory-retrieval-memory_retrieval_agentpy">Memory Retrieval (<code>memory_retrieval_agent.py</code>)<a class="headerlink" href="#memory-retrieval-memory_retrieval_agentpy" title="Permanent link">&para;</a></h2>
 <p>When the graph needs context about a user, <code>get_user_specific_memory(state)</code> is called.</p>
-<h3 id="textual-memory-chroma">Textual memory (Chroma)<a class="headerlink" href="#textual-memory-chroma" title="Permanent link">&para;</a></h3>
+<h3 id="textual-memory-chromadb">Textual memory (ChromaDB)<a class="headerlink" href="#textual-memory-chromadb" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Finds the Chroma collection for the current <code>user_id</code>.  </li>
+<li>Runs only for a known user: the graph node skips retrieval when <code>user_name</code> is missing or <code>"Unknown"</code>.  </li>
+<li>Opens the ChromaDB collection for the current <code>user_id</code> with the same <code>ONNXMiniLM_L6_V2</code> embedding function used at save time. A collection created with a different embedding function is deleted; it is recreated on the next episodic save.  </li>
 <li>Runs two independent similarity queries based on the latest user message:</li>
 <li>One over documents where <code>memory_type == "episode"</code>.  </li>
 <li>One over documents where <code>memory_type == "conversation"</code>.  </li>
@@ -1389,13 +1422,13 @@
 <li><code>episode_memory</code></li>
 <li><code>conversation_memory</code></li>
 </ul>
-<p>If no Chroma collection exists yet, the function degrades gracefully and returns <code>None</code> for these fields.</p>
+<p>If no ChromaDB collection exists yet, the function degrades gracefully and returns <code>None</code> for these fields. Visual memory is still attempted.</p>
 <h3 id="visual-memory">Visual memory<a class="headerlink" href="#visual-memory" title="Permanent link">&para;</a></h3>
 <p>The same function also calls <code>_retrieve_best_visual_memory(state, user_id)</code> to:</p>
 <ul>
 <li>Inspect memorable scenes stored by the <strong>perception layer</strong> under:</li>
 <li><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/</code></li>
-<li>Use <a href="https://huggingface.co/openai/clip-vit-large-patch14">CLIP ViT-L/14</a> text embeddings of the current user question to:</li>
+<li>Use <a href="https://huggingface.co/openai/clip-vit-base-patch32">CLIP ViT-B/32</a> text embeddings of the current user question to:</li>
 <li>Compare against stored CLIP image embeddings (produced by perception at storage time).</li>
 <li>Combine with text similarity against stored scene descriptions (generated by Moondream2).</li>
 <li>Select the most relevant visual memory if its combined similarity exceeds a threshold:</li>
@@ -1407,11 +1440,12 @@
 </ul>
 <p>The output is a minimal dict:</p>
 <ul>
-<li><code>{"image_path": ..., "scene_id": ..., "similarity": ...}</code> or <code>None</code>.</li>
+<li><code>{"image_path": ..., "scene_id": ..., "similarity": ..., "description": ...}</code> or <code>None</code>.</li>
 </ul>
 <p>This is placed in <code>state["visual_memory"]</code> and later consumed by the <strong>response agent</strong>:</p>
 <ul>
-<li><code>response_agent</code> attaches the image as an <code>image_url</code> content item, so the response LLM can reason over both text and visuals.</li>
+<li><code>response_agent</code> attaches the image as an <code>image_url</code> content item and appends a "VISUAL MEMORY" text block with the scene description, so the response LLM can reason over both text and visuals.</li>
+<li>Its system prompt instructs the model to treat the scene as its own memory: when the user asks whether Nadine remembers them or an earlier meeting, the reply references concrete details from the scene without mentioning an image.</li>
 </ul>
 <hr />
 <h2 id="knowledge-rag-agent-knowledge_rag_agentpy">Knowledge RAG Agent (<code>knowledge_RAG_agent.py</code>)<a class="headerlink" href="#knowledge-rag-agent-knowledge_rag_agentpy" title="Permanent link">&para;</a></h2>
@@ -1425,7 +1459,7 @@
 <li>Loads all files from <code>rag_files/</code> using <code>TextLoader</code>.  </li>
 <li>Splits them into chunks grouped by markdown headers (<code>#</code>, <code>##</code>).  </li>
 <li>
-<p>Builds a Chroma vectorstore:</p>
+<p>Builds a ChromaDB vectorstore:</p>
 <ul>
 <li>Embeddings: <code>OllamaEmbeddings(model="nomic-embed-text")</code>.  </li>
 <li>Collection name: <code>"nadine-knowledge"</code>.  </li>
@@ -1436,7 +1470,7 @@
 <p>On later runs:</p>
 </li>
 <li>
-<p>Reuses the existing Chroma collection if present.</p>
+<p>Reuses the existing ChromaDB collection if present.</p>
 </li>
 <li>
 <p>For each query:</p>
@@ -1457,8 +1491,8 @@ For a deeper view of how this knowledge is combined with other agents, see <a hr
 <p>The visual memory retrieval behavior is configured via:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">interaction</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">visual_memory</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">similarity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
-<span class="w">    </span><span class="nt">retrieval_alpha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+<span class="w">    </span><span class="nt">similarity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.15</span>
+<span class="w">    </span><span class="nt">retrieval_alpha</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
 </code></pre></div>
 <ul>
 <li><code>similarity_threshold</code>:</li>
@@ -1473,6 +1507,7 @@ For a deeper view of how this knowledge is combined with other agents, see <a hr
 <li><code>alpha * sim_image + (1 - alpha) * sim_desc</code></li>
 </ul>
 </li>
+<li>With the default 0.3, the description similarity carries more weight than the image similarity.</li>
 </ul>
 <p>Adjust these values to make visual memory <strong>more or less prominent</strong> in responses.</p>
 <hr />
@@ -1506,7 +1541,7 @@ For a deeper view of how this knowledge is combined with other agents, see <a hr
 <p><strong>Memory update</strong> (<code>update_memory</code>):</p>
 </li>
 <li>Incorporates new user profile data and episodic memories.  </li>
-<li>Keeps <code>user_info</code>, Chroma DB, and <code>user_ids.json</code> in sync over time.</li>
+<li>Keeps <code>user_info</code>, ChromaDB, and <code>user_ids.json</code> in sync over time.</li>
 </ol>
 <p>Together, these components make Nadine’s interactions <strong>cumulative</strong>, <strong>personalized</strong>, and <strong>multimodal</strong> across sessions.</p>
 
@@ -1574,7 +1609,11 @@ For a deeper view of how this knowledge is combined with other agents, see <a hr
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

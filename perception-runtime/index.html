@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -387,6 +389,34 @@
     
   
     Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
   
 
     
@@ -1152,14 +1182,15 @@
 <li>
 <p><strong>MQTT client</strong></p>
 </li>
-<li>Creates a <code>paho.mqtt.client.Client</code>.</li>
-<li>Connects to <code>_mqtt_cfg.primary_host</code> or <code>_mqtt_cfg.fallback_host</code>.</li>
-<li>
-<p>Subscribes to:</p>
-<ul>
+<li>Creates a <code>paho.mqtt.client.Client</code>, assigns the callbacks, then connects to <code>_mqtt_cfg.primary_host</code> or <code>_mqtt_cfg.fallback_host</code> and starts the network loop in its own thread.</li>
+<li>Subscribes to:<ul>
 <li><code>nadine/face_recognition/user_info</code> – user info for face storage.</li>
 <li><code>nadine/perception/capture_current_view</code> – request for a one‑shot camera snapshot.</li>
+<li><code>nadine/affect/state</code> – Nadine's current affect, published by the interaction layer after each affective appraisal; drives the default memory policy.</li>
 </ul>
+</li>
+<li>
+<p>Handlers only update shared variables; the camera pipeline is never touched from the MQTT thread.</p>
 </li>
 <li>
 <p><strong>RealSense camera</strong></p>
@@ -1169,15 +1200,16 @@
 <li>Depth stream: <code>640x480</code>, 30 fps.</li>
 </ul>
 </li>
+<li>Uses <code>rs.align(rs.stream.color)</code> so depth aligns with color.</li>
 <li>
-<p>Uses <code>rs.align(rs.stream.color)</code> so depth aligns with color.</p>
+<p>If the camera fails to start (not connected, or claimed by another process), the process logs the error and exits.</p>
 </li>
 <li>
 <p><strong>Models</strong></p>
 </li>
 <li>YOLO face detector: <code>model_face = YOLO(_yolo_cfg["model_path"], ...)</code>.</li>
 <li>
-<p>InsightFace: <code>FaceAnalysis</code> with detection + recognition.</p>
+<p>InsightFace: <code>FaceAnalysis(name="buffalo_s")</code> with the detection and recognition modules, <code>det_size=(640, 640)</code>.</p>
 </li>
 <li>
 <p><strong>Face database</strong></p>
@@ -1192,29 +1224,28 @@
 <li>
 <p><strong>Selective memory</strong></p>
 </li>
-<li>Creates a <code>SelectiveMemoryModule</code> with:<ul>
-<li><a href="https://github.com/CMU-MultiComp-Lab/OpenFace-3.0">OpenFace</a> backbone and face detector weights (<code>perception/weights/</code>).</li>
-<li>Weights/thresholds from <code>_sm_cfg</code> (emotion, novelty, memorability).</li>
-</ul>
-</li>
+<li>Reads <code>selective_memory.policy</code> from the config.</li>
+<li><code>pad_arousal</code> (default): creates a <code>PADArousalMemoryModule</code> with <code>arousal_threshold</code> (config value 0.25; code fallback 0.3). Loads only CLIP and Moondream2.</li>
+<li><code>vision</code>: creates a <code>SelectiveMemoryModule</code> with the OpenFace weights from <code>perception/weights/</code> and the emotion/novelty parameters from <code>_sm_cfg</code>.</li>
 </ul>
 <hr />
 <h2 id="per-frame-loop">Per-Frame Loop<a class="headerlink" href="#per-frame-loop" title="Permanent link">&para;</a></h2>
 <p>The main <code>while True</code> loop does, for each frame:</p>
 <ol>
 <li><strong>Capture frames</strong></li>
-<li>Wait for frames from RealSense.</li>
-<li>
-<p>Align depth to color and extract:</p>
-<ul>
+<li>Wait for frames from RealSense with a 5 s timeout. On timeout the loop logs a warning and retries; it does not exit.</li>
+<li>Align depth to color and extract:<ul>
 <li><code>color_frame</code> → <code>color_image</code> (BGR <code>numpy</code> array).</li>
 <li><code>depth_frame</code> → <code>depth_image</code> (depth map).</li>
 </ul>
 </li>
 <li>
+<p>If a snapshot was requested over MQTT, save the current frame to the requested path now.</p>
+</li>
+<li>
 <p><strong>YOLO face detection &amp; tracking</strong></p>
 </li>
-<li>Run <code>model_face.track(color_image, ...)</code>.</li>
+<li>Run <code>model_face.track(color_image, ..., conf=0.75)</code>.</li>
 <li>
 <p>For each detected face, collect:</p>
 <ul>
@@ -1227,12 +1258,13 @@
 <p><strong>Active user selection</strong></p>
 </li>
 <li>Among all detected faces, pick the one with <strong>minimum positive depth</strong> as the “active user”.</li>
-<li>
-<p>Maintain <code>tracked_user_id</code> and only update it if:</p>
-<ul>
+<li>Maintain <code>tracked_user_id</code> and only update it if:<ul>
 <li>The closest face changes, or</li>
 <li>More than ~2.5 seconds have passed since the last update.</li>
 </ul>
+</li>
+<li>
+<p>If no face has been seen for 5 s (<code>NO_FACE_TIMEOUT</code>), clear the tracked user and, if a user had been announced, publish <code>nadine/graph/user_detected</code> with <code>{"user_name": null, "confidence": 0.0, "user_id": null}</code> so the interaction layer knows nobody is present.</p>
 </li>
 <li>
 <p><strong>Face recognition</strong></p>
@@ -1240,16 +1272,11 @@
 <li>
 <p>If a <code>tracked_user_id</code> is set:</p>
 <ul>
-<li>Run InsightFace detection (<code>face_analyzer.get(color_image)</code>).</li>
-<li>For each InsightFace detection, compute IoU with the YOLO bbox of the tracked user.</li>
-<li>Pick the best IoU match and, if an embedding is available:</li>
-<li>Compute cosine similarities to all <code>known_embeddings</code>.</li>
-<li>If the best similarity passes threshold, set:<ul>
-<li><code>name</code> (user name),</li>
-<li><code>user_id</code>,</li>
-<li><code>confidence</code> (%).</li>
-</ul>
-</li>
+<li>Run InsightFace detection on the full frame (<code>face_analyzer.get(color_image)</code>).</li>
+<li>For each InsightFace detection, compute IoU with the YOLO bbox of the tracked user and keep the best match; it must have IoU above 0.2.</li>
+<li>If that face has an embedding, compute cosine similarities to all <code>known_embeddings</code>.</li>
+<li><code>confidence</code> is reported as <code>(best_similarity + 1) / 2 * 100</code>, i.e. a percentage.</li>
+<li>If the best similarity exceeds 0.3, set <code>name</code> and <code>user_id</code>; otherwise the user stays <code>"Unknown"</code>.</li>
 </ul>
 </li>
 <li>
@@ -1281,27 +1308,26 @@
 <li>
 <p><strong>Selective memory hook</strong></p>
 </li>
+<li>Runs only for recognized users (<code>user_id</code> not <code>None</code>), at most once per <code>memorability_check_interval</code> seconds per user (config 3.0 s; code fallback 2.0 s), on a copy of the frame taken before anything is drawn on it.</li>
+<li><strong><code>pad_arousal</code> policy (default)</strong>: read the latest <code>nadine/affect/state</code> values; compute <code>memorability = base[emotion_label] × intensity</code>; store if <code>should_store</code> is true (memorability ≥ <code>arousal_threshold</code>, or the user has no stored scenes yet).</li>
+<li><strong><code>vision</code> policy</strong>: run OpenFace on a padded face crop, compute a CLIP embedding of the frame, and combine emotion salience and novelty into a memorability score; store if it is ≥ <code>memorability_threshold</code>.</li>
+<li>Both policies then apply a 15 s per-user cooldown (<code>SCENE_STORE_COOLDOWN</code>): if a scene was stored for this user less than 15 s ago, the store is skipped.</li>
 <li>
-<p>For recognized users (<code>user_id</code> not <code>None</code>), periodically (per user):</p>
-<ul>
-<li>Compute emotion probabilities from the full frame.</li>
-<li>Compute a CLIP embedding for scene novelty.</li>
-<li>Ask <code>SelectiveMemoryModule</code> for a memorability score.</li>
-<li>If memorability exceeds threshold, store the scene and publish an event (see the Selective Memory page for details).</li>
-</ul>
+<p>On a store, a Moondream2 description is generated, the scene is written (see the Selective Memory page), and <code>nadine/memory/scene_stored</code> is published.</p>
 </li>
 <li>
 <p><strong>Visualization</strong></p>
 </li>
-<li>Draw the face bounding box, label with <code>name (confidence%)</code> and the 3D coordinates.</li>
+<li>For the tracked face only, draw the bounding box, the label <code>name (confidence%)</code>, and the 3D coordinates.</li>
 <li>
 <p>Show the window <code>"Face &amp; 3D Tracking"</code>.</p>
 </li>
 <li>
 <p><strong>Face storage</strong></p>
 </li>
-<li>When <code>nadine/face_recognition/user_info</code> is received:<ul>
-<li>Call <code>store_face_for_user(...)</code> to store image and embeddings for that user.</li>
+<li>When <code>nadine/face_recognition/user_info</code> has been received and the tracked face has an InsightFace match:<ul>
+<li>At most one face per user every 10 s (<code>FACE_STORE_COOLDOWN</code>), and only while the user has fewer than 3 stored face images.</li>
+<li><code>store_face_for_user(...)</code> writes the face crop and its embedding and publishes <code>nadine/graph/face_stored</code>.</li>
 <li>Set a flag to reload <code>known_embeddings</code> on the next loop.</li>
 </ul>
 </li>
@@ -1320,7 +1346,14 @@
 <p><code>nadine/perception/capture_current_view</code>  </p>
 </li>
 <li>Payload: file path string  </li>
-<li>Purpose: capture a single RGB frame and save it to the given path.</li>
+<li>
+<p>Purpose: capture a single RGB frame and save it to the given path.</p>
+</li>
+<li>
+<p><code>nadine/affect/state</code>  </p>
+</li>
+<li>Payload: <code>{"label": str, "arousal": float, "intensity": float}</code>  </li>
+<li>Published by the interaction layer's affective appraisal node after every turn. The <code>pad_arousal</code> memory policy uses <code>label</code> and <code>intensity</code> to decide whether the current scene is memorable.</li>
 </ul>
 <p><strong>Published</strong></p>
 <ul>
@@ -1334,7 +1367,7 @@
 </li>
 <li>Payload: <code>{"user_name": str, "confidence": float, "user_id": Optional[str]}</code>  </li>
 <li>
-<p>Used by the interaction layer to know who is in front of Nadine.</p>
+<p>Used by the interaction layer to know who is in front of Nadine. All three fields are <code>null</code>/<code>0.0</code> when the tracked user has been absent for 5 s.</p>
 </li>
 <li>
 <p><code>nadine/graph/face_stored</code>  </p>
@@ -1346,8 +1379,9 @@
 <li>
 <p><code>nadine/memory/scene_stored</code>  </p>
 </li>
-<li>Payload: user ID/name, memorability metrics, and optional description  </li>
-<li>Emitted after a memorable scene is stored by the selective memory module.</li>
+<li>Payload: <code>{"user_id": str, "user_name": str, "memorability": float, "emotion_label": str, "intensity": float, "description": str}</code>  </li>
+<li>Under <code>pad_arousal</code>, <code>emotion_label</code> and <code>intensity</code> are the affect values that triggered the store. Under <code>vision</code>, <code>emotion_label</code> is the dominant facial emotion and <code>intensity</code> is the emotion salience.</li>
+<li>No component in the interaction layer subscribes to this topic at present; it is available for monitoring and future use.</li>
 </ul>
 <hr />
 <h2 id="utilities">Utilities<a class="headerlink" href="#utilities" title="Permanent link">&para;</a></h2>
@@ -1421,7 +1455,11 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

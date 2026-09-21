@@ -1,0 +1,17 @@
+/* Full-width, theme-aware figures on the Platforms page */
+.md-typeset .platform-figure {
+  width: 100%;
+  margin: 1.5em 0 2em;
+}
+.md-typeset .platform-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.md-typeset .platform-figure figcaption {
+  margin-top: .6em;
+  font-size: .8em;
+  font-style: italic;
+  color: var(--md-default-fg-color--light);
+  text-align: center;
+}
