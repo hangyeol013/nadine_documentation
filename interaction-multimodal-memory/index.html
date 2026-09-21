@@ -1,0 +1,2158 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the Nadine social robot project">
+      
+      
+      
+      
+        <link rel="prev" href="../interaction-memory-rag/">
+      
+      
+        <link rel="next" href="../interaction-cloud-config/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Multimodal Memory (nadine_phd) - Nadine Social Robot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#interaction-layer-multimodal-memory-nadine_phd" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Nadine Social Robot" class="md-header__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Nadine Social Robot
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Multimodal Memory (nadine_phd)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../overview/" class="md-tabs__link">
+          
+  
+  
+  Project Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../perception-overview/" class="md-tabs__link">
+          
+  
+  
+  Perception Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../interaction-overview/" class="md-tabs__link">
+          
+  
+  
+  Interaction Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../control-overview/" class="md-tabs__link">
+          
+  
+  
+  Control Layer
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Nadine Social Robot" class="md-nav__button md-logo" aria-label="Nadine Social Robot" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Nadine Social Robot
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation & Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perception Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Perception Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../perception-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selective Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interaction Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interaction Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agents & Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-memory-rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory & RAG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Memory (nadine_phd)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Memory (nadine_phd)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differences-from-nadine_local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differences from nadine_local
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-stores-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who stores what
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moment-scenes-the-per-turn-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moment scenes: the per-turn evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-meeting-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First-meeting scenes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observation scenes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-disk-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-disk layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retrieval-and-recall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval and Recall
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Retrieval and Recall">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-and-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query and candidates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#similarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Similarity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-recall-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The recall flag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#episodes-and-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Episodes and scenes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-response-agent-surfaces-a-scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the response agent surfaces a scene
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-flags-and-mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime, Flags, and MQTT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Runtime, Flags, and MQTT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topics-changed-relative-to-nadine_local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topics changed relative to nadine_local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-script-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start script flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation Setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evaluation Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#study-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Study logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facial-emotion-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Facial-emotion sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design History
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-cloud-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Configuration (nadine_phd)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Layer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Layer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../control-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime & MQTT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differences-from-nadine_local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differences from nadine_local
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-stores-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who stores what
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moment-scenes-the-per-turn-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moment scenes: the per-turn evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-meeting-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First-meeting scenes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observation-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observation scenes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-disk-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-disk layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retrieval-and-recall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval and Recall
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Retrieval and Recall">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-and-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query and candidates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#similarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Similarity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thresholds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-recall-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The recall flag
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#episodes-and-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Episodes and scenes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-response-agent-surfaces-a-scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the response agent surfaces a scene
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-flags-and-mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime, Flags, and MQTT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Runtime, Flags, and MQTT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topics-changed-relative-to-nadine_local" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topics changed relative to nadine_local
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-script-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start script flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evaluation Setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evaluation Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#study-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Study logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facial-emotion-sampling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Facial-emotion sampling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design History
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="interaction-layer-multimodal-memory-nadine_phd">Interaction Layer – Multimodal Memory (nadine_phd)<a class="headerlink" href="#interaction-layer-multimodal-memory-nadine_phd" title="Permanent link">&para;</a></h1>
+<p>This page documents the <strong>observation-scene memory</strong> of the Hybrid Cloud version (<code>nadine_phd</code>). It extends the visual memory of the local platform described in <a href="../interaction-memory-rag/">Interaction Layer – Memory &amp; RAG</a> and <a href="../perception-memory/">Perception Layer – Selective Memory</a>; read those first. Everything below describes <code>nadine_phd</code> unless stated otherwise.</p>
+<hr />
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>A <strong>scene</strong> is one captured moment of a conversation with a known user. It consists of:</p>
+<ul>
+<li>the camera frame at capture time (<code>images/&lt;scene_id&gt;.jpg</code>),</li>
+<li>a CLIP image embedding (<code>embeddings/&lt;scene_id&gt;_embedding.npy</code>, omitted for observation scenes),</li>
+<li>a short caption generated by Moondream2 (<code>description</code>),</li>
+<li>the <strong>user's utterance in that moment</strong> (<code>user_message</code>), which is the text the scene is retrieved by,</li>
+<li>a <code>scene_type</code> (<code>moment</code>, <code>first_meeting</code>, or <code>observation</code>), the emotion signal that triggered the store, and a timestamp.</li>
+</ul>
+<p>The local platform stores scenes on a perception-side timer and retrieves them by matching the user's question against the caption and the image. The Hybrid Cloud version anchors every scene to what the user said when it was captured, stores exactly one scene per qualifying dialogue turn, retrieves on the utterance alone, and only surfaces scenes when the user is asking to recall the past.</p>
+<h3 id="differences-from-nadine_local">Differences from nadine_local<a class="headerlink" href="#differences-from-nadine_local" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>nadine_local</th>
+<th>nadine_phd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage trigger</td>
+<td>Perception polls every <code>memorability_check_interval</code> s with a 15 s cooldown</td>
+<td>One evaluation per dialogue turn, on each new <code>nadine/affect/state</code> message (<code>NADINE_STORAGE_TRIGGER=event</code>)</td>
+</tr>
+<tr>
+<td>Storage signal</td>
+<td>Nadine's own appraised emotion, <code>base(label) × intensity</code> (<code>pad_arousal</code>)</td>
+<td>The <strong>user's</strong> expressed-emotion intensity from the dialogue, no per-emotion weights (<code>intensity</code> policy)</td>
+</tr>
+<tr>
+<td>Retrieval anchor</td>
+<td>Caption and image</td>
+<td>The user's utterance at capture time; caption only as fallback for legacy scenes</td>
+</tr>
+<tr>
+<td>Description embeddings</td>
+<td>CLIP text encoder</td>
+<td>OpenAI <code>text-embedding-3-large</code>, CLIP (mean-centered) as fallback</td>
+</tr>
+<tr>
+<td>Image channel</td>
+<td><code>retrieval_alpha: 0.3</code></td>
+<td><code>retrieval_alpha: 0.0</code> (CLIP image embeddings are stored but not used for retrieval)</td>
+</tr>
+<tr>
+<td>Thresholds</td>
+<td>One <code>similarity_threshold</code></td>
+<td>Strict vs. recall thresholds, plus a stricter bar for first-meeting scenes</td>
+</tr>
+<tr>
+<td>Recall detection</td>
+<td>Regex on the message</td>
+<td><code>is_recall</code> judged by the turn-understanding LLM, regex kept as fallback</td>
+</tr>
+<tr>
+<td>Scene types</td>
+<td><code>moment</code> only</td>
+<td><code>moment</code>, <code>first_meeting</code> (stored at first face registration), <code>observation</code> (user-directed vision moments)</td>
+</tr>
+<tr>
+<td>Text memory injection</td>
+<td>Always</td>
+<td>Only on recall turns</td>
+</tr>
+<tr>
+<td>Study support</td>
+<td>None</td>
+<td><code>NADINE_ENABLE_VISUAL_MEMORY</code> A/B switch, <code>StudyLogger</code>, FER sampler</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
+<h3 id="who-stores-what">Who stores what<a class="headerlink" href="#who-stores-what" title="Permanent link">&para;</a></h3>
+<p>Scenes are written by two processes into the same per-user folder, <code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Scene type</th>
+<th>Written by</th>
+<th>Trigger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>moment</code></td>
+<td>Perception (<code>IntensityMemoryModule.store_memorable_scene</code>)</td>
+<td>The user's expressed-emotion intensity for the current turn reaches <code>intensity_threshold</code></td>
+</tr>
+<tr>
+<td><code>first_meeting</code></td>
+<td>Perception (<code>store_first_meeting_scene</code>)</td>
+<td>The first face registration for a new user</td>
+</tr>
+<tr>
+<td><code>observation</code></td>
+<td>Interaction (<code>observation_memory.store_observation_scene</code>)</td>
+<td>The vision agent answered a question about something specific the user pointed at</td>
+</tr>
+</tbody>
+</table>
+<p>All storage requires an identified user. Unknown users are never stored, in either process.</p>
+<h3 id="moment-scenes-the-per-turn-evaluation">Moment scenes: the per-turn evaluation<a class="headerlink" href="#moment-scenes-the-per-turn-evaluation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>The merged <code>understand</code> node (see <a href="../interaction-cloud-config/">Cloud Configuration</a>) returns, in the same structured call as intent and plan, the <strong>user's</strong> expressed emotion (<code>user_emotion.label</code>, <code>user_emotion.intensity</code> in 0–1) and an <code>is_recall</code> flag.</li>
+<li>The interaction layer publishes <code>nadine/affect/state</code> with Nadine's appraised emotion and, in addition to what nadine_local sends, <code>user_label</code>, <code>user_intensity</code>, <code>user_message</code> (the current utterance, up to 500 characters), and <code>suppress_storage</code>.</li>
+<li>Perception marks a new affect event. On the next frame in which the user's face is tracked, it evaluates storage <strong>once</strong> and consumes the event, so there is at most one scene per turn and no time-based cooldown.</li>
+<li><code>memorability = intensity</code> of the selected signal. <code>NADINE_STORAGE_EMOTION_SOURCE=user</code> (default) uses the user's expressed emotion; <code>robot</code> reverts to Nadine's own appraised intensity.</li>
+<li>The scene is stored when <code>memorability ≥ intensity_threshold</code> (perception <code>config.yaml</code>: 0.5; code fallback: 0.5, reading the legacy key <code>arousal_threshold</code> if present) and <code>suppress_storage</code> is false.</li>
+<li>Perception generates the Moondream2 caption, writes image, embedding, and metadata, and publishes <code>nadine/memory/scene_stored</code>.</li>
+</ol>
+<p><code>suppress_storage</code> is true on recall turns (remembering is not a new moment) and on <code>end_conversation</code> turns (a polite "thanks, bye" can be appraised as mildly positive and otherwise cross the threshold). Greeting turns are <strong>not</strong> suppressed, because a participant may bundle a greeting with a real moment in one utterance; a plain greeting carries low intensity and fails the threshold on its own.</p>
+<p>The legacy frame-polled behavior remains available with <code>NADINE_STORAGE_TRIGGER=interval</code>, which restores the check interval and the 15 s cooldown for A/B comparison. The interval trigger always applies to the <code>vision</code> policy, which is unchanged from nadine_local.</p>
+<h3 id="first-meeting-scenes">First-meeting scenes<a class="headerlink" href="#first-meeting-scenes" title="Permanent link">&para;</a></h3>
+<p>When perception stores the first face image for a newly registered user, it also captures the current frame as a <code>first_meeting</code> scene with <code>memorability: 1.0</code>, a neutral emotion, and a <strong>canonical anchor</strong> instead of the user's utterance:</p>
+<div class="highlight"><pre><span></span><code>The first time we met — &lt;user_name&gt; introduced themselves to me.
+</code></pre></div>
+<p>The canonical anchor replaced the greeting utterance because a greeting anchor matched every later "hi". First-meeting scenes are only retrievable on recall turns and have their own, stricter threshold (below).</p>
+<h3 id="observation-scenes">Observation scenes<a class="headerlink" href="#observation-scenes" title="Permanent link">&para;</a></h3>
+<p>When the plan routes to the vision agent and the vision model answers, <code>graph._maybe_store_observation</code> files the snapshot as an <code>observation</code> scene if all of the following hold:</p>
+<ul>
+<li>visual memory is enabled and the user is identified,</li>
+<li>the turn is not a recall turn,</li>
+<li>the utterance points at something specific: it matches <code>my</code>, <code>mine</code>, <code>me</code>, <code>this</code>, <code>that</code>, <code>these</code>, <code>those</code>, <code>look at</code>, or <code>watch me/this</code>,</li>
+<li>the vision answer is non-empty and does not start with "Sorry".</li>
+</ul>
+<p>Generic "what do you see?" descriptions are deliberately not stored. The <code>description</code> of an observation scene is the vision model's actual answer rather than a Moondream2 caption, <code>user_message</code> is the utterance, and no CLIP embedding is written because retrieval does not use the image channel.</p>
+<h3 id="on-disk-layout">On-disk layout<a class="headerlink" href="#on-disk-layout" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>interaction/db/memory/user_profiles/&lt;user_id&gt;/memorable_scenes/
+├── images/&lt;scene_id&gt;.jpg
+├── embeddings/&lt;scene_id&gt;_embedding.npy      # moment and first_meeting only
+└── metadata/&lt;scene_id&gt;_metadata.json
+</code></pre></div>
+<p><code>scene_id</code> is <code>scene_&lt;YYYYMMDD_HHMMSS&gt;_&lt;6 hex chars&gt;</code>; the random suffix avoids collisions within one second. Metadata fields: <code>scene_id</code>, <code>timestamp</code> (ISO), <code>image_path</code>, <code>memorability</code>, <code>emotion_label</code>, <code>intensity</code>, <code>description</code>, <code>user_message</code>, <code>scene_type</code>, <code>reason</code>.</p>
+<p>The user profiles directory is tracked in the <code>nadine_phd</code> repository.</p>
+<hr />
+<h2 id="retrieval-and-recall">Retrieval and Recall<a class="headerlink" href="#retrieval-and-recall" title="Permanent link">&para;</a></h2>
+<p>Retrieval runs in the <code>memory_retrieve_agent</code> node for a known user, after <code>understand</code> and before routing, so a retrieved scene is available to every downstream agent. It is skipped entirely when <code>NADINE_ENABLE_VISUAL_MEMORY=0</code>; textual memory is unaffected.</p>
+<h3 id="query-and-candidates">Query and candidates<a class="headerlink" href="#query-and-candidates" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The query is the latest user message.</li>
+<li>Every scene with a non-empty <code>description</code> is a candidate, except that <code>first_meeting</code> scenes are only considered on recall turns.</li>
+<li>The <strong>retrieval text</strong> of a scene is its <code>user_message</code>; <code>episode_context</code> is accepted for legacy scenes, and the caption is used only when neither exists. The caption was dropped from the retrieval text because Moondream2 captions are near-identical across the homogeneous lab scenes and diluted the utterance signal.</li>
+</ul>
+<h3 id="similarity">Similarity<a class="headerlink" href="#similarity" title="Permanent link">&para;</a></h3>
+<p><code>combined = alpha × sim_image + (1 − alpha) × sim_desc</code></p>
+<ul>
+<li><code>sim_desc</code>: cosine similarity between the query and the retrieval text, embedded with OpenAI <code>text-embedding-3-large</code> (<code>NADINE_DESC_EMBED_MODEL</code>). If the OpenAI call fails, both texts are embedded with CLIP's text encoder after subtracting the mean CLIP embedding of a fixed generic corpus; raw CLIP text cosine sits in a narrow band for any pair of texts and cannot be thresholded.</li>
+<li><code>sim_image</code>: cosine similarity between the CLIP text embedding of the query and the stored CLIP image embedding. It is only computed when <code>retrieval_alpha &gt; 0</code>.</li>
+<li><code>retrieval_alpha</code>: config.yaml: 0.0 (code fallback: 0.3). With 0.0 the image channel is off and CLIP is not loaded in the interaction process.</li>
+</ul>
+<h3 id="thresholds">Thresholds<a class="headerlink" href="#thresholds" title="Permanent link">&para;</a></h3>
+<p>Which threshold applies depends on whether the turn is a recall turn.</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Key</th>
+<th>config.yaml</th>
+<th>Code fallback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ordinary turn</td>
+<td><code>similarity_threshold</code></td>
+<td>0.35</td>
+<td>0.30</td>
+</tr>
+<tr>
+<td>Recall turn</td>
+<td><code>recall_threshold</code></td>
+<td>0.13</td>
+<td>0.18</td>
+</tr>
+<tr>
+<td>Recall turn, <code>first_meeting</code> scene</td>
+<td><code>first_meeting_recall_threshold</code></td>
+<td>0.32</td>
+<td>0.32</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>On ordinary turns the strict threshold means a scene is only injected on a strong content match, so scenes are never volunteered into small talk. The config comment records why it moved from 0.30 to 0.35: a mood-adjacent turn ("I'm having a great day today!") matched a "sad because it's too hot" scene at 0.325, while genuine content matches measure 0.38 and above with the OpenAI embeddings.</li>
+<li>On recall turns the permissive threshold lets a real recall request surface the best scene even when the absolute score is modest.</li>
+<li>First-meeting scenes use <code>max(recall_threshold, first_meeting_recall_threshold)</code>. Their canonical anchor scores 0.12–0.28 against almost any recall phrasing, so under the permissive threshold it attached to nearly every recall turn; genuine first-meeting questions score 0.38–0.56, and 0.32 sits in the gap.</li>
+</ul>
+<p>The best candidate above its threshold is returned as <code>state["visual_memory"]</code> with <code>image_path</code>, <code>scene_id</code>, <code>similarity</code>, <code>description</code>, <code>user_message</code>, <code>episode_context</code>, and <code>timestamp</code>.</p>
+<h3 id="the-recall-flag">The recall flag<a class="headerlink" href="#the-recall-flag" title="Permanent link">&para;</a></h3>
+<p><code>state["is_recall"]</code> is set by the <code>understand</code> node: the LLM judges whether the user is asking Nadine to remember anything from the past, in any phrasing, and the <code>_VISUAL_RECALL_CUE</code> regex from nadine_local is kept as a fallback for misses. The flag gates three things:</p>
+<ul>
+<li>the permissive visual threshold and eligibility of first-meeting scenes,</li>
+<li>injection of episodic and conversation memory into the response prompt,</li>
+<li>suppression of scene storage on that turn.</li>
+</ul>
+<h3 id="episodes-and-scenes">Episodes and scenes<a class="headerlink" href="#episodes-and-scenes" title="Permanent link">&para;</a></h3>
+<p>Episodic memory is unchanged in structure (a summary saved to ChromaDB at <code>end_conversation</code> or on a user switch), but the episodic save now summarizes the <strong>full session transcript</strong> kept in <code>dm.py</code> rather than the trailing four-message window. Scenes are no longer paired with episodes at save time: an earlier version stamped each scene with the episode's observation as <code>episode_context</code>, but that depended on the conversation ending cleanly and was replaced by the immediate utterance anchor. <code>episode_context</code> is still read for scenes created before that change.</p>
+<h3 id="how-the-response-agent-surfaces-a-scene">How the response agent surfaces a scene<a class="headerlink" href="#how-the-response-agent-surfaces-a-scene" title="Permanent link">&para;</a></h3>
+<p>When <code>visual_memory</code> carries an image and a description, the response agent adds one line to the background block of the prompt:</p>
+<div class="highlight"><pre><span></span><code>A scene you remember from a past meeting with this person (on &lt;timestamp&gt;): &lt;description&gt;
+(what was happening then: &lt;user_message&gt;) — this is a remembered PAST moment, not what
+you currently see; never describe it as the person's present appearance.
+</code></pre></div>
+<p>and attaches the image as a high-detail <code>image_url</code> content item. The explicit past-tense instruction was added because the model sometimes narrated the stored photo in present tense. The system prompt tells the model to recall an attached scene naturally as a shared moment, never to say "I see an image", and never to invent visual details when no scene is attached.</p>
+<p>On recall turns the episode summary and the retrieved conversation transcript are injected as well. When both Nadine's own knowledge and shared memories are present, an extra directive asks for her own facts first and the shared memory only if it relates.</p>
+<hr />
+<h2 id="runtime-flags-and-mqtt">Runtime, Flags, and MQTT<a class="headerlink" href="#runtime-flags-and-mqtt" title="Permanent link">&para;</a></h2>
+<h3 id="topics-changed-relative-to-nadine_local">Topics changed relative to nadine_local<a class="headerlink" href="#topics-changed-relative-to-nadine_local" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Direction</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nadine/affect/state</code></td>
+<td>interaction → perception</td>
+<td>Adds <code>user_label</code>, <code>user_intensity</code>, <code>user_message</code>, <code>suppress_storage</code> to <code>label</code>, <code>arousal</code>, <code>intensity</code></td>
+</tr>
+<tr>
+<td><code>nadine/memory/scene_stored</code></td>
+<td>perception → (no subscriber)</td>
+<td>Adds <code>user_message</code>; first-meeting stores add <code>scene_type: "first_meeting"</code></td>
+</tr>
+</tbody>
+</table>
+<p>Observation scenes are stored in-process by the interaction layer and publish nothing.</p>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
+<p>Set by <code>start_nadine.sh</code> for the perception and interaction processes.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NADINE_ENABLE_VISUAL_MEMORY</code></td>
+<td><code>1</code></td>
+<td><code>0</code> disables capture (the selective memory module is not loaded), retrieval, and the visual part of the response prompt</td>
+</tr>
+<tr>
+<td><code>NADINE_STORAGE_TRIGGER</code></td>
+<td><code>event</code></td>
+<td><code>interval</code> restores frame-polled storage with the cooldown</td>
+</tr>
+<tr>
+<td><code>NADINE_STORAGE_EMOTION_SOURCE</code></td>
+<td><code>user</code></td>
+<td><code>robot</code> stores on Nadine's appraised intensity instead of the user's</td>
+</tr>
+<tr>
+<td><code>NADINE_DESC_EMBED_MODEL</code></td>
+<td><code>text-embedding-3-large</code></td>
+<td>OpenAI embedding model for the description channel</td>
+</tr>
+<tr>
+<td><code>NADINE_STUDY_LOG</code></td>
+<td><code>0</code></td>
+<td><code>1</code> enables <code>StudyLogger</code></td>
+</tr>
+<tr>
+<td><code>NADINE_STUDY_CONDITION</code></td>
+<td>unset</td>
+<td><code>A</code> or <code>B</code>; defaults to <code>A</code> when visual memory is on, <code>B</code> otherwise</td>
+</tr>
+<tr>
+<td><code>NADINE_PARTICIPANT_ID</code></td>
+<td><code>anon</code></td>
+<td>Participant label in study logs</td>
+</tr>
+<tr>
+<td><code>NADINE_STUDY_AUDIO_TIMEOUT</code></td>
+<td><code>10</code></td>
+<td>Seconds to wait for audio onset before writing a turn record without it</td>
+</tr>
+<tr>
+<td><code>NADINE_ENABLE_FER_SAMPLING</code></td>
+<td>follows <code>--study</code></td>
+<td>Continuous facial-emotion sampling in perception</td>
+</tr>
+<tr>
+<td><code>NADINE_FER_INTERVAL</code></td>
+<td><code>1.5</code></td>
+<td>Seconds between FER samples per user</td>
+</tr>
+<tr>
+<td><code>NADINE_FER_NOVELTY</code></td>
+<td>follows FER sampling</td>
+<td>Also log CLIP novelty per sample</td>
+</tr>
+<tr>
+<td><code>NADINE_FER_LOG</code></td>
+<td><code>interaction/db/study_logs/fer_samples.jsonl</code></td>
+<td>FER output file</td>
+</tr>
+</tbody>
+</table>
+<h3 id="start-script-flags">Start script flags<a class="headerlink" href="#start-script-flags" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>--no-visual-memory</code> sets <code>NADINE_ENABLE_VISUAL_MEMORY=0</code> for both processes (study condition B).</li>
+<li><code>--study</code> sets <code>NADINE_STUDY_LOG=1</code> and, unless overridden, turns FER sampling and FER novelty on.</li>
+</ul>
+<p>Perception's <code>config.yaml</code> selects the policy with <code>selective_memory.policy: "intensity"</code>; <code>"pad_arousal"</code> is accepted as a legacy alias for the same module.</p>
+<hr />
+<h2 id="evaluation-setup">Evaluation Setup<a class="headerlink" href="#evaluation-setup" title="Permanent link">&para;</a></h2>
+<p>The code contains the infrastructure for a two-condition study; no results are described here.</p>
+<h3 id="conditions">Conditions<a class="headerlink" href="#conditions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Condition A</strong>: visual memory on. Scenes are captured, retrieved, and attached to the response prompt.</li>
+<li><strong>Condition B</strong>: visual memory off. No capture, no retrieval. Textual memory (profile, episodes, conversation) is identical in both conditions.</li>
+</ul>
+<p>The two conditions differ in exactly one block of the response system prompt. In A the block explains how to recall an attached scene; in B it states that Nadine has no visual memories of past meetings and must not invent visual details, while she can still recall what was talked about. Everything else in the prompt is the same.</p>
+<h3 id="study-logging">Study logging<a class="headerlink" href="#study-logging" title="Permanent link">&para;</a></h3>
+<p>With <code>NADINE_STUDY_LOG=1</code>, <code>StudyLogger</code> (<code>common/study_logger.py</code>) writes one JSONL file per session under <code>interaction/db/study_logs/</code>, named <code>&lt;condition&gt;_&lt;participant&gt;_&lt;start time&gt;.jsonl</code>, plus a matching <code>.log</code> copy of the human-readable interaction log and per-user transcripts under <code>by_user/</code>. Each turn record contains the user and robot text, intent, language, user ID, the user's expressed emotion and intensity, Nadine's appraised emotion and intensity, a summary of what visual retrieval returned (<code>injected</code>, <code>scene_id</code>, <code>similarity</code>, <code>description</code>), a heuristic flag for whether the reply referenced the scene, and three latency fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Measured from</th>
+<th>Measured to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>latency_s</code></td>
+<td>Transcript received by the dialogue manager</td>
+<td>Final response text ready</td>
+</tr>
+<tr>
+<td><code>latency_first_sentence_s</code></td>
+<td>Transcript received</td>
+<td>First sentence handed to TTS</td>
+</tr>
+<tr>
+<td><code>full_latency_s</code></td>
+<td>End of user speech</td>
+<td>Robot audio onset, reported by control on <code>start_speak</code></td>
+</tr>
+</tbody>
+</table>
+<p>A turn record is written at the later of graph completion and audio onset, with a timeout fallback so a turn is never lost if audio never starts.</p>
+<h3 id="facial-emotion-sampling">Facial-emotion sampling<a class="headerlink" href="#facial-emotion-sampling" title="Permanent link">&para;</a></h3>
+<p><code>perception/fer_sampler.py</code> runs DeepFace's emotion model on the perception frames at a fixed interval per user and appends one JSON line per sample (<code>dominant_emotion</code>, <code>confidence</code>, per-emotion scores, optional CLIP <code>novelty</code>). It is decoupled from the live pipeline and only writes a file; the samples are aligned to study-log turns offline by timestamp. It exists to give the facial storage signal a measured baseline against the dialogue-based signal used in deployment. DeepFace runs on CPU because the rig's TensorFlow GPU path does not work.</p>
+<hr />
+<h2 id="design-history">Design History<a class="headerlink" href="#design-history" title="Permanent link">&para;</a></h2>
+<p>Dated from the <code>nadine_phd</code> commit history; each entry gives the recorded reason.</p>
+<ul>
+<li><strong>2026-06-24</strong> Retrieval discrimination fixed and scene IDs made collision-safe; unsolicited memory surfacing stopped.</li>
+<li><strong>2026-06-25</strong> A/B study mode added: visual-memory toggle, capability-matched prompts, OpenAI retriever, study logging with the three latency fields. Scenes paired with episodes at save time so a scene could be retrieved by what happened, not only by its appearance.</li>
+<li><strong>2026-06-29</strong> Retrieval anchor changed to the user's utterance at capture time, replacing the deferred episode pairing, which depended on the conversation ending and was non-deterministic. Storage signal changed to the user's expressed-emotion intensity with no per-emotion weights, removing the need to justify specific arousal magnitudes. Storage made event-driven, one evaluation per turn, removing the 3 s interval and 15 s cooldown that could both re-store a moment after a pause and suppress a genuine second moment. Caption dropped from the retrieval text: on pilot scenes caption plus utterance scored a real recall query at 0.270, below the strict gate, and utterance alone at 0.331. FER sampler added.</li>
+<li><strong>2026-06-30</strong> Scene anchor narrowed from a two-turn window to the current utterance only, because a moment captured right after "Hi Nadine." carried the greeting in its anchor and later greetings retrieved it. Goodbye turns excluded from storage.</li>
+<li><strong>2026-07-13</strong> Recall detection moved from a regex to the <code>is_recall</code> flag judged by the understanding LLM, after a test session in which memories were saved and retrieved but rarely reached the response model. Episodic save switched to the full session transcript. First-meeting scenes introduced.</li>
+<li><strong>2026-07-14</strong> First-meeting scenes given their own stricter recall threshold (0.32), because their canonical anchor scored 0.12–0.28 against nearly any recall phrasing and was attached to almost every recall turn. User-directed vision moments persisted as observation scenes so that "do you remember my cup?" has an image to draw on.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 <a href="https://github.com/hangyeol013" target="_blank" rel="noopener">Hangyeol Kang</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

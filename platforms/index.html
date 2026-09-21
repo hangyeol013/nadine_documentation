@@ -980,6 +980,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-multimodal-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multimodal Memory (nadine_phd)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interaction-cloud-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Configuration (nadine_phd)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1242,9 +1298,9 @@
 </tr>
 <tr>
 <td><strong>Multi-Agent, Hybrid Cloud</strong></td>
-<td>Same graph, with intent, affect and planning merged into one turn-understanding call</td>
-<td>Hybrid: gpt-5.4-mini for turn understanding, response, memory extraction and routing; local adapters for the legacy nodes and episodic context; local vision</td>
-<td>Adds observation scenes that pair user utterances with what the camera saw, and study logging</td>
+<td>Same graph, with intent, affect and planning merged into one turn-understanding call (<a href="../interaction-cloud-config/">Cloud Configuration</a>)</td>
+<td>Hybrid: gpt-5.4-mini for turn understanding, response, memory extraction and routing; vision description local; the fine-tuned local adapters are used only in the optional legacy pipeline mode</td>
+<td>Adds observation scenes that pair user utterances with what the camera saw (<a href="../interaction-multimodal-memory/">Multimodal Memory</a>), and study logging</td>
 <td>PAD model, appraisal folded into turn understanding</td>
 <td>Multimodal memory research and user studies</td>
 </tr>
@@ -1523,7 +1579,7 @@
 <p><strong>Cost.</strong> Small fine-tuned models reproduce their training behavior closely. When the memory extraction rules were later tightened, the fine-tuned extractor kept following its original training and recorded stale facts as current ones. Improving that behavior requires new training data and a new adapter rather than a prompt change.</p>
 <h3 id="multi-agent-hybrid-cloud">Multi-Agent, Hybrid Cloud<a class="headerlink" href="#multi-agent-hybrid-cloud" title="Permanent link">&para;</a></h3>
 <p><strong>Constraint.</strong> The platform was prepared for a user study on multimodal memory, which required reliable memory extraction, stable turn understanding, and predictable latency under continuous use.</p>
-<p><strong>Consequence.</strong> Agents whose failures would corrupt the study data moved to gpt-5.4-mini: turn understanding, the response agent, memory extraction, and the search and vision routers. Merging intent, affect, and planning into one call also removed two sequential model calls from every turn. Extraction and episodic encoding run at most once per conversation, so the cloud cost of this change is negligible, and moving the routers off the GPU freed VRAM. Episodic contextualization stayed on a local adapter, and the original local nodes remain selectable.</p>
+<p><strong>Consequence.</strong> Agents whose failures would corrupt the study data moved to gpt-5.4-mini: turn understanding, the response agent, memory extraction, and the search and vision routers. Merging intent, affect, and planning into one call replaced three sequential local calls and the history contextualizer with one call bounded at 2.5 seconds. Extraction and episodic encoding run at most once per conversation, so the cloud cost of this change is negligible, and moving the routers off the GPU freed VRAM. The original local nodes remain selectable through the legacy pipeline mode.</p>
 <p>Vision description stayed local by design. Sending camera frames of study participants to an external provider was a privacy decision, not a latency one.</p>
 <p><strong>Cost.</strong> User speech text and the facts extracted from it now leave the machine; only camera frames stay local. The platform depends on network availability and an API key for its central agents, and its behavior is tied to a hosted model version that can change outside the project's control.</p>
 <h3 id="react-cloud">ReAct, Cloud<a class="headerlink" href="#react-cloud" title="Permanent link">&para;</a></h3>
