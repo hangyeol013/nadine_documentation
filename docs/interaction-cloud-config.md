@@ -159,7 +159,7 @@ The index under `db/knowledge/chroma` is specific to the embedding model. After 
 
 - `ANTHROPIC_API_KEY` – only for the Claude profiles.
 - `GOOGLE_APPLICATION_CREDENTIALS`, `GOOGLE_CLOUD_PROJECT`, `SERPER_API_KEY` – unchanged from `nadine_local`.
-- `LANGCHAIN_TRACING_V2` / `LANGCHAIN_API_KEY` – present but tracing was disabled on 2026-07-13 after the monthly trace quota was exhausted. In study mode every prompt and completion is logged locally by `nadine/common/prompt_logger.py` instead.
+- `LANGCHAIN_TRACING_V2` / `LANGCHAIN_API_KEY` – present but tracing was disabled after the monthly trace quota was exhausted. In study mode every prompt and completion is logged locally by `nadine/common/prompt_logger.py` instead.
 
 The conda environment pins `openai==2.15.0` and `anthropic==0.76.0`.
 
@@ -184,15 +184,3 @@ The default language is English. `interaction.runtime.current_language` in `conf
 - **Data leaving the machine.** User speech text, the conversation history passed as context, extracted profile facts, episodic summaries, and knowledge-base chunks are sent to OpenAI. Camera frames, the vision description, face embeddings, and the text-memory embeddings stay local.
 - **Two embedding models.** Knowledge RAG uses OpenAI embeddings while user text memory keeps the local ONNX MiniLM model; the two indexes cannot be queried with each other's vectors.
 - **Legacy mode still needs the adapters.** Switching to `NADINE_PIPELINE_MODE=legacy` requires all `nadine-*` Ollama models to be present and loads them on first use rather than at startup.
-
----
-
-## Design History
-
-From the `nadine_phd` commit history after the fork from `nadine_local` on 2026-06-23:
-
-- **2026-06-23** – Merged turn-understanding pipeline, cloud latency tuning, English default, Zoom interview audio.
-- **2026-06-25** – Per-turn latency logging (interaction, first sentence, end to end) and the study-log schema.
-- **2026-06-30** – User emotion appraised as the presently felt emotion only, not recalled or referenced ones; turn-understanding stability test suite for intent, routing, emotion, and recall cues.
-- **2026-07-13** – LangSmith tracing disabled; local prompt logging in study mode.
-- **2026-07-14** – Memory extraction switched to current-facts-only profiles and claim-preserving episodes, with the remaining pipeline LLMs moved to `gpt-5.4-mini`. Knowledge RAG moved to OpenAI embeddings with header-aware chunks. Runtime language persisted in a state file.

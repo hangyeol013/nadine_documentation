@@ -223,16 +223,3 @@ A turn record is written at the later of graph completion and audio onset, with 
 ### Facial-emotion sampling
 
 `perception/fer_sampler.py` runs DeepFace's emotion model on the perception frames at a fixed interval per user and appends one JSON line per sample (`dominant_emotion`, `confidence`, per-emotion scores, optional CLIP `novelty`). It is decoupled from the live pipeline and only writes a file; the samples are aligned to study-log turns offline by timestamp. It exists to give the facial storage signal a measured baseline against the dialogue-based signal used in deployment. DeepFace runs on CPU because the rig's TensorFlow GPU path does not work.
-
----
-
-## Design History
-
-Dated from the `nadine_phd` commit history; each entry gives the recorded reason.
-
-- **2026-06-24** Retrieval discrimination fixed and scene IDs made collision-safe; unsolicited memory surfacing stopped.
-- **2026-06-25** A/B study mode added: visual-memory toggle, capability-matched prompts, OpenAI retriever, study logging with the three latency fields. Scenes paired with episodes at save time so a scene could be retrieved by what happened, not only by its appearance.
-- **2026-06-29** Retrieval anchor changed to the user's utterance at capture time, replacing the deferred episode pairing, which depended on the conversation ending and was non-deterministic. Storage signal changed to the user's expressed-emotion intensity with no per-emotion weights, removing the need to justify specific arousal magnitudes. Storage made event-driven, one evaluation per turn, removing the 3 s interval and 15 s cooldown that could both re-store a moment after a pause and suppress a genuine second moment. Caption dropped from the retrieval text: on pilot scenes caption plus utterance scored a real recall query at 0.270, below the strict gate, and utterance alone at 0.331. FER sampler added.
-- **2026-06-30** Scene anchor narrowed from a two-turn window to the current utterance only, because a moment captured right after "Hi Nadine." carried the greeting in its anchor and later greetings retrieved it. Goodbye turns excluded from storage.
-- **2026-07-13** Recall detection moved from a regex to the `is_recall` flag judged by the understanding LLM, after a test session in which memories were saved and retrieved but rarely reached the response model. Episodic save switched to the full session transcript. First-meeting scenes introduced.
-- **2026-07-14** First-meeting scenes given their own stricter recall threshold (0.32), because their canonical anchor scored 0.12–0.28 against nearly any recall phrasing and was attached to almost every recall turn. User-directed vision moments persisted as observation scenes so that "do you remember my cup?" has an image to draw on.
