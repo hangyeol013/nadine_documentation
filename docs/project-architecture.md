@@ -53,7 +53,12 @@ Computer vision and face recognition:
 
 The following diagram summarizes how components and agents interact:
 
-![Nadine System Workflow](assets/workflow.png)
+<figure class="platform-figure">
+<a href="../assets/multiagent_graph.svg" target="_blank" rel="noopener" title="Open full size">
+--8<-- "assets/multiagent_graph.svg"
+</a>
+<figcaption>The LangGraph state graph of the interaction layer. Labeled edges are conditional on the intent or the remaining plan; unlabeled edges always follow.</figcaption>
+</figure>
 
 At a high level:
 

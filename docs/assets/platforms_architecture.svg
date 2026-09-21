@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 968" role="img" aria-label="Architecture comparison of the multi-agent and ReAct interaction layers" class="fig" style="overflow:visible">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 986" role="img" aria-label="Architecture comparison of the multi-agent and ReAct interaction layers" class="fig" style="overflow:visible">
 
 <style>
   .fig { font-family: var(--md-text-font-family, Roboto, Helvetica, Arial, sans-serif); color: var(--md-default-fg-color, #222); }
@@ -28,116 +28,117 @@
   </marker>
 </defs>
 
-<rect x="20" y="16" width="960" height="100" rx="8" class="band"/>
+<rect x="20" y="16" width="960" height="118" rx="8" class="band"/>
 <text x="34" y="38" class="lane">Perception layer · shared</text>
-<rect x="31.0" y="54" width="230" height="46" rx="6" class="n-sh"/>
-<text x="146.0" y="82.0" text-anchor="middle" class="t">RealSense RGB-D camera</text>
-<path d="M261.0,77.0 L295.0,77.0" class="edge" marker-end="url(#arr)"/>
-<rect x="295.0" y="54" width="380" height="46" rx="6" class="n-sh"/>
-<text x="485.0" y="82.0" text-anchor="middle" class="t">YOLOv8 detection · InsightFace recognition</text>
-<path d="M675.0,77.0 L709.0,77.0" class="edge" marker-end="url(#arr)"/>
-<rect x="709.0" y="54" width="260" height="46" rx="6" class="n-sh"/>
-<text x="839.0" y="82.0" text-anchor="middle" class="t">Identity, 3D position, frames</text>
-<rect x="20" y="160" width="960" height="648" rx="8" class="band"/>
-<text x="34" y="182" class="lane">Interaction layer · differs by family</text>
-<rect x="34" y="196" width="560" height="598" rx="8" class="band-ma"/>
-<text x="50" y="220" class="lane ma">Multi-agent graph · LangGraph</text>
-<text x="50" y="240" class="s">Multi-Agent, Local  ·  Multi-Agent, Hybrid Cloud</text>
-<rect x="99.0" y="258" width="230" height="46" rx="6" class="n-ma"/>
-<text x="214.0" y="286.0" text-anchor="middle" class="t">Google STT</text>
-<rect x="99.0" y="324" width="230" height="46" rx="6" class="n-ma"/>
-<text x="214.0" y="352.0" text-anchor="middle" class="t">Intent classifier</text>
-<rect x="99.0" y="390" width="230" height="46" rx="6" class="n-ma"/>
-<text x="214.0" y="418.0" text-anchor="middle" class="t">Affective appraisal · PAD</text>
-<rect x="99.0" y="456" width="230" height="46" rx="6" class="n-ma"/>
-<text x="214.0" y="484.0" text-anchor="middle" class="t">Orchestrator</text>
-<rect x="99.0" y="522" width="230" height="46" rx="6" class="n-ma"/>
-<text x="214.0" y="550.0" text-anchor="middle" class="t">Memory retrieval</text>
-<path d="M214,304 L214,324" class="edge" marker-end="url(#arr)"/>
-<path d="M214,370 L214,390" class="edge" marker-end="url(#arr)"/>
-<path d="M214,436 L214,456" class="edge" marker-end="url(#arr)"/>
-<path d="M214,502 L214,522" class="edge" marker-end="url(#arr)"/>
-<rect x="89.0" y="314" width="250" height="198" rx="8" fill="none" stroke="#3f51b5" stroke-width="1.4" stroke-dasharray="6 4"/>
-<text x="351.0" y="402" text-anchor="start" class="s">Merged into one</text>
-<text x="351.0" y="420" text-anchor="start" class="s">turn-understanding call</text>
-<text x="351.0" y="438" text-anchor="start" class="s">in Hybrid Cloud</text>
-<rect x="50.0" y="588" width="90" height="46" rx="6" class="n-ma"/>
-<text x="95.0" y="616.0" text-anchor="middle" class="t">Search</text>
-<path d="M214,568 L95.0,588" class="edge" marker-end="url(#arr)"/>
-<rect x="152.0" y="588" width="90" height="46" rx="6" class="n-ma"/>
-<text x="197.0" y="616.0" text-anchor="middle" class="t">Vision</text>
-<path d="M214,568 L197.0,588" class="edge" marker-end="url(#arr)"/>
-<rect x="254.0" y="588" width="124" height="46" rx="6" class="n-ma"/>
-<text x="316.0" y="616.0" text-anchor="middle" class="t">Knowledge RAG</text>
-<path d="M214,568 L316.0,588" class="edge" marker-end="url(#arr)"/>
-<rect x="99.0" y="654" width="230" height="46" rx="6" class="n-ma"/>
-<text x="214.0" y="682.0" text-anchor="middle" class="t">Response agent</text>
-<path d="M95.0,634 L214,654" class="edge" marker-end="url(#arr)"/>
-<path d="M197.0,634 L214,654" class="edge" marker-end="url(#arr)"/>
-<path d="M316.0,634 L214,654" class="edge" marker-end="url(#arr)"/>
-<rect x="99.0" y="720" width="230" height="46" rx="6" class="n-ma"/>
-<text x="214.0" y="748.0" text-anchor="middle" class="t">Memory update</text>
-<path d="M214,700 L214,720" class="edge" marker-end="url(#arr)"/>
-<rect x="402" y="643.0" width="176" height="92" rx="6" class="n-ma"/>
-<text x="490.0" y="667.0" text-anchor="middle" class="b">Memory stores</text>
-<text x="490.0" y="685.0" text-anchor="middle" class="s">text · episodic</text>
-<text x="490.0" y="703.0" text-anchor="middle" class="s">visual scenes</text>
-<text x="490.0" y="721.0" text-anchor="middle" class="s">ChromaDB · CLIP</text>
-<path d="M402,663.0 L388,667.0 L388,545.0 L329.0,545.0" class="edge" marker-end="url(#arr)" stroke-dasharray="5 4"/>
-<path d="M329.0,743.0 L388,743.0 L388,711.0 L402,711.0" class="edge" marker-end="url(#arr)" stroke-dasharray="5 4"/>
-<text x="461.5" y="288" text-anchor="middle" class="lbl">Every node is a separately</text>
-<text x="461.5" y="306" text-anchor="middle" class="lbl">replaceable model. Intent,</text>
-<text x="461.5" y="324" text-anchor="middle" class="lbl">affect and orchestration run</text>
-<text x="461.5" y="342" text-anchor="middle" class="lbl">on local fine-tuned models.</text>
-<rect x="608" y="196" width="358" height="598" rx="8" class="band-ra"/>
-<text x="624" y="220" class="lane ra">ReAct agent · LangChain</text>
-<text x="624" y="240" class="s">ReAct, Cloud</text>
-<rect x="672.0" y="258" width="230" height="46" rx="6" class="n-ra"/>
-<text x="787.0" y="286.0" text-anchor="middle" class="t">Google STT</text>
-<path d="M787.0,304 L787.0,324" class="edge" marker-end="url(#arr)"/>
-<rect x="672.0" y="324" width="230" height="46" rx="6" class="n-ra"/>
-<text x="787.0" y="352.0" text-anchor="middle" class="t">Contextualizer · chat history</text>
-<rect x="621.0" y="390" width="160" height="62" rx="6" class="n-ra"/>
-<text x="701.0" y="417.0" text-anchor="middle" class="b">Long-term memory</text>
-<text x="701.0" y="435.0" text-anchor="middle" class="s">per-user · ChromaDB</text>
-<rect x="793.0" y="390" width="160" height="62" rx="6" class="n-ra"/>
-<text x="873.0" y="417.0" text-anchor="middle" class="b">Knowledge base</text>
-<text x="873.0" y="435.0" text-anchor="middle" class="s">ChromaDB</text>
-<path d="M747.0,370 L701.0,390" class="edge" marker-end="url(#arr)"/>
-<path d="M827.0,370 L873.0,390" class="edge" marker-end="url(#arr)"/>
-<path d="M701.0,452 L747.0,474" class="edge" marker-end="url(#arr)"/>
-<path d="M873.0,452 L827.0,474" class="edge" marker-end="url(#arr)"/>
-<rect x="672.0" y="474" width="230" height="62" rx="6" class="n-ra"/>
-<text x="787.0" y="501.0" text-anchor="middle" class="b">ReAct reasoning loop</text>
-<text x="787.0" y="519.0" text-anchor="middle" class="s">gpt-5.4-mini</text>
-<rect x="621.0" y="566" width="160" height="80" rx="6" class="n-ra"/>
-<text x="701.0" y="584.0" text-anchor="middle" class="b">Fixed tool set</text>
-<text x="701.0" y="602.0" text-anchor="middle" class="s">search · news</text>
-<text x="701.0" y="620.0" text-anchor="middle" class="s">weather · language</text>
-<text x="701.0" y="638.0" text-anchor="middle" class="s">behaviors · sing</text>
-<rect x="793.0" y="566" width="160" height="80" rx="6" class="n-ra"/>
-<text x="873.0" y="584.0" text-anchor="middle" class="b">Structured answer</text>
-<text x="873.0" y="602.0" text-anchor="middle" class="s">reply · category</text>
-<text x="873.0" y="620.0" text-anchor="middle" class="s">emotion · intensity</text>
-<text x="873.0" y="638.0" text-anchor="middle" class="s">cause</text>
-<path d="M747.0,536 L701.0,566" class="edge" marker-end="url(#arr)" marker-start="url(#arr)"/>
-<path d="M827.0,536 L873.0,566" class="edge" marker-end="url(#arr)"/>
-<text x="787.0" y="680" text-anchor="middle" class="lbl">Retrieval feeds one reasoning loop;</text>
-<text x="787.0" y="698" text-anchor="middle" class="lbl">adding a capability adds a tool.</text>
-<text x="787.0" y="726" text-anchor="middle" class="lbl">Emotion is appraised per turn;</text>
-<text x="787.0" y="744" text-anchor="middle" class="lbl">no persistent affect, no visual memory.</text>
-<rect x="20" y="852" width="960" height="100" rx="8" class="band"/>
-<text x="34" y="874" class="lane">Control layer · shared</text>
-<rect x="66.0" y="890" width="200" height="46" rx="6" class="n-sh"/>
-<text x="166.0" y="918.0" text-anchor="middle" class="t">Azure TTS</text>
-<path d="M266.0,913.0 L300.0,913.0" class="edge" marker-end="url(#arr)"/>
-<rect x="300.0" y="890" width="300" height="46" rx="6" class="n-sh"/>
-<text x="450.0" y="918.0" text-anchor="middle" class="t">Lip-sync and animation</text>
-<path d="M600.0,913.0 L634.0,913.0" class="edge" marker-end="url(#arr)"/>
-<rect x="634.0" y="890" width="300" height="46" rx="6" class="n-sh"/>
-<text x="784.0" y="918.0" text-anchor="middle" class="t">Joint control and gaze</text>
-<path d="M210,116 L210,160" class="edge" marker-end="url(#arr)"/>
-<text x="222" y="143" text-anchor="start" class="lbl">MQTT  ·  user id, position, frames</text>
-<path d="M210,808 L210,852" class="edge" marker-end="url(#arr)"/>
-<text x="222" y="835" text-anchor="start" class="lbl">MQTT  ·  speech text, emotion, behavior</text>
+<rect x="21.0" y="54" width="230" height="46" rx="6" class="n-sh"/>
+<text x="136.0" y="82.0" text-anchor="middle" class="t">RealSense RGB-D camera</text>
+<path d="M251.0,77.0 L285.0,77.0" class="edge" marker-end="url(#arr)"/>
+<rect x="285.0" y="54" width="400" height="46" rx="6" class="n-sh"/>
+<text x="485.0" y="82.0" text-anchor="middle" class="t">YOLOv8 face tracking · InsightFace recognition*</text>
+<path d="M685.0,77.0 L719.0,77.0" class="edge" marker-end="url(#arr)"/>
+<rect x="719.0" y="54" width="260" height="46" rx="6" class="n-sh"/>
+<text x="849.0" y="82.0" text-anchor="middle" class="t">Identity, 3D position, frames</text>
+<text x="966" y="124" text-anchor="end" class="lbl">* recognition and selective visual memory in the multi-agent versions only; the ReAct build tracks the closest face for gaze</text>
+<rect x="20" y="178" width="960" height="648" rx="8" class="band"/>
+<text x="34" y="200" class="lane">Interaction layer · differs by family</text>
+<rect x="34" y="214" width="560" height="598" rx="8" class="band-ma"/>
+<text x="50" y="238" class="lane ma">Multi-agent graph · LangGraph</text>
+<text x="50" y="258" class="s">Multi-Agent, Local  ·  Multi-Agent, Hybrid Cloud</text>
+<rect x="99.0" y="276" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="304.0" text-anchor="middle" class="t">Google STT</text>
+<rect x="99.0" y="342" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="370.0" text-anchor="middle" class="t">Intent classifier</text>
+<rect x="99.0" y="408" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="436.0" text-anchor="middle" class="t">Affective appraisal · PAD</text>
+<rect x="99.0" y="474" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="502.0" text-anchor="middle" class="t">Orchestrator</text>
+<rect x="99.0" y="540" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="568.0" text-anchor="middle" class="t">Memory retrieval</text>
+<path d="M214,322 L214,342" class="edge" marker-end="url(#arr)"/>
+<path d="M214,388 L214,408" class="edge" marker-end="url(#arr)"/>
+<path d="M214,454 L214,474" class="edge" marker-end="url(#arr)"/>
+<path d="M214,520 L214,540" class="edge" marker-end="url(#arr)"/>
+<rect x="89.0" y="332" width="250" height="198" rx="8" fill="none" stroke="#3f51b5" stroke-width="1.4" stroke-dasharray="6 4"/>
+<text x="351.0" y="420" text-anchor="start" class="s">Merged into one</text>
+<text x="351.0" y="438" text-anchor="start" class="s">turn-understanding call</text>
+<text x="351.0" y="456" text-anchor="start" class="s">in Hybrid Cloud</text>
+<rect x="50.0" y="606" width="90" height="46" rx="6" class="n-ma"/>
+<text x="95.0" y="634.0" text-anchor="middle" class="t">Search</text>
+<path d="M214,586 L95.0,606" class="edge" marker-end="url(#arr)"/>
+<rect x="152.0" y="606" width="90" height="46" rx="6" class="n-ma"/>
+<text x="197.0" y="634.0" text-anchor="middle" class="t">Vision</text>
+<path d="M214,586 L197.0,606" class="edge" marker-end="url(#arr)"/>
+<rect x="254.0" y="606" width="124" height="46" rx="6" class="n-ma"/>
+<text x="316.0" y="634.0" text-anchor="middle" class="t">Knowledge RAG</text>
+<path d="M214,586 L316.0,606" class="edge" marker-end="url(#arr)"/>
+<rect x="99.0" y="672" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="700.0" text-anchor="middle" class="t">Response agent</text>
+<path d="M95.0,652 L214,672" class="edge" marker-end="url(#arr)"/>
+<path d="M197.0,652 L214,672" class="edge" marker-end="url(#arr)"/>
+<path d="M316.0,652 L214,672" class="edge" marker-end="url(#arr)"/>
+<rect x="99.0" y="738" width="230" height="46" rx="6" class="n-ma"/>
+<text x="214.0" y="766.0" text-anchor="middle" class="t">Memory update</text>
+<path d="M214,718 L214,738" class="edge" marker-end="url(#arr)"/>
+<rect x="402" y="661.0" width="176" height="92" rx="6" class="n-ma"/>
+<text x="490.0" y="685.0" text-anchor="middle" class="b">Memory stores</text>
+<text x="490.0" y="703.0" text-anchor="middle" class="s">text · episodic</text>
+<text x="490.0" y="721.0" text-anchor="middle" class="s">visual scenes</text>
+<text x="490.0" y="739.0" text-anchor="middle" class="s">ChromaDB · CLIP</text>
+<path d="M402,681.0 L388,685.0 L388,563.0 L329.0,563.0" class="edge" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+<path d="M329.0,761.0 L388,761.0 L388,729.0 L402,729.0" class="edge" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+<text x="461.5" y="306" text-anchor="middle" class="lbl">Every node is a separately</text>
+<text x="461.5" y="324" text-anchor="middle" class="lbl">replaceable model. Intent,</text>
+<text x="461.5" y="342" text-anchor="middle" class="lbl">affect and orchestration run</text>
+<text x="461.5" y="360" text-anchor="middle" class="lbl">on local fine-tuned models.</text>
+<rect x="608" y="214" width="358" height="598" rx="8" class="band-ra"/>
+<text x="624" y="238" class="lane ra">ReAct agent · LangChain</text>
+<text x="624" y="258" class="s">ReAct, Cloud</text>
+<rect x="672.0" y="276" width="230" height="46" rx="6" class="n-ra"/>
+<text x="787.0" y="304.0" text-anchor="middle" class="t">Google STT</text>
+<path d="M787.0,322 L787.0,342" class="edge" marker-end="url(#arr)"/>
+<rect x="672.0" y="342" width="230" height="46" rx="6" class="n-ra"/>
+<text x="787.0" y="370.0" text-anchor="middle" class="t">Contextualizer · chat history</text>
+<rect x="621.0" y="408" width="160" height="62" rx="6" class="n-ra"/>
+<text x="701.0" y="435.0" text-anchor="middle" class="b">Long-term memory</text>
+<text x="701.0" y="453.0" text-anchor="middle" class="s">per-user · ChromaDB</text>
+<rect x="793.0" y="408" width="160" height="62" rx="6" class="n-ra"/>
+<text x="873.0" y="435.0" text-anchor="middle" class="b">Knowledge base</text>
+<text x="873.0" y="453.0" text-anchor="middle" class="s">ChromaDB</text>
+<path d="M747.0,388 L701.0,408" class="edge" marker-end="url(#arr)"/>
+<path d="M827.0,388 L873.0,408" class="edge" marker-end="url(#arr)"/>
+<path d="M701.0,470 L747.0,492" class="edge" marker-end="url(#arr)"/>
+<path d="M873.0,470 L827.0,492" class="edge" marker-end="url(#arr)"/>
+<rect x="672.0" y="492" width="230" height="62" rx="6" class="n-ra"/>
+<text x="787.0" y="519.0" text-anchor="middle" class="b">ReAct reasoning loop</text>
+<text x="787.0" y="537.0" text-anchor="middle" class="s">gpt-5.4-mini</text>
+<rect x="621.0" y="584" width="160" height="80" rx="6" class="n-ra"/>
+<text x="701.0" y="602.0" text-anchor="middle" class="b">Fixed tool set</text>
+<text x="701.0" y="620.0" text-anchor="middle" class="s">search · news</text>
+<text x="701.0" y="638.0" text-anchor="middle" class="s">weather · language</text>
+<text x="701.0" y="656.0" text-anchor="middle" class="s">behaviors · sing</text>
+<rect x="793.0" y="584" width="160" height="80" rx="6" class="n-ra"/>
+<text x="873.0" y="602.0" text-anchor="middle" class="b">Structured answer</text>
+<text x="873.0" y="620.0" text-anchor="middle" class="s">reply · category</text>
+<text x="873.0" y="638.0" text-anchor="middle" class="s">emotion · intensity</text>
+<text x="873.0" y="656.0" text-anchor="middle" class="s">cause</text>
+<path d="M747.0,554 L701.0,584" class="edge" marker-end="url(#arr)" marker-start="url(#arr)"/>
+<path d="M827.0,554 L873.0,584" class="edge" marker-end="url(#arr)"/>
+<text x="787.0" y="698" text-anchor="middle" class="lbl">Retrieval feeds one reasoning loop;</text>
+<text x="787.0" y="716" text-anchor="middle" class="lbl">adding a capability adds a tool.</text>
+<text x="787.0" y="744" text-anchor="middle" class="lbl">Emotion is appraised per turn;</text>
+<text x="787.0" y="762" text-anchor="middle" class="lbl">no persistent affect, no visual memory.</text>
+<rect x="20" y="870" width="960" height="100" rx="8" class="band"/>
+<text x="34" y="892" class="lane">Control layer · shared</text>
+<rect x="66.0" y="908" width="200" height="46" rx="6" class="n-sh"/>
+<text x="166.0" y="936.0" text-anchor="middle" class="t">Azure TTS</text>
+<path d="M266.0,931.0 L300.0,931.0" class="edge" marker-end="url(#arr)"/>
+<rect x="300.0" y="908" width="300" height="46" rx="6" class="n-sh"/>
+<text x="450.0" y="936.0" text-anchor="middle" class="t">Lip-sync and animation</text>
+<path d="M600.0,931.0 L634.0,931.0" class="edge" marker-end="url(#arr)"/>
+<rect x="634.0" y="908" width="300" height="46" rx="6" class="n-sh"/>
+<text x="784.0" y="936.0" text-anchor="middle" class="t">Joint control and gaze</text>
+<path d="M210,134 L210,178" class="edge" marker-end="url(#arr)"/>
+<text x="222" y="161" text-anchor="start" class="lbl">MQTT  ·  user id, position, frames</text>
+<path d="M210,826 L210,870" class="edge" marker-end="url(#arr)"/>
+<text x="222" y="853" text-anchor="start" class="lbl">MQTT  ·  speech text, emotion, behavior</text>
 </svg>

@@ -29,7 +29,7 @@ The rest of the **Project Overview** section is split across multiple pages:
 - **Architecture & Features** – system components, workflow, project structure, and key features.  
 - **Development & Troubleshooting** – configuration, MQTT topic summary, developer tips, and troubleshooting.
 
-Each layer (Interaction, Control, Perception) also has its own detailed documentation section in the left navigation.
+Each layer (Interaction, Control, Perception) has its own documentation section in the left navigation, and the **ReAct Platform** section covers the demonstration build.
 
 
 

@@ -38,6 +38,11 @@ nav:
   - Control Layer:
       - Overview: control-overview.md
       - Runtime & MQTT: control-runtime.md
+  - ReAct Platform:
+      - Overview & Architecture: react-overview.md
+      - Dialogue Manager & Tools: react-agent.md
+      - Runtime, Audio & MQTT: react-runtime.md
+      - Singing Pipeline: react-singing.md
 
 theme:
   name: material

@@ -2,13 +2,13 @@
 
 Nadine's software has been developed as two platform families that share the same perception and control layers but differ in how the interaction layer is built. This page describes the three currently maintained versions, how they relate to each other, and the constraints that shaped each one.
 
-All three versions share the same foundation: an MQTT message bus between three layers, a RealSense camera with YOLOv8 and InsightFace for [perception](perception-overview.md), Google Cloud speech recognition, Azure text-to-speech, and the XML animation and joint [control](control-overview.md) stack.
+All three versions share the same foundation: an MQTT message bus between three layers, a RealSense camera with YOLOv8 face tracking for [perception](perception-overview.md), Google Cloud speech recognition, Azure text-to-speech, and the XML animation and joint [control](control-overview.md) stack. The two multi-agent versions add InsightFace recognition and selective visual memory on the perception side; the ReAct build tracks the closest face for gaze only and takes the user's name from an external publisher.
 
 | Version | Dialogue engine | Language models | Features |
 |---|---|---|---|
 | **Multi-Agent, Local** | LangGraph graph, ten agents ([Agents & Graph](interaction-agents.md)) | On-device via Ollama<br>• fine-tuned Qwen2.5-1.5B per agent<br>• Mistral Small 3.2 for responses<br>• Qwen2.5-VL for vision | • profile, episodic and visual memory ([Memory & RAG](interaction-memory-rag.md))<br>• PAD affect model<br>• no per-turn API cost<br>• use: agent development, offline runs |
 | **Multi-Agent, Hybrid Cloud** | Same graph; intent, affect and planning merged into one call ([Cloud Configuration](interaction-cloud-config.md)) | Hybrid<br>• gpt-5.4-mini for understanding, response, memory, routing<br>• vision description kept local<br>• local adapters only in legacy mode | • observation-scene memory ([Multimodal Memory](interaction-multimodal-memory.md))<br>• A/B study mode and logging<br>• use: memory research, user studies |
-| **ReAct, Cloud** | Contextualizer → memory and knowledge retrieval → ReAct agent with fixed tools | Cloud only<br>• gpt-5.4-mini, gpt-4o-mini (OpenAI) | • long-term conversation memory and knowledge base<br>• per-turn emotion in the structured answer<br>• barge-in, singing<br>• use: demonstrations, recordings |
+| **ReAct, Cloud** | Contextualizer → memory and knowledge retrieval → ReAct agent with fixed tools ([Dialogue Manager & Tools](react-agent.md)) | Cloud only<br>• gpt-5.4-mini, gpt-4o-mini (OpenAI) | • long-term conversation memory (per named user) and knowledge base<br>• per-turn emotion in the structured answer<br>• barge-in, singing<br>• use: demonstrations, recordings |
 
 The versions live in three repositories: `nadine_local` (Multi-Agent, Local), `nadine_phd` (Multi-Agent, Hybrid Cloud, forked from `nadine_local`), and `nadine_stable` (ReAct, Cloud). The layer documentation on this site describes the multi-agent code base unless a page says otherwise.
 
@@ -31,7 +31,7 @@ The two multi-agent versions share one code base. The hybrid-cloud version conta
 
 ## Architecture Comparison
 
-Perception and control are common to both families and communicate with the interaction layer over MQTT topics. Only the interaction layer differs.
+Perception and control are common to both families and communicate with the interaction layer over MQTT topics. The interaction layer differs, and the ReAct build carries a lighter perception layer without face recognition.
 
 <figure class="platform-figure">
 <a href="../assets/platforms_architecture.svg" target="_blank" rel="noopener" title="Open full size">

@@ -147,9 +147,10 @@ def architecture():
             x += w + 34
 
     # perception
-    py, ph = 16, 100
+    py, ph = 16, 118
     band(py, ph, "Perception layer · shared",
-         [("RealSense RGB-D camera", 230), ("YOLOv8 detection · InsightFace recognition", 380), ("Identity, 3D position, frames", 260)])
+         [("RealSense RGB-D camera", 230), ("YOLOv8 face tracking · InsightFace recognition*", 400), ("Identity, 3D position, frames", 260)])
+    p.append(label(W - 34, py + ph - 10, "* recognition and selective visual memory in the multi-agent versions only; the ReAct build tracks the closest face for gaze", "end"))
 
     # interaction
     iy = py + ph + 44
@@ -273,7 +274,95 @@ def architecture():
     return "\n".join([svg] + p + ["</svg>"])
 
 
+# ---------------------------------------------------------------- Figure 3: multi-agent graph (nadine_local)
+def agent_graph():
+    W = 1000
+    p = [STYLE, DEFS]
+    cx, cw, nh = 430, 240, 52
+
+    def pill(y, txt):
+        p.append(f'<rect x="{cx - 50}" y="{y}" width="100" height="34" rx="17" class="n-sh"/>')
+        p.append(f'<text x="{cx}" y="{y + 22}" text-anchor="middle" class="b">{txt}</text>')
+
+    def col(y, title, fn):
+        p.append(node(cx - cw / 2, y, cw, nh, [(title, "t"), (fn, "s")], "n-ma"))
+
+    def elabel(x, y, txt, anchor="start"):
+        p.append(label(x, y, txt, anchor))
+
+    ys = dict(start=20, ic=92, mr=176, aa=260, orc=344, tools=436, ra=530, au=614, end=706)
+    pill(ys["start"], "START")
+    col(ys["ic"], "Intent classifier", "intention_classifier")
+    col(ys["mr"], "Memory retrieval", "memory_retrieve_agent")
+    col(ys["aa"], "Affective appraisal", "affective_appraisal")
+    col(ys["orc"], "Orchestrator", "orchestrator")
+    tools = [("Search", "search_agent", 150), ("Vision", "vision_agent", 150), ("Knowledge RAG", "knowledge_rag_agent", 170)]
+    tw = sum(w for _, _, w in tools) + 16 * 2
+    tx = cx - tw / 2
+    tcx = []
+    for t, fn, w in tools:
+        p.append(node(tx, ys["tools"], w, nh, [(t, "t"), (fn, "s")], "n-ma"))
+        tcx.append((tx + w / 2, tx, tx + w))
+        tx += w + 16
+    col(ys["ra"], "Response agent", "response_agent")
+    col(ys["au"], "Affective update", "affective_update")
+    pill(ys["end"], "END")
+    # memory update on the right
+    mx, my, mw = 730, ys["orc"], 230
+    p.append(node(mx, my, mw, nh, [("Memory update", "t"), ("memory_update_agent", "s")], "n-ma"))
+    mcx = mx + mw / 2
+
+    # main column edges
+    p.append(edge(cx, ys["start"] + 34, cx, ys["ic"]))
+    p.append(edge(cx, ys["ic"] + nh, cx, ys["mr"]))
+    elabel(cx + 8, ys["ic"] + nh + 22, "otherwise")
+    p.append(edge(cx, ys["mr"] + nh, cx, ys["aa"]))
+    p.append(edge(cx, ys["aa"] + nh, cx, ys["orc"]))
+    for c, x1, x2 in tcx:
+        p.append(edge(cx, ys["orc"] + nh, c, ys["tools"]))
+        p.append(edge(c, ys["tools"] + nh, cx, ys["ra"]))
+    elabel(cx - cw / 2 - 8, ys["orc"] + nh + 26, "first plan step", "end")
+    elabel(cx - cw / 2 - 8, ys["tools"] + nh + 26, "plan empty", "end")
+    p.append(edge(cx, ys["ra"] + nh, cx, ys["au"]))
+    p.append(edge(cx, ys["au"] + nh, cx, ys["end"]))
+    elabel(cx + 8, ys["au"] + nh + 22, "otherwise")
+
+    # tools -> orchestrator when plan steps remain (loop on the left)
+    lx = tcx[0][1]
+    p.append(poly([(lx, ys["tools"] + nh / 2), (150, ys["tools"] + nh / 2), (150, ys["orc"] + nh / 2), (cx - cw / 2, ys["orc"] + nh / 2)]))
+    elabel(142, ys["tools"] - 6, "plan steps", "end")
+    elabel(142, ys["tools"] + 12, "remaining", "end")
+
+    # orchestrator -> response agent when no plan
+    p.append(poly([(cx + cw / 2, ys["orc"] + nh / 2), (640, ys["orc"] + nh / 2), (640, ys["ra"] + nh / 2 - 8), (cx + cw / 2, ys["ra"] + nh / 2 - 8)]))
+    elabel(648, ys["orc"] + nh / 2 + 44, "no plan")
+
+    # intent classifier -> memory update (update_user_info)
+    p.append(poly([(cx + cw / 2, ys["ic"] + nh / 2), (mcx, ys["ic"] + nh / 2), (mcx, my)]))
+    elabel(cx + cw / 2 + 12, ys["ic"] + nh / 2 - 8, "update_user_info")
+    # memory update -> memory retrieval (otherwise)
+    p.append(poly([(mx, my + 14), (690, my + 14), (690, ys["mr"] + nh / 2 + 8), (cx + cw / 2, ys["mr"] + nh / 2 + 8)]))
+    elabel(698, ys["mr"] + nh / 2 + 4, "otherwise")
+    # memory update -> response agent (name confirmation pending)
+    p.append(poly([(mcx - 40, my + nh), (mcx - 40, ys["ra"] + nh / 2 + 8), (cx + cw / 2, ys["ra"] + nh / 2 + 8)]))
+    elabel(mcx - 32, ys["ra"] + nh / 2 - 6, "name confirmation")
+    # memory update -> END (end_conversation, after the final save)
+    p.append(poly([(mcx + 40, my + nh), (mcx + 40, ys["end"] + 17), (cx + 50, ys["end"] + 17)]))
+    elabel(mcx + 48, ys["end"] - 30, "end_conversation,")
+    elabel(mcx + 48, ys["end"] - 12, "after final save")
+    # affective update -> memory update (end_conversation)
+    p.append(poly([(cx + cw / 2, ys["au"] + 14), (mcx + 40 - 60, ys["au"] + 14)]))
+    p.append(poly([(mcx - 20, ys["au"] + 14), (mcx - 20, my + nh + 1)], arrow=True))
+    elabel(cx + cw / 2 + 12, ys["au"] + 8, "end_conversation")
+
+    H = ys["end"] + 60
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" '
+           f'aria-label="LangGraph multi-agent graph of the local platform" class="fig" style="overflow:visible">')
+    return "\n".join([svg] + p + ["</svg>"])
+
+
 if __name__ == "__main__":
     (OUT / "platforms_lineage.svg").write_text(lineage())
     (OUT / "platforms_architecture.svg").write_text(architecture())
+    (OUT / "multiagent_graph.svg").write_text(agent_graph())
     print("written")

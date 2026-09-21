@@ -49,7 +49,11 @@ On startup, `main.py`:
 
 ## Per-Frame Loop
 
-The main `while True` loop does, for each frame:
+The main `while True` loop does, for each frame, the following five phases:
+
+### Capture and detect
+
+Grab an aligned color/depth pair and find every face in it.
 
 1. **Capture frames**
    - Wait for frames from RealSense with a 5 s timeout. On timeout the loop logs a warning and retries; it does not exit.
@@ -64,6 +68,10 @@ The main `while True` loop does, for each frame:
      - Bounding box `(x1, y1, x2, y2)`.
      - Tracker ID.
      - Depth at the center of the box from `depth_frame`.
+
+### Track and recognize
+
+Choose the person to attend to and try to identify them.
 
 3. **Active user selection**
    - Among all detected faces, pick the one with **minimum positive depth** as the “active user”.
@@ -80,6 +88,10 @@ The main `while True` loop does, for each frame:
      - `confidence` is reported as `(best_similarity + 1) / 2 * 100`, i.e. a percentage.
      - If the best similarity exceeds 0.3, set `name` and `user_id`; otherwise the user stays `"Unknown"`.
 
+### Publish position and identity
+
+Tell the control layer where to look and the interaction layer who is there.
+
 5. **3D position estimation**
    - For the tracked face, compute:
      - Center pixel `(cx, cy)` from the bounding box.
@@ -95,12 +107,20 @@ The main `while True` loop does, for each frame:
      - Topic: `nadine/graph/user_detected`  
      - Payload: `{"user_name": name, "confidence": confidence, "user_id": user_id}`
 
+### Selective memory
+
+Decide whether the current scene is worth keeping.
+
 7. **Selective memory hook**
    - Runs only for recognized users (`user_id` not `None`), at most once per `memorability_check_interval` seconds per user (config 3.0 s; code fallback 2.0 s), on a copy of the frame taken before anything is drawn on it.
    - **`pad_arousal` policy (default)**: read the latest `nadine/affect/state` values; compute `memorability = base[emotion_label] × intensity`; store if `should_store` is true (memorability ≥ `arousal_threshold`, or the user has no stored scenes yet).
    - **`vision` policy**: run OpenFace on a padded face crop, compute a CLIP embedding of the frame, and combine emotion salience and novelty into a memorability score; store if it is ≥ `memorability_threshold`.
    - Both policies then apply a 15 s per-user cooldown (`SCENE_STORE_COOLDOWN`): if a scene was stored for this user less than 15 s ago, the store is skipped.
    - On a store, a Moondream2 description is generated, the scene is written (see the Selective Memory page), and `nadine/memory/scene_stored` is published.
+
+### Display and storage
+
+Draw the debug view and persist new face data when asked.
 
 8. **Visualization**
    - For the tracked face only, draw the bounding box, the label `name (confidence%)`, and the 3D coordinates.

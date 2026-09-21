@@ -41,7 +41,11 @@ This page explains how the interaction layer runs at runtime: from microphone in
 
 ## Voice Interaction Flow
 
-In normal mode:
+In normal mode each user utterance passes through three phases: listen, process, respond.
+
+### Listen
+
+STT runs continuously and hands finished utterances to `Nadine`.
 
 1. `Nadine.start_all()`:
    - Starts STT listening.
@@ -51,14 +55,22 @@ In normal mode:
 2. **User speaks**:
    - `STTManager` converts audio to text and calls `Nadine.user_speech_detected(text)`.
 
+### Process
+
+`user_speech_detected` gates the microphone and hands the text to the dialogue manager.
+
 3. **user_speech_detected**:
    - Suspends STT while Nadine is speaking (when MQTT is enabled).
    - Translates user input to English if current `language` is not English.
    - Calls `DialogueManager.processInput(text_en)`.
-   - Updates the UI (user input + agent output).
-   - Calls `mqtt_comm.speak(reply_en, self.language)` to trigger speech and animation.
 
-4. **After response**:
+### Respond
+
+The reply is shown, spoken, and the microphone is re-armed.
+
+4. Updates the UI (user input + agent output).
+5. Calls `mqtt_comm.speak(reply_en, self.language)` to trigger speech and animation.
+6. **After response**:
    - STT is re-activated.
    - UI status is updated again to reflect current listening/speaking state.
 
@@ -83,7 +95,11 @@ This loop repeats for each user utterance.
   - `conversation_limit` – how many recent messages to keep in `chat_history` (4, i.e. two user–robot exchanges).
 - Does not warm up models itself: the Ollama models are pre-warmed by `start_nadine.sh` before the interaction process starts (`warmup_llms` in `utils.py` is an unused helper).
 
-### State refresh & name confirmation
+### Prepare the turn
+
+Before the graph runs, DM syncs the user, answers trivial inputs directly, and resolves any pending name confirmation.
+
+#### State refresh & name confirmation
 
 Before invoking the graph, DM:
 
@@ -96,7 +112,7 @@ Before invoking the graph, DM:
     - Resets the language to English through `set_language_callback`.
   - Updates `c_state` via `default_custom_state(c_state, chat_history, user_info)`.
 
-### Pre-graph short-circuits
+#### Pre-graph short-circuits
 
 Before the graph runs, `_short_circuit_reply` answers two kinds of input directly and appends them to the history:
 
@@ -113,7 +129,11 @@ If the memory agents previously requested name confirmation, `name_confirmation(
   - Rotating through remaining candidate names if needed.  
 - Synchronizes user info back to face recognition via MQTT.
 
-### Graph invocation
+### Run the graph
+
+One `invoke` call runs the whole multi-agent graph on the prepared state.
+
+#### Graph invocation
 
 After state prep:
 
@@ -128,6 +148,12 @@ The result includes:
 - Optional `name_confirmation` payload
 - `intent` – classified intent (e.g., `first_greeting`, `end_conversation`)
 
+### Respond
+
+DM adopts the new state, extracts the reply, and triggers any motion tied to the intent.
+
+#### Result handling
+
 The DM:
 
 - Optionally calls `set_language_callback` if `results["language"]` changed.  
@@ -138,7 +164,7 @@ The DM:
 - Updates `chat_history` with the new AI message.  
 - Resets chat history on `end_conversation` and trims to `conversation_limit` messages. After the reply is spoken, `__main__.py` also resets the language to French on `end_conversation`.
 
-### Motion side-effects
+#### Motion side-effects
 
 For certain intents (`first_greeting`, `end_conversation`), DM asks the control layer to wave:
 
